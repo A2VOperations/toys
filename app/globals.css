@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --animate-scroll: scrollBg 25s linear infinite;
+}
+
+@keyframes scrollBg {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .scrollX {
+    animation: scrollX 30s linear infinite;
+  }
+
+  @keyframes scrollX {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-33.33%);
+    }
+  }
+}
+
+/* Mobile specific adjustments for cart button */
+@media (max-width: 767px) {
+  .nb-actions {
+    gap: 4px;
+  }
+  .nb-cart-btn {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+  .nb-mobile-btn {
+    padding: 6px;
+  }
+}
+
+@keyframes twinkle {
+  0%,100% { opacity:0.35; transform:scale(1); }
+  50%      { opacity:0.7;  transform:scale(1.3); }
+}
+.tip-wrap:hover .tip-box {
+  opacity: 1 !important;
+  transform: translateX(-50%) translateY(0) !important;
+  pointer-events: auto !important;
+}

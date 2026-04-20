@@ -320,6 +320,9 @@ export default function Home() {
   const [activeGender, setActiveGender] = useState("Boy");
   const [genderProducts, setGenderProducts] = useState([]);
   const [genderLoading, setGenderLoading] = useState(true);
+  const [dealTag, setDealTag] = useState("limited edition");
+  const [dealProducts, setDealProducts] = useState([]);
+  const [dealLoading, setDealLoading] = useState(true);
   const [popularCurrent, setPopularCurrent] = useState(0);
   const [popularVisible, setPopularVisible] = useState(4);
   const [toastMessage, setToastMessage] = useState("");
@@ -413,20 +416,46 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    async function fetchByGender(gender) {
+    async function fetchDealProducts() {
+      try {
+        setDealLoading(true);
+        const res = await fetch(`/api/toys?tags=${encodeURIComponent(dealTag)}&limit=4`);
+        const data = await res.json();
+        if (data && data.toys) {
+          setDealProducts(
+            data.toys.map((t) => ({
+              _id: t._id,
+              name: t.title,
+              image: t.images?.[0] || "https://placehold.co/240x240?text=No+Image",
+              price: `\u20b9${parseFloat(t.price || 0).toFixed(2)}`,
+              stock: t.stock,
+            }))
+          );
+        } else {
+          setDealProducts([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch deal products", err);
+        setDealProducts([]);
+      } finally {
+        setDealLoading(false);
+      }
+    }
+    fetchDealProducts();
+  }, [dealTag]);
+
+  useEffect(() => {
+    async function fetchCollectionProducts() {
       try {
         setGenderLoading(true);
-        const res = await fetch(
-          `/api/toys?gender=${encodeURIComponent(gender)}&limit=8`,
-        );
+        const res = await fetch(`/api/toys?gender=${encodeURIComponent(activeGender)}&limit=8`);
         const data = await res.json();
         if (data && data.toys) {
           const mapped = data.toys.map((t) => ({
             _id: t._id,
             name: t.title,
             category: t.category,
-            image:
-              t.images?.[0] || "https://placehold.co/200x200?text=No+Image",
+            image: t.images?.[0] || "https://placehold.co/200x200?text=No+Image",
             price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
             stock: t.stock,
           }));
@@ -435,13 +464,13 @@ export default function Home() {
           setGenderProducts([]);
         }
       } catch (err) {
-        console.error("Failed to fetch gender products", err);
+        console.error("Failed to fetch collection products", err);
         setGenderProducts([]);
       } finally {
         setGenderLoading(false);
       }
     }
-    fetchByGender(activeGender);
+    fetchCollectionProducts();
   }, [activeGender]);
 
   useEffect(() => {
@@ -620,7 +649,7 @@ export default function Home() {
             {categories.map((c, i) => (
               <SwiperSlide key={`${c.label}-${i}`}>
                 <div
-                  className="flex flex-col items-center group cursor-pointer mx-auto"
+                  className="flex flex-col items-center group mx-auto"
                   style={{ width: 140 }}
                 >
                   <div className="relative w-50 h-50 p-2">
@@ -682,28 +711,28 @@ export default function Home() {
         {featuredBanners.map((b) => (
           <div
             key={b.label}
-            className={`${b.bg} h-80 rounded-3xl p-3 flex items-center justify-between text-white group hover:-translate-y-2 transition-transform cursor-pointer shadow-xl overflow-hidden`}
+            className={`${b.bg} h-auto sm:h-80 rounded-3xl p-4 sm:p-3 flex flex-col sm:flex-row items-center justify-between text-white group hover:-translate-y-2 transition-transform cursor-pointer shadow-xl overflow-hidden gap-4 sm:gap-0`}
           >
-            <div className="flex flex-col gap-3 p-5">
+            <div className="flex flex-col gap-3 p-2 sm:p-5 items-center text-center sm:items-start sm:text-left w-full sm:w-auto z-10 pt-6 sm:pt-5">
               <span className="inline-block bg-white/30 text-xs font-black px-4 py-1.5 rounded-full w-fit">
                 {b.tag}
               </span>
               <h3 className="text-2xl font-black leading-tight">{b.label}</h3>
               <Link
                 href="/shop"
-                className="bg-white text-slate-800 px-6 py-2.5 rounded-full text-sm font-black shadow-lg w-fit"
+                className="text-center bg-white text-slate-800 px-4 py-3 rounded-full text-sm font-black shadow-lg w-fit mt-1 sm:mt-0"
               >
                 Shop Now
               </Link>
             </div>
 
-            <div className="h-full w-[220px] shrink-0 flex items-end justify-center group-hover:scale-105 transition-transform duration-500">
+            <div className="h-[200px] sm:h-full w-full sm:w-[220px] shrink-0 flex items-end justify-center group-hover:scale-105 transition-transform duration-500">
               <Image
                 src={b.image}
                 alt={b.label}
                 width={220}
                 height={320}
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover sm:object-cover sm:object-top"
               />
             </div>
           </div>
@@ -804,65 +833,127 @@ export default function Home() {
       {/* ── DEAL OF THE DAY ── */}
       <section className="bg-[#FFF5F9] py-16 px-5">
         <div className="max-w-[1200px] mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
-            <h2 className="text-3xl font-black text-slate-900">
+          {/* Header row: title + timer */}
+          <div className="flex flex-col md:flex-row justify-between items-center mb-6 md:mb-8 gap-6">
+            <h2 className="text-3xl lg:text-4xl font-black text-slate-900 text-center md:text-left">
               Deal of <span className="text-[#E84393]">the Day</span>
             </h2>
-            <div className="flex items-center space-x-3">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <span className="text-xs sm:text-sm font-bold text-slate-400 uppercase tracking-widest hidden sm:inline-block">
                 Ends in:
               </span>
               {[dealTimer.h, dealTimer.m, dealTimer.s].map((v, i) => (
                 <div
                   key={i}
-                  className="bg-slate-900 text-white w-12 h-12 flex items-center justify-center rounded-xl text-xl font-black"
+                  className="bg-slate-900 text-white w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl text-lg sm:text-xl font-black shadow-lg"
                 >
                   {pad(v)}
                 </div>
               ))}
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {dealOfDay.map((d) => (
-              <div
-                key={d.name}
-                className="bg-white p-8 rounded-[40px] flex flex-col sm:flex-row items-center gap-8 border-4 border-[#FFE0EE] shadow-xl"
+
+          {/* Tag filter pills */}
+          <div className="flex gap-3 mb-8 flex-wrap">
+            {[
+              { tag: "limited edition", label: "👑 Limited Edition", activeColor: "#7c3aed" },
+              { tag: "sales", label: "🔥 On Sale", activeColor: "#ef4444" },
+            ].map((pill) => (
+              <button
+                key={pill.tag}
+                onClick={() => setDealTag(pill.tag)}
+                style={dealTag === pill.tag ? { background: pill.activeColor, color: "#fff", borderColor: pill.activeColor } : {}}
+                className={`px-5 py-2 rounded-full text-sm font-black border-2 transition-all duration-200 ${
+                  dealTag === pill.tag
+                    ? "shadow-lg scale-105"
+                    : "border-pink-200 text-slate-600 bg-white hover:border-[#E84393] hover:text-[#E84393]"
+                }`}
               >
-                <Image
-                  className="object-contain "
-                  height={200}
-                  width={200}
-                  style={{ width: "auto", height: "auto" }}
-                  src={d.image}
-                  alt={d.name}
-                />
-                <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left gap-4">
-                  <h3 className="text-lg font-black leading-tight mb-3">
-                    {d.name}
-                  </h3>
-                  <Stars />
-                  <button
-                    onClick={() => {
-                      const waNumber =
-                        process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
-                      if (!waNumber) {
-                        alert(
-                          "Please set NEXT_PUBLIC_WHATSAPP_NUMBER in your env file.",
-                        );
-                        return;
-                      }
-                      const message = `Hi, I want to buy this deal: ${d.name}`;
-                      const whatsappUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
-                      window.open(whatsappUrl, "_blank");
-                    }}
-                    className="bg-green-500 text-white px-8 py-3 rounded-full font-black text-xs uppercase tracking-widest hover:bg-slate-900 transition-colors"
-                  >
-                    whatsapp
-                  </button>
-                </div>
-              </div>
+                {pill.label}
+              </button>
             ))}
           </div>
+
+          {/* Products grid */}
+          {dealLoading ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+              {Array.from({ length: 2 }).map((_, i) => (
+                <div key={i} className="bg-white animate-pulse rounded-[30px] sm:rounded-[40px] h-48 border-4 border-[#FFE0EE]" />
+              ))}
+            </div>
+          ) : dealProducts.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-48 text-gray-400">
+              <span className="text-5xl mb-4">🔍</span>
+              <p className="text-lg font-bold">
+                No deals found for{" "}
+                <span className="text-[#E84393]">
+                  {dealTag === "limited edition" ? "Limited Edition" : "On Sale"}
+                </span>
+              </p>
+              <p className="text-sm mt-1">
+                Tag products with &ldquo;{dealTag}&rdquo; in the admin panel.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+              {dealProducts.map((d) => (
+                <div
+                  key={d._id}
+                  className="bg-white p-6 sm:p-8 rounded-[30px] sm:rounded-[40px] flex flex-col sm:flex-row items-center gap-6 sm:gap-8 border-4 border-[#FFE0EE] shadow-xl hover:shadow-2xl transition-all h-full cursor-pointer"
+                  onClick={() => router.push(`/shop/${d._id}`)}
+                >
+                  <div className="w-full sm:w-[45%] max-w-[240px] sm:max-w-none aspect-square relative shrink-0">
+                    <Image
+                      className="object-cover hover:scale-105 transition-transform duration-500 drop-shadow-md"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      src={d.image}
+                      alt={d.name}
+                    />
+                  </div>
+                  <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left gap-4 w-full">
+                    <span
+                      className="inline-block text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full"
+                      style={{
+                        background: dealTag === "limited edition" ? "#ede9fe" : "#fee2e2",
+                        color: dealTag === "limited edition" ? "#7c3aed" : "#ef4444",
+                      }}
+                    >
+                      {dealTag === "limited edition" ? "👑 Limited Edition" : "🔥 On Sale"}
+                    </span>
+                    <h3 className="text-lg font-black leading-tight">
+                      {d.name}
+                    </h3>
+                    <Stars />
+                    <p className="text-2xl font-black text-[#E84393]">{d.price}</p>
+                    <div className="flex gap-3 mt-auto flex-wrap">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(d);
+                        }}
+                        className="bg-[#E84393] hover:bg-[#d83a82] text-white px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest transition-colors shadow-sm"
+                      >
+                        Add to Cart
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
+                          if (!waNumber) return;
+                          const msg = `Hi, I want to buy: ${d.name}`;
+                          window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`, "_blank");
+                        }}
+                        className="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest transition-colors shadow-sm"
+                      >
+                        WhatsApp
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -1143,37 +1234,22 @@ export default function Home() {
             <h2 className="text-3xl font-black text-slate-900">
               Select from <span className="text-[#E84393]">Collection</span>
             </h2>
-            <a
+            <Link
               href="/shop"
               className="text-[#E84393] text-sm font-bold hover:underline transition-all"
             >
               View All
-            </a>
+            </Link>
           </div>
 
           <div className="flex flex-col md:flex-row gap-6">
-            {/* ── LEFT: Gender Filter ── */}
+            {/* ── LEFT: Filter Sidebar ── */}
             <div className="md:w-48 shrink-0">
               <div className="border border-pink-100 rounded-2xl overflow-hidden shadow-sm">
                 {[
-                  {
-                    label: "Boy",
-                    display: "Boys",
-                    emoji: "🚀",
-                    color: "#3b82f6",
-                  },
-                  {
-                    label: "Girl",
-                    display: "Girls",
-                    emoji: "🌸",
-                    color: "#E84393",
-                  },
-                  {
-                    label: "Unisex",
-                    display: "Unisex",
-                    emoji: "⭐",
-                    color: "#f59e0b",
-                  },
+                  { label: "Boy",    display: "Boys",   emoji: "\uD83D\uDE80", color: "#3b82f6" },
+                  { label: "Girl",   display: "Girls",  emoji: "\uD83C\uDF38", color: "#E84393" },
+                  { label: "Unisex", display: "Unisex", emoji: "\u2B50",       color: "#f59e0b" },
                 ].map((g, idx) => (
                   <button
                     key={g.label}
@@ -1188,10 +1264,7 @@ export default function Home() {
                   >
                     <span
                       className="w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0"
-                      style={{
-                        background:
-                          activeGender === g.label ? g.color + "22" : "#f3f4f6",
-                      }}
+                      style={{ background: activeGender === g.label ? g.color + "22" : "#f3f4f6" }}
                     >
                       {g.emoji}
                     </span>
@@ -1200,14 +1273,10 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Decorative bear image below tabs */}
+              {/* Decorative emoji */}
               <div className="hidden md:flex justify-center mt-6 pointer-events-none select-none">
                 <span className="text-[80px] leading-none">
-                  {activeGender === "Boy"
-                    ? "🚀"
-                    : activeGender === "Girl"
-                      ? "🧸"
-                      : "🌈"}
+                  {activeGender === "Boy" ? "\uD83D\uDE80" : activeGender === "Girl" ? "\uD83E\uDDF8" : "\uD83C\uDF08"}
                 </span>
               </div>
             </div>
@@ -1229,11 +1298,7 @@ export default function Home() {
                   <p className="text-lg font-bold">
                     No products found for{" "}
                     <span className="text-[#E84393]">
-                      {activeGender === "Boy"
-                        ? "Boys"
-                        : activeGender === "Girl"
-                          ? "Girls"
-                          : "Unisex"}
+                      {activeGender === "Boy" ? "Boys" : activeGender === "Girl" ? "Girls" : "Unisex"}
                     </span>
                   </p>
                   <p className="text-sm mt-1">
@@ -1250,10 +1315,11 @@ export default function Home() {
                     >
                       {/* Image */}
                       <div className="relative bg-gray-50 h-44 overflow-hidden">
-                        <img
+                        <Image
+                          fill
                           src={product.image}
                           alt={product.name}
-                          className="w-full h-full object-contain p-3 transition-transform duration-500 group-hover:scale-110"
+                          className="w-full h-full object-cover p-3 transition-transform duration-500 group-hover:scale-110"
                         />
                       </div>
 

@@ -34,7 +34,7 @@ export default function AddToyForm() {
     title: "",
     category: "Action Figures",
     brand: "",
-    stock: 3,
+    stock: 1,
     description: "",
     gender: "Unisex",
     age: "",
@@ -489,7 +489,7 @@ export default function AddToyForm() {
               <input
                 className="toy-input"
                 type="number"
-                min={0}
+                min={1}
                 value={formData.stock}
                 onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
               />

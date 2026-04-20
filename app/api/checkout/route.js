@@ -24,7 +24,7 @@ export async function POST(request) {
     const base64Data = pdfBase64.split("base64,")[1] || pdfBase64;
 
     const sender = {
-      address: process.env.EMAIL_MAILTRAP,
+      address: process.env.EMAIL_MAILTRAP || "hello@demomailtrap.co",
       name: "Toys for Kids Checkout",
     };
 

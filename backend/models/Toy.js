@@ -8,7 +8,7 @@ const ToySchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
-  stock: { type: Number, default: 3 },
+  stock: { type: Number, default: 1 },
   description: { type: String },
   gender: { type: String, enum: ['Boy', 'Girl', 'Unisex'] },
   age: { type: String },
@@ -17,5 +17,14 @@ const ToySchema = new mongoose.Schema({
 }, { timestamps: true });
 
 ToySchema.index({ createdAt: -1 });
+ToySchema.index({ category: 1 });
+ToySchema.index({ brand: 1 });
+ToySchema.index({ gender: 1 });
+ToySchema.index({ price: 1 });
+ToySchema.index({ title: 1 });
+ToySchema.index({ tags: 1 });
+
+ToySchema.index({ createdAt: -1, _id: -1 }); // compound for pagination
+ToySchema.index({ category: 1, createdAt: -1 }); // filtered listing
 
 export default mongoose.models.Toy || mongoose.model('Toy', ToySchema);

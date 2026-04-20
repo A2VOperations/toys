@@ -470,7 +470,7 @@ export default function CartPage() {
               </div>
               <form onSubmit={handleCheckout} className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-md font-medium text-gray-700 mb-1">
                     Full Name
                   </label>
                   <input
@@ -485,7 +485,7 @@ export default function CartPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-md font-medium text-gray-700 mb-1">
                     Email Address
                   </label>
                   <input
@@ -503,11 +503,14 @@ export default function CartPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone Number
+                  <label className="block text-md font-medium text-gray-700 mb-1">
+                    Phone Number  
                   </label>
                   <input
+                    minLength={10}
+                    maxLength={10}
                     required
+                    pattern="[0-9]{10}"
                     type="tel"
                     value={checkoutData.phone}
                     onChange={(e) =>
@@ -517,12 +520,12 @@ export default function CartPage() {
                       })
                     }
                     className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 outline-none"
-                    placeholder="+91..."
+                    placeholder="Enter 10 digits number"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Physical Address
+                  <label className="block text-md font-medium text-gray-700 mb-1">
+                  Address
                   </label>
                   <textarea
                     required
@@ -535,7 +538,7 @@ export default function CartPage() {
                       })
                     }
                     className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 outline-none"
-                    placeholder="123 Main St..."
+                    placeholder="Enter Address"
                   ></textarea>
                 </div>
                 <div className="pt-4 border-t border-gray-100 flex justify-end gap-3 mt-6">

@@ -419,9 +419,9 @@ export default function AuthPage() {
             </div>
             <div className="error-msg">{errors.password}</div>
 
-            <button type="button" className="forgot-link" onClick={handleForgotOpen}>
+            {/* <button type="button" className="forgot-link" onClick={handleForgotOpen}>
               Forgot password?
-            </button>
+            </button> */}
 
             <button type="submit" className="login-btn" disabled={loading}>
               {loading ? "Authenticating..." : "Login"}
@@ -453,7 +453,7 @@ export default function AuthPage() {
                 </button>
               </div>
               <div className="modal-note">
-                <strong>Note:</strong> Your password is never emailed directly. You will receive a secure link to set a new password. If you don't receive it, contact your administrator.
+                <strong>Note:</strong> Your password is never emailed directly. You will receive a secure link to set a new password. If you don&apos;t receive it, contact your administrator.
               </div>
             </div>
           </div>

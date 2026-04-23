@@ -5,9 +5,10 @@ import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 
 const CATEGORIES = [
-  "Action Figures", "Board Games", "Educational", "Dolls",
+  "Action Figures", "Board Games", "Educational Toys", "Dolls",
   "Vehicles", "Puzzles", "Outdoor & Sports", "Arts & Crafts",
-  "Electronic Toys", "Building Sets"
+  "Battery Operated Toys", "Building Sets" , "Return Gifts Toys" , "Lunch Box And Bottles",
+  "School Bags", "Return Gifts Stationary","Non Battery Toys","Soft Toys"
 ];
 
 const TAGS = ["Bestseller", "New", "Sale", "Limited Edition", "Award Winning", "Eco Friendly"];
@@ -198,9 +199,8 @@ export default function ProductDetailPage() {
 
   return (
     <div
-      className="min-h-screen py-10 px-4 relative"
+      className="min-h-screen py-10 px-4 relative bg-gray-200"
       style={{
-        background: "linear-gradient(135deg, #fff5f9 0%, #fffdf0 50%, #f0fff4 100%)",
         fontFamily: "'Nunito', sans-serif",
       }}
     >
@@ -236,7 +236,7 @@ export default function ProductDetailPage() {
         .toy-input.input-success { border-color: #22c55e !important; background: #f0fdf4; }
 
         .section-label {
-          font-size: 10px;
+          font-size: 14px;
           font-weight: 800;
           letter-spacing: 0.18em;
           text-transform: uppercase;
@@ -317,7 +317,7 @@ export default function ProductDetailPage() {
         </div>
       )}
 
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto bg-gray-100 rounded-3xl p-10 mb-10">
 
         {/* BACK + HEADER */}
         <div className="mb-8">

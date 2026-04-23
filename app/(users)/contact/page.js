@@ -44,34 +44,31 @@ const heroStars = [
 const waNumber = (
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567"
 ).replace(/\D/g, "");
-const mapLocation = process.env.NEXT_PUBLIC_MAP_LOCATION || "DELHI+INDIA";
+const mapLocation =
+  process.env.NEXT_PUBLIC_MAP_LOCATION ||
+  "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3498.108502575005!2d77.19453617550505!3d28.74616675603734!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjjCsDQ0JzQ2LjIiTiA3N8KwMTEnNDkuNiJF!5e0!3m2!1sen!2sin!4v1745403061619!5m2!1sen!2sin";
 
 const CARDS = [
   {
     icon: <BuildingIcon />,
-    label: "Corporate Office",
-    value: "0233 Brisbane Cir.\nShiloh, Australia 81063",
+    label: "Shop",
+    value: process.env.NEXT_PUBLIC_ADDRESS
+      ? process.env.NEXT_PUBLIC_ADDRESS
+      : "Kh no 793/1 Budh bazar road kamalpur Burari Delhi 110084",
     iconBg: "bg-[#fff0f4]",
     iconColor: "text-[#f74872]",
   },
   {
-    icon: <MapPinIcon />,
-    label: "Main Warehouse",
-    value: "0233 Brisbane Cir.\nShiloh, Australia 81063",
-    iconBg: "bg-blue-50",
-    iconColor: "text-blue-600",
-  },
-  {
     icon: <MailIcon />,
     label: "Email Address",
-    value: "contact@kiddex.com\nsupport@kiddex.com",
+    value: process.env.EMAIL_FROM || "toysforkidsdelhi@gmail.com",
     iconBg: "bg-violet-50",
     iconColor: "text-violet-600",
   },
   {
     icon: <PhoneIcon />,
     label: "Phone Number",
-    value: "+(208) 544-0142\n+(208) 544-0143",
+    value: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567",
     iconBg: "bg-orange-50",
     iconColor: "text-orange-600",
   },
@@ -118,7 +115,7 @@ export default function ContactPage() {
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")`,
           }}
         />
-        
+
         {/* Animated Stars */}
         <div className="pointer-events-none absolute inset-0">
           {heroStars.map((star, index) => (
@@ -214,12 +211,12 @@ export default function ContactPage() {
       />
 
       {/* ── INFO CARDS ───────────────────────────────────────────────────── */}
-      <div className="relative z-10 mx-auto -mt-9 grid max-w-6xl grid-cols-2 gap-4 px-12 lg:grid-cols-4 max-sm:grid-cols-1 max-sm:px-6">
+      <div className="relative z-10 mx-auto -mt-9 grid max-w-6xl grid-cols-2  gap-4 px-12 lg:grid-cols-3 max-sm:grid-cols-1 max-sm:px-6">
         {CARDS.map((card, i) => (
           <div
             key={i}
             className={[
-              "flex flex-col gap-4 rounded-2xl bg-white p-7",
+              "flex flex-col justify-center items-center gap-4 rounded-2xl bg-white p-7",
               "transition-[transform,box-shadow] duration-[350ms]",
               "hover:-translate-y-1.5 hover:shadow-[0_20px_48px_rgba(15,10,12,0.1)]",
             ].join(" ")}
@@ -231,19 +228,19 @@ export default function ContactPage() {
             }}
           >
             <div
-              className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl text-lg ${card.iconBg} ${card.iconColor}`}
+              className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-lg ${card.iconBg} ${card.iconColor}`}
             >
               {card.icon}
             </div>
             <div>
               <div
-                className="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em]"
+                className="mb-1 text-[16px] text-center font-semibold uppercase tracking-[0.12em]"
                 style={{ color: "#9a7d86" }}
               >
                 {card.label}
               </div>
               <div
-                className="whitespace-pre-line text-[13.5px] font-medium leading-[1.65]"
+                className="whitespace-pre-line text-center text-[15px] font-medium leading-[1.65]"
                 style={{ color: "#0f0a0c" }}
               >
                 {card.value}
@@ -375,9 +372,11 @@ export default function ContactPage() {
             }}
           >
             <iframe
-              src={`https://www.google.com/maps?q=${mapLocation}&output=embed`}
+              src={mapLocation}
               loading="lazy"
               title="Store Location"
+              allowFullScreen=""
+              referrerPolicy="no-referrer-when-downgrade"
               className="block h-full w-full border-0 transition-[filter] duration-[400ms]"
               style={{ filter: "grayscale(20%) saturate(90%)" }}
               // Tailwind can't toggle :hover filter on iframe; inline onMouseEnter/Leave works:

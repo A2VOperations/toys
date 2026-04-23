@@ -3,23 +3,11 @@
 import { useCallback, useEffect, useMemo, useState, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
+import { CATEGORIES } from "../categories";
 
 const PAGE_SIZE = 9;
-
-const CATEGORIES = [
-  "Action Figures",
-  "Board Games",
-  "Educational",
-  "Dolls",
-  "Vehicles",
-  "Puzzles",
-  "Outdoor & Sports",
-  "Arts & Crafts",
-  "Electronic Toys",
-  "Building Sets",
-];
 
 const TAGS = [
   "Bestseller",
@@ -62,6 +50,8 @@ const defaultFilters = {
 };
 
 function ShopPageContent() {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [filters, setFilters] = useState(defaultFilters);
@@ -72,18 +62,6 @@ function ShopPageContent() {
     currentPage: 1,
     pageSize: PAGE_SIZE,
   });
-
-  // Sync filters from URL directly
-  useEffect(() => {
-    setFilters((prev) => ({
-      ...prev,
-      category: searchParams.get("category") || "",
-      gender: searchParams.get("gender") || "",
-      minPrice: searchParams.get("minPrice") || "",
-      maxPrice: searchParams.get("maxPrice") || "",
-      tags: searchParams.get("tags") ? searchParams.get("tags").split(",") : [],
-    }));
-  }, [searchParams]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -96,14 +74,16 @@ function ShopPageContent() {
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
 
-  const queryString = useMemo(() => {
+  const buildSearchParams = useCallback((nextFilters, nextPage = 1) => {
     const params = new URLSearchParams();
-    params.set("limit", String(PAGE_SIZE));
-    params.set("page", String(pagination.currentPage));
 
-    Object.entries(filters).forEach(([key, value]) => {
+    params.set("page", String(nextPage));
+
+    Object.entries(nextFilters).forEach(([key, value]) => {
       if (typeof value === "boolean") {
-        params.set(key, String(value));
+        if (key === "latestUploaded") {
+          params.set(key, String(value));
+        }
       } else if (Array.isArray(value) && value.length) {
         params.set(key, value.join(","));
       } else if (typeof value === "string" && value.trim()) {
@@ -112,14 +92,67 @@ function ShopPageContent() {
     });
 
     return params.toString();
-  }, [filters, pagination.currentPage]);
+  }, []);
+
+  // Sync filters from URL directly
+  useEffect(() => {
+    const sortBy = searchParams.get("sortBy") || defaultFilters.sortBy;
+    const latestUploadedParam = searchParams.get("latestUploaded");
+    const pageFromUrl = Number(searchParams.get("page") || "1");
+
+    setFilters({
+      ...defaultFilters,
+      category: searchParams.get("category") || "",
+      gender: searchParams.get("gender") || "",
+      age: searchParams.get("age") || "",
+      tags: searchParams.get("tags") ? searchParams.get("tags").split(",") : [],
+      brand: searchParams.get("brand") || "",
+      title: searchParams.get("title") || "",
+      minPrice: searchParams.get("minPrice") || "",
+      maxPrice: searchParams.get("maxPrice") || "",
+      sortBy,
+      latestUploaded:
+        latestUploadedParam !== null
+          ? latestUploadedParam === "true"
+          : sortBy !== "oldest",
+    });
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: Number.isNaN(pageFromUrl) || pageFromUrl < 1 ? 1 : pageFromUrl,
+    }));
+  }, [searchParams]);
+
+  const urlQueryString = useMemo(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set("limit", String(PAGE_SIZE));
+
+    if (!params.get("page")) {
+      params.set("page", "1");
+    }
+
+    if (!params.get("sortBy")) {
+      params.set("sortBy", defaultFilters.sortBy);
+    }
+
+    if (!params.get("latestUploaded")) {
+      params.set(
+        "latestUploaded",
+        params.get("sortBy") === "oldest" ? "false" : "true",
+      );
+    }
+
+    return params.toString();
+  }, [searchParams]);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError("");
 
     try {
-      const response = await fetch(`/api/toys?${queryString}`);
+      const response = await fetch(`/api/toys?${urlQueryString}`, {
+        cache: "no-store",
+      });
       const data = await response.json();
 
       if (!response.ok) {
@@ -136,7 +169,7 @@ function ShopPageContent() {
     } finally {
       setLoading(false);
     }
-  }, [queryString]);
+  }, [urlQueryString]);
 
   useEffect(() => {
     fetchProducts();
@@ -203,16 +236,21 @@ function ShopPageContent() {
     if (event) event.preventDefault();
     setPagination((prev) => ({ ...prev, currentPage: 1 }));
     setIsMobileFilterOpen(false); // Close mobile drawer on apply
+    router.push(`${pathname}?${buildSearchParams(filters)}`, { scroll: false });
   };
 
   const handleResetFilters = () => {
     setFilters(defaultFilters);
     setPagination((prev) => ({ ...prev, currentPage: 1 }));
+    router.push(pathname, { scroll: false });
   };
 
   const handlePageChange = (nextPage) => {
     if (nextPage < 1 || nextPage > pagination.totalPages) return;
     setPagination((prev) => ({ ...prev, currentPage: nextPage }));
+    router.push(`${pathname}?${buildSearchParams(filters, nextPage)}`, {
+      scroll: false,
+    });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 

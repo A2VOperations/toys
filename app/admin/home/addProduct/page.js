@@ -3,17 +3,37 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const CATEGORIES = [
-  "Action Figures", "Board Games", "Educational", "Dolls",
-  "Vehicles", "Puzzles", "Outdoor & Sports", "Arts & Crafts",
-  "Electronic Toys", "Building Sets"
+  "Action Figures",
+  "Board Games",
+  "Educational Toys",
+  "Dolls",
+  "Vehicles",
+  "Puzzles",
+  "Outdoor & Sports",
+  "Arts & Crafts",
+  "Battery Operated Toys",
+  "Building Sets",
+  "Return Gifts Toys",
+  "Lunch Box And Bottles",
+  "School Bags",
+  "Return Gifts Stationary",
+  "Non Battery Toys",
+  "Soft Toys",
 ];
 
-const TAGS = ["Bestseller", "New", "Sale", "Limited Edition", "Award Winning", "Eco Friendly"];
+const TAGS = [
+  "Bestseller",
+  "New",
+  "Sale",
+  "Limited Edition",
+  "Award Winning",
+  "Eco Friendly",
+];
 
 const TAG_EMOJIS = {
-  "Bestseller": "🏆",
-  "New": "✨",
-  "Sale": "🔥",
+  Bestseller: "🏆",
+  New: "✨",
+  Sale: "🔥",
   "Limited Edition": "💎",
   "Award Winning": "🥇",
   "Eco Friendly": "🌿",
@@ -34,12 +54,12 @@ export default function AddToyForm() {
     title: "",
     category: "Action Figures",
     brand: "",
-    stock: 1,
+    stock: 3,
     description: "",
     gender: "Unisex",
     age: "",
     tags: [],
-    price: 0
+    price: 0,
   });
 
   const handleImageChange = (e) => {
@@ -53,7 +73,7 @@ export default function AddToyForm() {
           reader.onload = () => resolve(reader.result);
           reader.onerror = reject;
           reader.readAsDataURL(file);
-        })
+        }),
     );
 
     Promise.all(readers).then((results) => {
@@ -92,26 +112,28 @@ export default function AddToyForm() {
     setCheckingTitle(true);
 
     titleCheckTimeout.current = setTimeout(async () => {
-  try {
-    const res = await fetch(`/api/toys?title=${encodeURIComponent(value.trim())}&limit=100`);
-    const data = await res.json();
+      try {
+        const res = await fetch(
+          `/api/toys?title=${encodeURIComponent(value.trim())}&limit=100`,
+        );
+        const data = await res.json();
 
-    // API returns { toys: [...], pagination: {...} }
-    const toys = Array.isArray(data?.toys) ? data.toys : [];
+        // API returns { toys: [...], pagination: {...} }
+        const toys = Array.isArray(data?.toys) ? data.toys : [];
 
-    const exists = toys.some(
-      (t) => t.title.toLowerCase() === value.trim().toLowerCase()
-    );
+        const exists = toys.some(
+          (t) => t.title.toLowerCase() === value.trim().toLowerCase(),
+        );
 
-    if (exists) {
-      setTitleError("A toy with this name already exists.");
-    }
-  } catch (err) {
-    console.error("Title check failed:", err);
-  } finally {
-    setCheckingTitle(false);
-  }
-}, 600);
+        if (exists) {
+          setTitleError("A toy with this name already exists.");
+        }
+      } catch (err) {
+        console.error("Title check failed:", err);
+      } finally {
+        setCheckingTitle(false);
+      }
+    }, 600);
   };
 
   const handleSubmit = async (e) => {
@@ -157,9 +179,8 @@ export default function AddToyForm() {
 
   return (
     <div
-      className="min-h-screen py-12 px-4 relative"
+      className="min-h-screen py-12 px-4 relative bg-gray-200"
       style={{
-        background: "linear-gradient(135deg, #fff5f9 0%, #fffdf0 50%, #f0fff4 100%)",
         fontFamily: "'Nunito', sans-serif",
       }}
     >
@@ -297,7 +318,7 @@ export default function AddToyForm() {
         .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .section-label {
-          font-size: 10px;
+          font-size: 14px;
           font-weight: 800;
           letter-spacing: 0.18em;
           text-transform: uppercase;
@@ -324,15 +345,23 @@ export default function AddToyForm() {
       {/* ── FULL-SCREEN LOADING OVERLAY ── */}
       {loading && (
         <div className="loading-overlay">
-          <span className="spin" style={{ fontSize: 52 }}>🎡</span>
-          <p style={{ fontSize: 14, fontWeight: 700, color: "#aaa", fontFamily: "'Nunito', sans-serif" }}>
+          <span className="spin" style={{ fontSize: 52 }}>
+            🎡
+          </span>
+          <p
+            style={{
+              fontSize: 14,
+              fontWeight: 700,
+              color: "#aaa",
+              fontFamily: "'Nunito', sans-serif",
+            }}
+          >
             Saving your toy... 🧸
           </p>
         </div>
       )}
 
-      <div className="max-w-2xl mx-auto">
-
+      <div className="max-w-2xl mx-auto bg-gray-100 rounded-3xl p-10">
         {/* ── HEADER ── */}
         <div className="mb-10 text-center">
           <div
@@ -341,9 +370,11 @@ export default function AddToyForm() {
           >
             <span>🎁</span> Admin Panel
           </div>
-          <h1 className="text-5xl font-black leading-tight" style={{ color: "#1a1a2e" }}>
-            Add a New{" "}
-            <span style={{ color: "#E84393" }}>Toy</span>{" "}
+          <h1
+            className="text-5xl font-black leading-tight"
+            style={{ color: "#1a1a2e" }}
+          >
+            Add a New <span style={{ color: "#E84393" }}>Toy</span>{" "}
             <span style={{ color: "#FFB800" }}>🧸</span>
           </h1>
           <p className="text-sm font-semibold text-gray-400 mt-2">
@@ -352,14 +383,20 @@ export default function AddToyForm() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-
           {/* ── IMAGE UPLOAD ── */}
           <div className="field-card">
-            <span className="section-label">Product Images</span>
-            <div className="upload-zone" onClick={() => fileInputRef.current?.click()}>
+            <h3 className="section-label">Product Images</h3>
+            <div
+              className="upload-zone"
+              onClick={() => fileInputRef.current?.click()}
+            >
               <div className="text-5xl mb-3">📸</div>
-              <p className="text-sm font-bold text-gray-500">Click to upload images</p>
-              <p className="text-xs text-gray-400 mt-1 font-semibold">PNG, JPG, WEBP — multiple allowed</p>
+              <p className="text-sm font-bold text-gray-500">
+                Click to upload images
+              </p>
+              <p className="text-xs text-gray-400 mt-1 font-semibold">
+                PNG, JPG, WEBP — multiple allowed
+              </p>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -374,8 +411,16 @@ export default function AddToyForm() {
               <div className="flex flex-wrap gap-3 mt-4">
                 {previews.map((src, i) => (
                   <div key={i} className="preview-thumb">
-                    <img src={src} alt="" className="w-full h-full object-cover" />
-                    <button type="button" className="remove-btn" onClick={() => removeImage(i)}>
+                    <img
+                      src={src}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      className="remove-btn"
+                      onClick={() => removeImage(i)}
+                    >
                       ×
                     </button>
                   </div>
@@ -386,11 +431,15 @@ export default function AddToyForm() {
 
           {/* ── TITLE with duplicate check ── */}
           <div className="field-card">
-            <span className="section-label">Product Title *</span>
+            <h3 className="section-label">Product Title <span className="text-xl">*</span></h3>
             <div style={{ position: "relative" }}>
               <input
                 className={`toy-input ${
-                  titleError ? "input-error" : formData.title && !checkingTitle ? "input-success" : ""
+                  titleError
+                    ? "input-error"
+                    : formData.title && !checkingTitle
+                      ? "input-success"
+                      : ""
                 }`}
                 required
                 placeholder="e.g. Mega Blasters Action Set"
@@ -404,11 +453,15 @@ export default function AddToyForm() {
               {checkingTitle && (
                 <span
                   style={{
-                    position: "absolute", right: 12, top: "50%",
+                    position: "absolute",
+                    right: 12,
+                    top: "50%",
                     transform: "translateY(-50%)",
-                    fontSize: 11, fontWeight: 700, color: "#aaa",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: "#aaa",
                     fontFamily: "'Nunito', sans-serif",
-                    animation: "pulse 1s infinite"
+                    animation: "pulse 1s infinite",
                   }}
                 >
                   checking…
@@ -419,9 +472,13 @@ export default function AddToyForm() {
               {!checkingTitle && formData.title && !titleError && (
                 <span
                   style={{
-                    position: "absolute", right: 12, top: "50%",
+                    position: "absolute",
+                    right: 12,
+                    top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#22c55e", fontSize: 16, fontWeight: 900
+                    color: "#22c55e",
+                    fontSize: 16,
+                    fontWeight: 900,
                   }}
                 >
                   ✓
@@ -432,9 +489,13 @@ export default function AddToyForm() {
               {!checkingTitle && titleError && (
                 <span
                   style={{
-                    position: "absolute", right: 12, top: "50%",
+                    position: "absolute",
+                    right: 12,
+                    top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#ef4444", fontSize: 16, fontWeight: 900
+                    color: "#ef4444",
+                    fontSize: 16,
+                    fontWeight: 900,
                   }}
                 >
                   ✕
@@ -446,9 +507,14 @@ export default function AddToyForm() {
             {titleError && (
               <p
                 style={{
-                  marginTop: 8, fontSize: 11, fontWeight: 700,
-                  color: "#ef4444", display: "flex", alignItems: "center", gap: 4,
-                  fontFamily: "'Nunito', sans-serif"
+                  marginTop: 8,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: "#ef4444",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  fontFamily: "'Nunito', sans-serif",
                 }}
               >
                 <span>⚠️</span> {titleError}
@@ -459,25 +525,31 @@ export default function AddToyForm() {
           {/* ── CATEGORY + BRAND ── */}
           <div className="grid grid-cols-2 gap-4">
             <div className="field-card">
-              <span className="section-label">Category *</span>
+              <h3 className="section-label">Category <span className="text-xl">*</span></h3>
               <select
                 required
                 value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
                 className="toy-input"
               >
-                {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+                {CATEGORIES.map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
               </select>
             </div>
 
             <div className="field-card">
-              <span className="section-label">Brand *</span>
+              <h3 className="section-label">Brand <span className="text-xl">*</span></h3>
               <input
                 className="toy-input"
                 required
                 placeholder="e.g. LEGO, Mattel"
                 value={formData.brand}
-                onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, brand: e.target.value })
+                }
               />
             </div>
           </div>
@@ -485,31 +557,37 @@ export default function AddToyForm() {
           {/* ── STOCK + AGE + GENDER ── */}
           <div className="grid grid-cols-3 gap-4">
             <div className="field-card">
-              <span className="section-label">Stock</span>
+              <h3 className="section-label">Stock</h3>
               <input
                 className="toy-input"
                 type="number"
-                min={1}
+                min={0}
                 value={formData.stock}
-                onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, stock: e.target.value })
+                }
               />
             </div>
 
             <div className="field-card">
-              <span className="section-label">Age</span>
+              <h3 className="section-label">Age</h3>
               <input
                 className="toy-input"
                 placeholder="e.g. 3"
                 value={formData.age}
-                onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, age: e.target.value })
+                }
               />
             </div>
 
             <div className="field-card">
-              <span className="section-label">Gender</span>
+              <h3 className="section-label">Gender</h3>
               <select
                 value={formData.gender}
-                onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, gender: e.target.value })
+                }
                 className="toy-input"
               >
                 <option>Unisex</option>
@@ -521,7 +599,9 @@ export default function AddToyForm() {
 
           {/* ── PRICE ── */}
           <div className="field-card">
-            <span className="section-label">Price (₹) *</span>
+            <h3 className="section-label">
+              Price (₹) <span className="text-xl">*</span>{" "}
+            </h3>
             <input
               className="toy-input"
               type="number"
@@ -529,18 +609,22 @@ export default function AddToyForm() {
               required
               placeholder="e.g. 499"
               value={formData.price}
-              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, price: e.target.value })
+              }
             />
           </div>
 
           {/* ── DESCRIPTION ── */}
           <div className="field-card">
-            <span className="section-label">Description</span>
+            <h3 className="section-label">Description</h3>
             <textarea
               rows={4}
               placeholder="What makes this toy special? Safety notes, materials, included pieces…"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               className="toy-input"
               style={{ resize: "none" }}
             />
@@ -548,7 +632,7 @@ export default function AddToyForm() {
 
           {/* ── TAGS ── */}
           <div className="field-card">
-            <span className="section-label">Tags</span>
+            <h3 className="section-label">Tags</h3>
             <div className="flex flex-wrap gap-2">
               {TAGS.map((tag) => (
                 <button
@@ -572,7 +656,6 @@ export default function AddToyForm() {
           >
             {loading ? "Saving… 🌀" : "Save Product 🚀"}
           </button>
-
         </form>
 
         <div className="h-10" />

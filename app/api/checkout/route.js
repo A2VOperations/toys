@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
-import { MailtrapTransport } from "mailtrap";
+import { MailtrapClient } from "mailtrap";
 
 export async function POST(request) {
   try {
@@ -13,25 +12,31 @@ export async function POST(request) {
       );
     }
 
-    // Configure nodemailer transporter using Mailtrap's official provider
-    const transporter = nodemailer.createTransport(
-      MailtrapTransport({
-        token: process.env.MAILTRAP_TOKEN,
-      }),
-    );
+    if (!process.env.MAILTRAP_TOKEN) {
+      throw new Error("MAILTRAP_TOKEN is not configured.");
+    }
 
     // Remove the data URI prefix if it exists to get just the base64 string
     const base64Data = pdfBase64.split("base64,")[1] || pdfBase64;
 
     const sender = {
-      address: process.env.EMAIL_MAILTRAP || "hello@demomailtrap.co",
+      email: process.env.EMAIL_MAILTRAP || "hello@demomailtrap.co",
       name: "Toys for Kids Checkout",
     };
 
+    const recipientEmail =
+      process.env.EMAIL_TO || "operation.a2vgroups@gmail.com";
+
+    const client = new MailtrapClient({
+      token: process.env.MAILTRAP_TOKEN,
+    });
+
     const mailOptions = {
       from: sender, // Must be the authorized sender for Mailtrap
-      to: [process.env.EMAIL_TO || "operation.a2vgroups@gmail.com"], // The website owner
-      replyTo: email, // The customer's email
+      to: [{ email: recipientEmail }], // The website owner
+      headers: {
+        "Reply-To": email,
+      },
       subject: `New Order from ${name}`,
       text: `You have received a new order.\n\nCustomer Details:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nAddress: ${address}\n\nPlease find the PDF receipt attached.`,
       category: "Integration Test",
@@ -39,13 +44,13 @@ export async function POST(request) {
         {
           filename: "order-receipt.pdf",
           content: base64Data,
-          encoding: "base64",
+          type: "application/pdf",
+          disposition: "attachment",
         },
       ],
     };
 
-    // Send email
-    await transporter.sendMail(mailOptions);
+    await client.send(mailOptions);
 
     return NextResponse.json({
       success: true,

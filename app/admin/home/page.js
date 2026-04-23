@@ -2,21 +2,23 @@ import Link from "next/link";
 import Image from "next/image";
 import dbConnect from "@/backend/dbConfig/db";
 import Toy from "@/backend/models/Toy";
+import { getHomePageToys } from '@/backend/controller/toyController';
+// async function getLatestProducts() {
+//   await dbConnect();
+//   return await Toy.find({}).sort({ createdAt: -1 }).lean();
+// }
 
 async function getLatestProducts() {
-  await dbConnect();
-  return await Toy.find({}).sort({ createdAt: -1 }).limit(8).lean();
+  return await getHomePageToys({ limit: 20 }); // latest 20, only needed fields
 }
 
 export default async function HomePage() {
-  const products = await getLatestProducts();
+  const { toys: products, totalItems } = await getLatestProducts();
 
   return (
     <div
-      className="min-h-screen"
+      className="min-h-screen bg-gray-100"
       style={{
-        background:
-          "linear-gradient(160deg, #fff4fb 0%, #fffbee 50%, #f3fff8 100%)",
         fontFamily: "'Nunito', sans-serif",
       }}
     >
@@ -219,10 +221,6 @@ export default async function HomePage() {
         .toy-card:hover .card-image-bg {
           background: linear-gradient(135deg, #fff0f9 0%, #fffbe0 100%);
         }
-        .toy-card:hover .view-btn {
-          opacity: 1;
-          transform: translateY(0);
-        }
 
         .card-image-bg {
           background: linear-gradient(135deg, #fdf6ff 0%, #fffcee 100%);
@@ -261,16 +259,6 @@ export default async function HomePage() {
           overflow: hidden;
         }
 
-        .card-stars {
-          display: flex;
-          align-items: center;
-          gap: 2px;
-          margin-bottom: 5px;
-        }
-        .card-star {
-          color: #FFB800;
-          font-size: 12px;
-        }
         .card-rating-text {
           font-size: 10px;
           font-weight: 700;
@@ -298,9 +286,6 @@ export default async function HomePage() {
           letter-spacing: 1px;
           text-transform: uppercase;
           cursor: pointer;
-          opacity: 0;
-          transform: translateY(5px);
-          transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
         /* ── New badge on first card ── */
@@ -317,6 +302,12 @@ export default async function HomePage() {
           padding: 3px 9px;
           border-radius: 20px;
           z-index: 1;
+        }
+
+        .products-grid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 18px;
         }
 
         /* ── Empty state ── */
@@ -369,6 +360,15 @@ export default async function HomePage() {
           .dash-header { padding: 18px 20px 14px; }
           .dash-title { font-size: 24px; }
           .db-body-pad { padding: 16px 20px 24px !important; }
+          .products-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (min-width: 641px) and (max-width: 900px) {
+          .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (min-width: 901px) and (max-width: 1180px) {
+          .products-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         }
       `}</style>
 
@@ -396,7 +396,7 @@ export default async function HomePage() {
               <span className="yellow">picks</span>{" "}
               <span className="wiggle">🎉</span>
             </h1>
-            <p className="dash-sub">{products.length} products in your vault</p>
+            <p className="dash-sub">{totalItems} products in your vault</p>
           </div>
 
           {/* Right: Stats + CTA */}
@@ -413,13 +413,13 @@ export default async function HomePage() {
                 <div className="stat-dot" style={{ background: "#E84393" }} />
                 <div>
                   <div className="stat-label">Total</div>
-                  <div className="stat-val">{products.length}</div>
+                  <div className="stat-val">{totalItems}</div>
                 </div>
               </div>
               <div className="stat-pill">
                 <div className="stat-dot" style={{ background: "#FFB800" }} />
                 <div>
-                  <div className="stat-label">Latest</div>
+                  <div className="stat-label">Last Added</div>
                   <div className="stat-val">
                     {products[0]
                       ? new Date(products[0].createdAt).toLocaleDateString(
@@ -436,7 +436,7 @@ export default async function HomePage() {
               <div className="stat-pill">
                 <div className="stat-dot" style={{ background: "#22c55e" }} />
                 <div>
-                  <div className="stat-label">Active</div>
+                  <div className="stat-label">On Home page</div>
                   <div className="stat-val">{products.length}</div>
                 </div>
               </div>
@@ -472,30 +472,24 @@ export default async function HomePage() {
         {products.length > 0 ? (
           <>
             {/* Welcome banner */}
-            <div className="welcome-banner">
+            {/* <div className="welcome-banner">
               <div className="banner-icon">
                 <span className="float">🌟</span>
               </div>
               <div>
                 <div className="banner-title">You&apos;re doing great!</div>
                 <div className="banner-desc">
-                  {products.length} product{products.length !== 1 ? "s" : ""}{" "}
+                  New products
                   live — keep building your amazing toy vault.
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Section label */}
             <div className="section-label">Latest products</div>
 
             {/* Grid */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-                gap: 18,
-              }}
-            >
+            <div className="products-grid">
               {products.map((product, index) => (
                 <div
                   key={String(product._id)}
@@ -523,23 +517,6 @@ export default async function HomePage() {
                       {product.category || "Toy"}
                     </div>
                     <div className="card-title-text">{product.title}</div>
-
-                    <div className="card-stars">
-                      {[...Array(5)].map((_, i) => (
-                        <svg
-                          key={i}
-                          className="card-star"
-                          width="13"
-                          height="13"
-                          viewBox="0 0 20 20"
-                          fill="#FFB800"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                      <span className="card-rating-text">5.0</span>
-                    </div>
-
                     <div className="card-meta">
                       {product.brand} · {product.age}
                     </div>

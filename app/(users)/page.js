@@ -7,6 +7,7 @@ import { Navigation, Autoplay, Grid } from "swiper/modules";
 import Testimonials from "./testimonials";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { PiStarFourFill } from "react-icons/pi";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -16,6 +17,7 @@ const categories = [
     color: "#2ecc71",
     stroke: "#00b894",
     bg: "#e8f8f0",
+    borderImage: "/home page/shape-11.png",
     image: "/home page/category-1.png",
   },
   {
@@ -23,6 +25,7 @@ const categories = [
     color: "#f39c12",
     stroke: "#e67e22",
     bg: "#fef9e7",
+    borderImage: "/home page/shape-12.png",
     image: "/home page/category-2.png",
   },
   {
@@ -30,6 +33,7 @@ const categories = [
     color: "#9b59b6",
     stroke: "#8e44ad",
     bg: "#f5eef8",
+    borderImage: "/home page/shape-13.png",
     image: "/home page/category-3.png",
   },
   {
@@ -37,6 +41,7 @@ const categories = [
     color: "#e74c3c",
     stroke: "#c0392b",
     bg: "#fdecea",
+    borderImage: "/home page/shape-14.png",
     image: "/home page/category-4.png",
   },
   {
@@ -44,6 +49,7 @@ const categories = [
     color: "#ff69b4",
     stroke: "#e91e8c",
     bg: "#fde7f3",
+    borderImage: "/home page/shape-15.png",
     image: "/home page/category-5.png",
   },
   {
@@ -51,6 +57,7 @@ const categories = [
     color: "#3498db",
     stroke: "#2980b9",
     bg: "#eaf4fc",
+    borderImage: "/home page/shape-16.png",
     image: "/home page/category-6.png",
   },
   {
@@ -58,6 +65,7 @@ const categories = [
     color: "#f39c12",
     stroke: "#e67e22",
     bg: "#fef9e7",
+    borderImage: "/home page/shape-12.png",
     image: "/home page/category-2.png",
   },
 ];
@@ -67,21 +75,21 @@ const featuredBanners = [
     tag: "FEATURED",
     label: "Baby Toy's",
     price: "₹0.99",
-    bg: "bg-[#F4A261]",
+    bg: "bg-[#0bb31b]",
     image: "/home page/feature-1.webp",
   },
   {
     tag: "HOT DEAL",
     label: "Gaming",
     price: "₹34.00",
-    bg: "bg-[#2EC4B6]",
+    bg: "bg-[#e81a3c]",
     image: "/home page/feature-2.webp",
   },
   {
     tag: "LATEST",
     label: "Accessories",
     price: "₹35.99",
-    bg: "bg-[#E76F51]",
+    bg: "bg-[#1a6ce8]",
     image: "/home page/feature-3.webp",
   },
 ];
@@ -98,18 +106,18 @@ const dealOfDay = [
 ];
 
 const promoTags = [
-  "Puzzles ✦",
-  "Cubes ✦",
-  "Toy Car ✦",
-  "Girls Doll ✦",
-  "Balloons ✦",
-  "Or Plate ✦",
-  "Puzzles ✦",
-  "Cubes ✦",
-  "Toy Car ✦",
-  "Girls Doll ✦",
-  "Balloons ✦",
-  "Or Plate ✦",
+  "Puzzles",
+  "Cubes",
+  "Toy Car",
+  "Girls Doll",
+  "Balloons",
+  "Or Plate",
+  "Puzzles",
+  "Cubes",
+  "Toy Car",
+  "Girls Doll",
+  "Balloons",
+  "Or Plate",
 ];
 
 // ─── COMPONENTS ──────────────────────────────────────────────────────────────
@@ -200,8 +208,8 @@ function PopularPicksArrowButton({ direction, onClick, disabled }) {
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`absolute top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-lg transition-all duration-200 ${
-        direction === "left" ? "-left-5" : "-right-5"
+      className={`absolute top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-lg transition-all duration-200 md:h-11 md:w-11 ${
+        direction === "left" ? "left-2 md:-left-5" : "right-2 md:-right-5"
       } ${
         disabled
           ? "cursor-not-allowed opacity-30"
@@ -240,7 +248,7 @@ function PopularProductCard({ product, onAddToCart }) {
   return (
     <div
       onClick={() => router.push(`/shop/${product._id}`)}
-      className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col cursor-pointer"
+      className="group bg-white overflow-hidden transition-all duration-300 h-full flex flex-col cursor-pointer"
     >
       {/* Image Container with overlay effect */}
       <div className="relative overflow-hidden bg-gray-100">
@@ -249,7 +257,7 @@ function PopularProductCard({ product, onAddToCart }) {
           height={300}
           src={product.image}
           alt={product.name}
-          className="rounded-t-2xl h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="h-48 w-full object-contain transition-transform duration-500 group-hover:scale-105"
         />
 
         {/* Optional: Category badge on image */}
@@ -261,7 +269,7 @@ function PopularProductCard({ product, onAddToCart }) {
       </div>
 
       {/* Content Section */}
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-4 flex flex-col justify-center items-center">
         {/* Product Name */}
         <h3 className="text-base font-semibold text-gray-800 line-clamp-2 mb-2 group-hover:text-[#f74872] transition-colors">
           {product.name}
@@ -275,9 +283,9 @@ function PopularProductCard({ product, onAddToCart }) {
         )}
 
         {/* Price and CTA Section */}
-        <div className="mt-auto pt-3">
+        <div className="mt-auto">
           {product.price !== undefined && (
-            <div className="flex items-baseline gap-1 mb-3">
+            <div className="text-center gap-1 mb-3">
               <span className="text-2xl font-bold text-[#E84393]">
                 {product.price}
               </span>
@@ -294,7 +302,7 @@ function PopularProductCard({ product, onAddToCart }) {
               e.stopPropagation();
               onAddToCart(product);
             }}
-            className="w-full rounded-full bg-gradient-to-r from-[#f74872] to-[#E84393] py-2.5 px-4 text-xs font-bold uppercase tracking-wider text-white transition-all duration-300 hover:shadow-lg hover:shadow-[#f74872]/30 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#f74872] focus:ring-offset-2"
+            className="w-full rounded-full border border-dashed border-[#E84393] py-2.5 px-4 text-xs font-bold uppercase tracking-wider text-[#E84393] transition-all duration-300 hover:shadow-lg hover:shadow-[#f74872]/30 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#f74872] focus:ring-offset-2"
           >
             Add to Cart
           </button>
@@ -324,7 +332,7 @@ export default function Home() {
   const [dealProducts, setDealProducts] = useState([]);
   const [dealLoading, setDealLoading] = useState(true);
   const [popularCurrent, setPopularCurrent] = useState(0);
-  const [popularVisible, setPopularVisible] = useState(4);
+  const [popularVisible, setPopularVisible] = useState(5);
   const [toastMessage, setToastMessage] = useState("");
 
   const showToast = (message) => {
@@ -341,7 +349,7 @@ export default function Home() {
       } else if (window.innerWidth < 1024) {
         setPopularVisible(2);
       } else {
-        setPopularVisible(4);
+        setPopularVisible(5);
       }
     };
     handleResize(); // Initial call
@@ -419,17 +427,20 @@ export default function Home() {
     async function fetchDealProducts() {
       try {
         setDealLoading(true);
-        const res = await fetch(`/api/toys?tags=${encodeURIComponent(dealTag)}&limit=4`);
+        const res = await fetch(
+          `/api/toys?tags=${encodeURIComponent(dealTag)}&limit=4`,
+        );
         const data = await res.json();
         if (data && data.toys) {
           setDealProducts(
             data.toys.map((t) => ({
               _id: t._id,
               name: t.title,
-              image: t.images?.[0] || "https://placehold.co/240x240?text=No+Image",
+              image:
+                t.images?.[0] || "https://placehold.co/240x240?text=No+Image",
               price: `\u20b9${parseFloat(t.price || 0).toFixed(2)}`,
               stock: t.stock,
-            }))
+            })),
           );
         } else {
           setDealProducts([]);
@@ -448,14 +459,17 @@ export default function Home() {
     async function fetchCollectionProducts() {
       try {
         setGenderLoading(true);
-        const res = await fetch(`/api/toys?gender=${encodeURIComponent(activeGender)}&limit=8`);
+        const res = await fetch(
+          `/api/toys?gender=${encodeURIComponent(activeGender)}&limit=8`,
+        );
         const data = await res.json();
         if (data && data.toys) {
           const mapped = data.toys.map((t) => ({
             _id: t._id,
             name: t.title,
             category: t.category,
-            image: t.images?.[0] || "https://placehold.co/200x200?text=No+Image",
+            image:
+              t.images?.[0] || "https://placehold.co/200x200?text=No+Image",
             price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
             stock: t.stock,
           }));
@@ -534,19 +548,19 @@ export default function Home() {
   };
 
   return (
-    <div className="min-w-[320px] bg-white text-slate-800 font-sans selection:bg-[#E84393] selection:text-white">
+    <div className="overflow-x-hidden bg-white text-slate-800 font-sans selection:bg-[#E84393] selection:text-white">
       {/* ── HERO ── */}
       <section className="m-0 p-0 leading-none">
         <Image
-          src="/home page/hero-border-2.png"
+          src="/home page/hero-border-1.png"
           alt="Decorative shape divider"
           width={1920}
           height={180}
           priority
-          className="block h-auto w-full scale-y-[-1] bg-[#ffcf7d]"
+          className="block h-auto w-full scale-y-[-1] bg-[linear-gradient(78.33deg,#FFCF78_5.9%,#FEE2B1_97.88%)]"
         />
       </section>
-      <section className="relative overflow-hidden bg-[#ffcf7d] py-16 px-5">
+      <section className="relative overflow-hidden bg-[linear-gradient(78.33deg,#FFCF78_5.9%,#FEE2B1_97.88%)] px-4 py-14 sm:px-5 sm:py-18 md:py-22">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-32 -top-24 h-56 w-56 rounded-full bg-white/30 blur-3xl" />
           <div className="absolute -bottom-16 -right-12 h-48 w-48 rounded-full bg-[#ff8fc7]/25 blur-3xl" />
@@ -559,43 +573,41 @@ export default function Home() {
               ✦
             </span>
           ))}
-        </div>
-        <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-          <div
-            className={`relative z-10 flex-1 transition-all duration-1000 transform ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-          >
-            <div className="inline-block bg-[#FFE0EE] text-[#E84393] text-[11px] font-black px-4 py-1 rounded-full mb-6 uppercase tracking-widest">
-              🎁 Free Delivery on ₹50+
-            </div>
-            <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-[1.1] mb-6">
-              The Best Kids
-              <br />
-              <span className="text-[#E84393]">Toy Store</span>
-              <br />
-              in the City
-            </h1>
-
-            <Link
-              href="/shop"
-              className="bg-gradient-to-r from-[#E84393] to-[#FF6B6B] text-white px-10 py-4 rounded-full font-black text-sm uppercase tracking-widest shadow-lg shadow-pink-200 hover:scale-105 active:scale-95 transition-all"
-            >
-              🛍️ View Shop
-            </Link>
-          </div>
-          <div
-            className={`relative z-10 w-100 h-100 md:w-[400px] md:h-[400px] bg-white/95 rounded-full flex items-center justify-center text-[180px] shadow-2xl ring-8 ring-white/40 transition-all duration-1000 delay-200 animate-bounce-slow transform ${heroVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"}`}
-          >
-            <span className="absolute left-8 top-12 text-2xl text-[#FFB800] animate-hero-star">
-              ★
-            </span>
-            <span
-              className="absolute bottom-16 right-10 text-xl text-[#E84393] animate-hero-star"
-              style={{ animationDelay: "1s" }}
-            >
-              ✦
-            </span>
+          <div className="absolute bottom-10 left-0 hidden sm:block md:bottom-20 md:left-2">
             <Image
-              src="/home page/hero-girl.png"
+              src="/home page/shape-4.png"
+              alt="Hero Toy"
+              width={300}
+              height={300}
+              priority
+              style={{ width: "auto", height: "auto" }}
+              className="object-contain opacity-50"
+            />
+            <Image
+              src="/home page/shape-3.png"
+              alt="Hero Toy"
+              width={400}
+              height={400}
+              priority
+              style={{ width: "auto", height: "auto" }}
+              className="object-contain animate-floatUpDown"
+            />
+          </div>
+          <div className="absolute top-12 right-[45%] hidden md:block">
+            <Image
+              src="/home page/shape-6.png"
+              alt="Hero Toy"
+              width={400}
+              height={400}
+              priority
+              style={{ width: "auto", height: "auto" }}
+              className="object-contain animate-floatLeftRight"
+            />
+          </div>
+
+          <div className="absolute right-4 top-10 hidden sm:block md:right-10 md:top-20">
+            <Image
+              src="/home page/shape-7.png"
               alt="Hero Toy"
               width={400}
               height={400}
@@ -603,6 +615,68 @@ export default function Home() {
               style={{ width: "auto", height: "auto" }}
               className="object-contain"
             />
+          </div>
+          <div className="absolute right-4 top-24 hidden sm:block md:right-10 md:top-40">
+            <Image
+              src="/home page/shape-8.png"
+              alt="Hero Toy"
+              width={400}
+              height={400}
+              priority
+              style={{ width: "auto", height: "auto" }}
+              className="object-contain animate-floatUpDown"
+            />
+          </div>
+          <div className="absolute bottom-12 right-[20%] hidden lg:block">
+            <Image
+              src="/home page/shape-9.png"
+              alt="Hero Toy"
+              width={400}
+              height={400}
+              priority
+              style={{ width: "auto", height: "auto" }}
+              className="object-contain animate-floatUpDown"
+            />
+          </div>
+          <div className="absolute bottom-0 right-0 hidden sm:block">
+            <Image
+              src="/home page/shape-10.png"
+              alt="Hero Toy"
+              width={200}
+              height={200}
+              priority
+              className="object-contain opacity-50"
+            />
+          </div>
+        </div>
+        <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-8 md:flex-row md:gap-12">
+          <div
+            className={`relative z-10 mx-auto flex h-[260px] w-[260px] items-center justify-center rounded-full text-[120px] transition-all duration-1000 delay-200 animate-bounce-slow transform sm:h-[320px] sm:w-[320px] sm:text-[150px] md:mx-20 md:h-[350px] md:w-[400px] md:text-[180px] ${heroVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"}`}
+          >
+            <Image
+              src="/home page/hero-girl-1.webp"
+              alt="Hero Toy"
+              width={400}
+              height={400}
+              priority
+              className="object-contain"
+            />
+          </div>
+          <div
+            className={`relative z-10 flex-1 text-center md:text-left transition-all duration-1000 transform ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+          >
+            <h1 className="mb-6 text-3xl font-extrabold leading-[1.1] text-slate-900 sm:text-4xl md:text-6xl">
+              Fun Toys & <br />
+              Lunch Boxes for
+              <br />
+              <span className="text-[#f52c6c]">Every Happy Kid</span>
+            </h1>
+            <Link
+              href="/shop"
+              className="bg-white text-[#f52c6c] hover:text-white hover:bg-[#f52c6c] hover:border hover:border-white hover:border-dashed border border-dashed border-pink-500 px-5 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg shadow-pink-200 hover:scale-105 active:scale-95 transition-all"
+            >
+              View Shop
+            </Link>
           </div>
         </div>
       </section>
@@ -613,25 +687,36 @@ export default function Home() {
           alt="Decorative shape divider"
           width={1920}
           height={180}
-          className="block h-auto w-full bg-[#ffcf7d]"
+          className="block h-auto w-full bg-[linear-gradient(78.33deg,_#FFCF78_5.9%,_#FEE2B1_97.88%)]"
         />
       </section>
 
       {/* ── CATEGORIES ── */}
-      <section className="relative py-10 px-4 rounded-2xl">
+      <section className="relative overflow-hidden rounded-2xl px-4 py-10">
+        <div className="absolute right-5 top-40 hidden lg:block">
+          <Image
+            src="/home page/shape-6.png"
+            alt="Hero Toy"
+            width={400}
+            height={400}
+            priority
+            style={{ width: "auto", height: "auto" }}
+            className="object-contain animate-floatLeftRight"
+          />
+        </div>
         {/* Decorative elements */}
-        <span className="absolute text-2xl" style={{ top: 10, left: 30 }}>
-          ⭐
-        </span>
-        <span className="absolute text-base" style={{ top: 24, left: 52 }}>
-          ⭐
-        </span>
-        <span className="absolute text-xl" style={{ bottom: 12, right: 40 }}>
-          🦋
+        <span className="absolute left-8 top-0 hidden text-2xl lg:block">
+          <Image
+            src="/home page/shape-17.png"
+            alt="Decorative shape divider"
+            width={1920}
+            height={180}
+            className="block h-auto w-full"
+          />
         </span>
 
         {/* Categories List */}
-        <div className="pb-4">
+        <div className="pb-4 max-w-[1300px] mx-auto">
           <Swiper
             modules={[Autoplay]}
             spaceBetween={20}
@@ -652,47 +737,23 @@ export default function Home() {
                   className="flex flex-col items-center group mx-auto"
                   style={{ width: 140 }}
                 >
-                  <div className="relative w-50 h-50 p-2">
-                    {/* Brushstroke ring SVG */}
-                    <svg
-                      viewBox="0 0 130 130"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="absolute inset-0 w-full h-full"
-                    >
-                      <circle
-                        cx="65"
-                        cy="65"
-                        r="55"
-                        fill="none"
-                        stroke={c.color}
-                        strokeWidth="14"
-                        strokeDasharray="220 120"
-                        strokeLinecap="round"
-                        opacity="0.9"
-                        transform="rotate(-60 65 65)"
-                      />
-                      <circle
-                        cx="65"
-                        cy="65"
-                        r="55"
-                        fill="none"
-                        stroke={c.stroke}
-                        strokeWidth="8"
-                        strokeDasharray="80 260"
-                        strokeLinecap="round"
-                        opacity="0.6"
-                        transform="rotate(100 65 65)"
-                      />
-                    </svg>
+                  <div className="relative" style={{ width: 140, height: 140 }}>
+                    {/* Brushstroke ring image — must be square */}
+                    <Image
+                      src={c.borderImage}
+                      alt="Decorative ring"
+                      fill
+                      className="object-contain"
+                    />
 
-                    {/* image / Image placeholder */}
+                    {/* Inner category image — centered inside the circle */}
                     <Image
                       src={c.image}
                       alt={c.label}
-                      width={100}
-                      height={100}
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-30 h-30 rounded-full flex items-center justify-center text-4xl transition-transform duration-200 group-hover:scale-110"
-                      style={{ background: c.bg }}
+                      width={90}
+                      height={90}
+                      className="absolute left-1/2 top-16 -translate-x-1/2 -translate-y-1/2 rounded-full object-cover transition-transform duration-200 group-hover:scale-110"
+                      style={{ width: 90, height: 90, background: c.bg }}
                     />
                   </div>
 
@@ -707,20 +768,20 @@ export default function Home() {
       </section>
 
       {/* ── FEATURED BANNERS ── */}
-      <section className="px-5 pb-16 max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section className="mx-auto grid max-w-[1400px] grid-cols-1 gap-6 px-4 pb-14 sm:px-5 md:grid-cols-3 md:pb-16">
         {featuredBanners.map((b) => (
           <div
             key={b.label}
-            className={`${b.bg} h-auto sm:h-80 rounded-3xl p-4 sm:p-3 flex flex-col sm:flex-row items-center justify-between text-white group hover:-translate-y-2 transition-transform cursor-pointer shadow-xl overflow-hidden gap-4 sm:gap-0`}
+            className={`${b.bg} h-auto sm:h-65 rounded-xl flex flex-col sm:flex-row items-center justify-between text-white group hover:-translate-y-2 transition-transform cursor-pointer shadow-xl overflow-hidden gap-4 sm:gap-0`}
           >
-            <div className="flex flex-col gap-3 p-2 sm:p-5 items-center text-center sm:items-start sm:text-left w-full sm:w-auto z-10 pt-6 sm:pt-5">
-              <span className="inline-block bg-white/30 text-xs font-black px-4 py-1.5 rounded-full w-fit">
+            <div className="z-10 mx-auto flex w-full flex-col items-center p-2 pt-6 text-center sm:w-auto sm:p-5 sm:pt-5">
+              <span className="inline-block text-xs font-bold rounded-full w-fit">
                 {b.tag}
               </span>
-              <h3 className="text-2xl font-black leading-tight">{b.label}</h3>
+              <h3 className="text-3xl font-bold leading-tight">{b.label}</h3>
               <Link
                 href="/shop"
-                className="text-center bg-white text-slate-800 px-4 py-3 rounded-full text-sm font-black shadow-lg w-fit mt-1 sm:mt-0"
+                className="text-center bg-white/50 text-gray/80 border border-dashed px-5 py-2 rounded-full text-sm font-black shadow-lg w-fit mt-5 sm:mt-10"
               >
                 Shop Now
               </Link>
@@ -740,28 +801,25 @@ export default function Home() {
       </section>
 
       {/* ── POPULAR PICKS ── */}
-      <section
-        className="relative overflow-hidden px-6 py-14"
-        style={{
-          background:
-            "linear-gradient(135deg, #fff0f5 0%, #fffbf0 60%, #f5f5f0 100%)",
-        }}
-      >
-        <div className="pointer-events-none absolute left-5 top-5">
-          <KiteSVG />
+      <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
+        <div className="absolute top-20 hidden lg:block">
+          <Image
+            src="/home page/shape-20.png"
+            alt="Hero Toy"
+            width={400}
+            height={400}
+            priority
+            style={{ width: "auto", height: "auto" }}
+            className="object-contain animate-floatLeftRight"
+          />
         </div>
-
-        <div className="absolute left-4 top-28 flex h-8 w-8 items-center justify-center rounded-full bg-[#E84393] text-[9px] font-black tracking-wider text-white">
-          RTL
-        </div>
-
         <div className="mb-10 text-center">
-          <h2 className="text-4xl font-black tracking-tight text-slate-900 md:text-5xl">
-            Today&apos;s <span className="text-[#E84393]">popular picks</span>
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+            Today&apos;s <span className="text-[#f75781]">popular picks</span>
           </h2>
         </div>
 
-        <div className="relative mx-auto max-w-[1200px] px-6">
+        <div className="relative mx-auto max-w-[1400px] px-0 sm:px-6">
           <PopularPicksArrowButton
             direction="left"
             onClick={() => setPopularCurrent((c) => Math.max(0, c - 1))}
@@ -793,7 +851,7 @@ export default function Home() {
                 : popularProductsList.map((product) => (
                     <div
                       key={product.name}
-                      className="shrink-0 px-2"
+                      className="shrink-0 border-l-2  border-t-2  border-b-2 border-dotted border-gray-300  "
                       style={{ width: `${100 / popularVisible}%` }}
                     >
                       <PopularProductCard
@@ -812,57 +870,84 @@ export default function Home() {
             }
             disabled={popularCurrent === popularMaxIndex}
           />
-
-          <div className="mt-6 flex justify-center gap-2">
-            {Array.from({ length: popularMaxIndex + 1 }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setPopularCurrent(i)}
-                className={`rounded-full transition-all duration-300 ${
-                  i === popularCurrent
-                    ? "h-2 w-5 bg-[#E84393]"
-                    : "h-2 w-2 bg-slate-300 hover:bg-slate-400"
-                }`}
-                aria-label={`Go to popular picks slide ${i + 1}`}
-              />
-            ))}
-          </div>
         </div>
       </section>
 
       {/* ── DEAL OF THE DAY ── */}
-      <section className="bg-[#FFF5F9] py-16 px-5">
-        <div className="max-w-[1200px] mx-auto">
+      <section className="leading-none">
+        <Image
+          src="/home page/hero-border-2.png"
+          alt="Decorative shape divider"
+          width={1920}
+          height={180}
+          priority
+          className="block h-auto scale-y-[-1] scale-x-[-1] w-full bg-[#FFE8EE]"
+        />
+      </section>
+      <section className="relative isolate overflow-hidden bg-[#FFE8EE] px-4 py-5 sm:px-5">
+        <div className="pointer-events-none absolute left-10 top-550 hidden lg:block -z-10">
+          <Image
+            src="/home page/shape-24.png"
+            alt="Hero Toy"
+            width={400}
+            height={400}
+            priority
+            style={{ width: "auto", height: "auto" }}
+            className="object-contain animate-floatUpDown"
+          />
+        </div>
+        <div className="pointer-events-none absolute top-448 right-[45%] hidden lg:block -z-10">
+          <Image
+            src="/home page/shape-17.png"
+            alt="Hero Toy"
+            width={400}
+            height={400}
+            priority
+            style={{ width: "auto", height: "auto" }}
+            className="object-contain"
+          />
+        </div>
+        <div className="pointer-events-none absolute top-460 right-130 hidden lg:block -z-10">
+          <Image
+            src="/home page/shape-25.png"
+            alt="Hero Toy"
+            width={400}
+            height={400}
+            priority
+            style={{ width: "auto", height: "auto" }}
+            className="object-contain animate-floatLeftRight"
+          />
+        </div>
+        <div className="relative z-10 max-w-[1400px] mx-auto">
           {/* Header row: title + timer */}
-          <div className="flex flex-col md:flex-row justify-between items-center mb-6 md:mb-8 gap-6">
-            <h2 className="text-3xl lg:text-4xl font-black text-slate-900 text-center md:text-left">
+          <div className="flex flex-col md:flex-row justify-center items-center mb-6 md:mb-8 gap-6">
+            <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-left md:text-5xl">
               Deal of <span className="text-[#E84393]">the Day</span>
             </h2>
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <span className="text-xs sm:text-sm font-bold text-slate-400 uppercase tracking-widest hidden sm:inline-block">
-                Ends in:
-              </span>
-              {[dealTimer.h, dealTimer.m, dealTimer.s].map((v, i) => (
-                <div
-                  key={i}
-                  className="bg-slate-900 text-white w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl text-lg sm:text-xl font-black shadow-lg"
-                >
-                  {pad(v)}
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Tag filter pills */}
-          <div className="flex gap-3 mb-8 flex-wrap">
+          <div className="flex justify-center gap-3 mb-8 flex-wrap">
             {[
-              { tag: "limited edition", label: "👑 Limited Edition", activeColor: "#7c3aed" },
+              {
+                tag: "limited edition",
+                label: "👑 Limited Edition",
+                activeColor: "#7c3aed",
+              },
               { tag: "sales", label: "🔥 On Sale", activeColor: "#ef4444" },
             ].map((pill) => (
               <button
                 key={pill.tag}
                 onClick={() => setDealTag(pill.tag)}
-                style={dealTag === pill.tag ? { background: pill.activeColor, color: "#fff", borderColor: pill.activeColor } : {}}
+                style={
+                  dealTag === pill.tag
+                    ? {
+                        background: pill.activeColor,
+                        color: "#fff",
+                        borderColor: pill.activeColor,
+                      }
+                    : {}
+                }
                 className={`px-5 py-2 rounded-full text-sm font-black border-2 transition-all duration-200 ${
                   dealTag === pill.tag
                     ? "shadow-lg scale-105"
@@ -874,11 +959,14 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Products grid */}
+          {/* Products slider area with relative arrows */}
           {dealLoading ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               {Array.from({ length: 2 }).map((_, i) => (
-                <div key={i} className="bg-white animate-pulse rounded-[30px] sm:rounded-[40px] h-48 border-4 border-[#FFE0EE]" />
+                <div
+                  key={i}
+                  className="bg-white animate-pulse rounded-[30px] sm:rounded-[40px] h-48 border-4 border-[#FFE0EE]"
+                />
               ))}
             </div>
           ) : dealProducts.length === 0 ? (
@@ -887,7 +975,9 @@ export default function Home() {
               <p className="text-lg font-bold">
                 No deals found for{" "}
                 <span className="text-[#E84393]">
-                  {dealTag === "limited edition" ? "Limited Edition" : "On Sale"}
+                  {dealTag === "limited edition"
+                    ? "Limited Edition"
+                    : "On Sale"}
                 </span>
               </p>
               <p className="text-sm mt-1">
@@ -895,72 +985,158 @@ export default function Home() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-              {dealProducts.map((d) => (
-                <div
-                  key={d._id}
-                  className="bg-white p-6 sm:p-8 rounded-[30px] sm:rounded-[40px] flex flex-col sm:flex-row items-center gap-6 sm:gap-8 border-4 border-[#FFE0EE] shadow-xl hover:shadow-2xl transition-all h-full cursor-pointer"
-                  onClick={() => router.push(`/shop/${d._id}`)}
+            <div className="relative px-0 sm:px-12">
+              {/* Left Arrow */}
+              <button className="deal-prev absolute left-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  className="h-5 w-5"
                 >
-                  <div className="w-full sm:w-[45%] max-w-[240px] sm:max-w-none aspect-square relative shrink-0">
-                    <Image
-                      className="object-cover hover:scale-105 transition-transform duration-500 drop-shadow-md"
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      src={d.image}
-                      alt={d.name}
-                    />
-                  </div>
-                  <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left gap-4 w-full">
-                    <span
-                      className="inline-block text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full"
-                      style={{
-                        background: dealTag === "limited edition" ? "#ede9fe" : "#fee2e2",
-                        color: dealTag === "limited edition" ? "#7c3aed" : "#ef4444",
-                      }}
+                  <path
+                    d="M15 18l-6-6 6-6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              <Swiper
+                modules={[Navigation, Autoplay]}
+                spaceBetween={20}
+                slidesPerView={1}
+                loop={true}
+                navigation={{
+                  prevEl: ".deal-prev",
+                  nextEl: ".deal-next",
+                }}
+                autoplay={{ delay: 3500, disableOnInteraction: false }}
+                breakpoints={{
+                  640: { slidesPerView: 1, spaceBetween: 20 },
+                  1024: { slidesPerView: 2, spaceBetween: 30 },
+                }}
+                className="deal-swiper"
+              >
+                {dealProducts.map((d) => (
+                  <SwiperSlide key={d._id} className="pb-8 px-2">
+                    <div
+                      className="bg-white p-6 sm:p-8 rounded-[30px] sm:rounded-[40px] flex flex-col sm:flex-row items-center gap-6 sm:gap-8 border-4 border-[#FFE0EE] shadow-xl hover:shadow-2xl transition-all h-full cursor-pointer"
+                      onClick={() => router.push(`/shop/${d._id}`)}
                     >
-                      {dealTag === "limited edition" ? "👑 Limited Edition" : "🔥 On Sale"}
-                    </span>
-                    <h3 className="text-lg font-black leading-tight">
-                      {d.name}
-                    </h3>
-                    <Stars />
-                    <p className="text-2xl font-black text-[#E84393]">{d.price}</p>
-                    <div className="flex gap-3 mt-auto flex-wrap">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          addToCart(d);
-                        }}
-                        className="bg-[#E84393] hover:bg-[#d83a82] text-white px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest transition-colors shadow-sm"
-                      >
-                        Add to Cart
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
-                          if (!waNumber) return;
-                          const msg = `Hi, I want to buy: ${d.name}`;
-                          window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`, "_blank");
-                        }}
-                        className="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest transition-colors shadow-sm"
-                      >
-                        WhatsApp
-                      </button>
+                      <div className="w-full sm:w-[45%] max-w-[240px] sm:max-w-none aspect-square relative shrink-0">
+                        <Image
+                          className="object-cover hover:scale-105 transition-transform duration-500 drop-shadow-md"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          src={d.image}
+                          alt={d.name}
+                        />
+                      </div>
+                      <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left gap-4 w-full">
+                        <span
+                          className="inline-block text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full"
+                          style={{
+                            background:
+                              dealTag === "limited edition"
+                                ? "#ede9fe"
+                                : "#fee2e2",
+                            color:
+                              dealTag === "limited edition"
+                                ? "#7c3aed"
+                                : "#ef4444",
+                          }}
+                        >
+                          {dealTag === "limited edition"
+                            ? "👑 Limited Edition"
+                            : "🔥 On Sale"}
+                        </span>
+                        <h3 className="text-lg font-black leading-tight">
+                          {d.name}
+                        </h3>
+                        <Stars />
+                        <p className="text-2xl font-black text-[#E84393]">
+                          {d.price}
+                        </p>
+                        <div className="flex gap-3 mt-auto flex-wrap">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              addToCart(d);
+                            }}
+                            className="rounded-full border border-dashed bg-white px-6 py-2.5 text-xs font-black uppercase tracking-widest text-[#e8569a] shadow-sm transition-colors hover:border-white hover:bg-[#d83a82] hover:text-white"
+                          >
+                            Add to Cart
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const waNumber =
+                                process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
+                              if (!waNumber) return;
+                              const msg = `Hi, I want to buy: ${d.name}`;
+                              window.open(
+                                `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`,
+                                "_blank",
+                              );
+                            }}
+                            className="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest transition-colors shadow-sm"
+                          >
+                            WhatsApp
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+
+              {/* Right Arrow */}
+              <button className="deal-next absolute right-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  className="h-5 w-5"
+                >
+                  <path
+                    d="M9 18l6-6-6-6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
             </div>
           )}
         </div>
       </section>
+      <section className="m-0 p-0 leading-none">
+        <Image
+          src="/home page/hero-border-2.png"
+          alt="Decorative shape divider"
+          width={1920}
+          height={180}
+          priority
+          className="block h-auto w-full scale-y-[-1] scale-x-[-1] bg-[#FFE8EE] rotate-180"
+        />
+      </section>
 
-      <section className="py-16 bg-white overflow-hidden">
+      <section className="relative isolate overflow-hidden bg-white py-14 md:py-16">
+        <div className="pointer-events-none absolute right-8 top-[38rem] hidden lg:block -z-10 xl:right-20">
+          <Image
+            src="/home page/shape-26.png"
+            alt="Hero Toy"
+            width={220}
+            height={220}
+            priority
+            className="h-[120px] w-[120px] object-contain animate-floatLeftRight xl:h-[220px] xl:w-[220px]"
+          />
+        </div>
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* LEFT BANNER */}
-          <div className="md:col-span-1 min-h-[300px] md:min-h-[auto] relative rounded-3xl overflow-hidden shadow-xl">
+          <div className="relative min-h-[260px] overflow-hidden rounded-3xl shadow-xl md:col-span-1 md:min-h-[auto]">
             {/* Background Image */}
             <Image
               src="/home page/ads-1.jpg"
@@ -974,12 +1150,12 @@ export default function Home() {
             <div className="absolute inset-0 bg-black/20 opacity-80 backdrop-blur-[2px]"></div>
 
             {/* Content */}
-            <div className="absolute inset-0 p-8 flex flex-col justify-end md:justify-between text-white z-10">
+            <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 text-white md:justify-between md:p-8">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.2em] mb-2 drop-shadow-md">
                   Featured
                 </p>
-                <h2 className="text-3xl md:text-2xl lg:text-3xl font-black mt-2 mb-4 leading-tight drop-shadow-lg">
+                <h2 className="mt-2 mb-4 text-2xl font-black leading-tight drop-shadow-lg md:text-2xl lg:text-3xl">
                   Kid Toy Collection <br /> for Summer
                 </h2>
 
@@ -996,7 +1172,7 @@ export default function Home() {
           <div className="md:col-span-3 min-w-0">
             {/* HEADER */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-              <h2 className="text-3xl md:text-5xl font-black tracking-tight">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
                 Top Selling <span className="text-pink-500">products</span>
               </h2>
             </div>
@@ -1060,40 +1236,99 @@ export default function Home() {
       </section>
 
       {/* ── PROMO TICKER ── */}
-      <div className="bg-slate-900 py-4 overflow-hidden">
-        <style>{`
+      <section className="relative isolate my-12 overflow-hidden -rotate-2 md:my-20 md:-rotate-5">
+        <div className="pointer-events-none absolute -top-62 left-10 hidden lg:block -z-10">
+          <Image
+            src="/home page/shape-33.png"
+            alt="Hero Toy"
+            width={400}
+            height={400}
+            priority
+            style={{ width: "auto", height: "auto" }}
+            className="object-contain animate-floatUpDown"
+          />
+        </div>
+        <div className="pointer-events-none absolute -top-62 right-10 hidden lg:block -z-10">
+          <Image
+            src="/home page/shape-29.png"
+            alt="Hero Toy"
+            width={400}
+            height={400}
+            priority
+            style={{ width: "auto", height: "auto" }}
+            className="object-contain animate-floatUpDown"
+          />
+        </div>
+        <div className="m-0 p-0 leading-none">
+          <Image
+            src="/home page/shape-32.png"
+            alt="Decorative shape divider"
+            width={1920}
+            height={180}
+            priority
+            className="block h-auto w-full scale-y-[-1]"
+          />
+        </div>
+
+        <div className="overflow-hidden bg-white py-3 sm:py-4">
+          <style>{`
           .ticker-swiper .swiper-wrapper {
             transition-timing-function: linear !important;
           }
         `}</style>
-        <Swiper
-          modules={[Autoplay]}
-          spaceBetween={0}
-          slidesPerView="auto"
-          loop={true}
-          speed={4000}
-          autoplay={{
-            delay: 0,
-            disableOnInteraction: false,
-          }}
-          allowTouchMove={false}
-          className="ticker-swiper flex items-center h-full"
-        >
-          {promoTags.map((t, i) => (
-            <SwiperSlide
-              key={i}
-              className="!w-auto flex items-center justify-center"
-            >
-              <span className="text-[#FFB800] font-black text-sm mx-10 uppercase tracking-[0.2em] whitespace-nowrap">
-                {t}
-              </span>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+          <Swiper
+            modules={[Autoplay]}
+            spaceBetween={0}
+            slidesPerView="auto"
+            loop={true}
+            speed={4000}
+            autoplay={{
+              delay: 0,
+              disableOnInteraction: false,
+            }}
+            allowTouchMove={false}
+            className="ticker-swiper flex items-center h-full"
+          >
+            {promoTags.map((t, i) => (
+              <SwiperSlide
+                key={i}
+                className="!w-auto flex items-center justify-center"
+              >
+                <div className="flex flex-row items-center justify-center gap-4">
+                  <span className="mx-6 text-lg font-bold tracking-tight text-slate-900 uppercase whitespace-nowrap sm:mx-8 sm:text-xl md:mx-10 md:text-2xl">
+                    {t}
+                  </span>
+                  <PiStarFourFill className="text-slate-900" />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        <div className="m-0 p-0 leading-none">
+          <Image
+            src="/home page/shape-32.png"
+            alt="Decorative shape divider"
+            width={1920}
+            height={180}
+            priority
+            className="block h-auto w-full"
+          />
+        </div>
+      </section>
 
       {/* ── PROMO BANNERS ── */}
-      <section className="px-5 py-12 max-w-[1400px] mx-auto">
+      <section className="relative isolate mx-auto max-w-[1400px] overflow-hidden px-4 py-12 sm:px-5">
+        <div className="pointer-events-none absolute -right-10 hidden lg:block -z-10">
+          <Image
+            src="/home page/shape-27.png"
+            alt="Hero Toy"
+            width={400}
+            height={400}
+            priority
+            className=" object-contain animate-floatUpDown w-60 h-60"
+          />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr_1fr] gap-5">
           {/* Left Card – Red */}
           <div
@@ -1227,11 +1462,31 @@ export default function Home() {
       </section>
 
       {/* ── SELECT FROM COLLECTION ── */}
-      <section className="py-16 px-5 bg-white">
-        <div className="max-w-[1300px] mx-auto">
+      <section className="relative isolate overflow-hidden bg-white px-4 py-14 sm:px-5 md:py-16">
+        <div className="pointer-events-none absolute hidden -z-10 lg:block">
+          <Image
+            src="/home page/shape-28.png"
+            alt="Hero Toy"
+            width={400}
+            height={400}
+            priority
+            className=" object-contain animate-floatUpDown w-50 h-50"
+          />
+        </div>
+        <div className="pointer-events-none absolute top-2 right-[35%] hidden -z-10 lg:block">
+          <Image
+            src="/home page/shape-30.png"
+            alt="Hero Toy"
+            width={400}
+            height={400}
+            priority
+            className=" object-contain animate-floatUpDown w-50 h-50"
+          />
+        </div>
+        <div className="relative z-10 max-w-[1300px] mx-auto">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-black text-slate-900">
+          <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 className="text-slate-900 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
               Select from <span className="text-[#E84393]">Collection</span>
             </h2>
             <Link
@@ -1244,12 +1499,27 @@ export default function Home() {
 
           <div className="flex flex-col md:flex-row gap-6">
             {/* ── LEFT: Filter Sidebar ── */}
-            <div className="md:w-48 shrink-0">
-              <div className="border border-pink-100 rounded-2xl overflow-hidden shadow-sm">
+            <div className="shrink-0 md:w-48">
+              <div className="bg-white border border-pink-100 rounded-lg overflow-hidden shadow-sm">
                 {[
-                  { label: "Boy",    display: "Boys",   emoji: "\uD83D\uDE80", color: "#3b82f6" },
-                  { label: "Girl",   display: "Girls",  emoji: "\uD83C\uDF38", color: "#E84393" },
-                  { label: "Unisex", display: "Unisex", emoji: "\u2B50",       color: "#f59e0b" },
+                  {
+                    label: "Boy",
+                    display: "Boys",
+                    emoji: "\uD83D\uDE80",
+                    color: "#3b82f6",
+                  },
+                  {
+                    label: "Girl",
+                    display: "Girls",
+                    emoji: "\uD83C\uDF38",
+                    color: "#E84393",
+                  },
+                  {
+                    label: "Unisex",
+                    display: "Unisex",
+                    emoji: "\u2B50",
+                    color: "#f59e0b",
+                  },
                 ].map((g, idx) => (
                   <button
                     key={g.label}
@@ -1264,7 +1534,10 @@ export default function Home() {
                   >
                     <span
                       className="w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0"
-                      style={{ background: activeGender === g.label ? g.color + "22" : "#f3f4f6" }}
+                      style={{
+                        background:
+                          activeGender === g.label ? g.color + "22" : "#f3f4f6",
+                      }}
                     >
                       {g.emoji}
                     </span>
@@ -1276,13 +1549,17 @@ export default function Home() {
               {/* Decorative emoji */}
               <div className="hidden md:flex justify-center mt-6 pointer-events-none select-none">
                 <span className="text-[80px] leading-none">
-                  {activeGender === "Boy" ? "\uD83D\uDE80" : activeGender === "Girl" ? "\uD83E\uDDF8" : "\uD83C\uDF08"}
+                  {activeGender === "Boy"
+                    ? "\uD83D\uDE80"
+                    : activeGender === "Girl"
+                      ? "\uD83E\uDDF8"
+                      : "\uD83C\uDF08"}
                 </span>
               </div>
             </div>
 
             {/* ── RIGHT: Product Grid ── */}
-            <div className="flex-1 min-h-[300px]">
+            <div className="flex-1 min-h-75">
               {genderLoading ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                   {Array.from({ length: 8 }).map((_, i) => (
@@ -1298,7 +1575,11 @@ export default function Home() {
                   <p className="text-lg font-bold">
                     No products found for{" "}
                     <span className="text-[#E84393]">
-                      {activeGender === "Boy" ? "Boys" : activeGender === "Girl" ? "Girls" : "Unisex"}
+                      {activeGender === "Boy"
+                        ? "Boys"
+                        : activeGender === "Girl"
+                          ? "Girls"
+                          : "Unisex"}
                     </span>
                   </p>
                   <p className="text-sm mt-1">
@@ -1306,12 +1587,12 @@ export default function Home() {
                   </p>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 rounded-xl border border-dashed border-[#E84393] bg-white sm:grid-cols-2 lg:grid-cols-4">
                   {genderProducts.map((product) => (
                     <div
                       key={product._id}
                       onClick={() => router.push(`/shop/${product._id}`)}
-                      className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col cursor-pointer"
+                      className="group bg-white overflow-hidden border border-gray-100 rounded-xl transition-all duration-300 flex flex-col cursor-pointer"
                     >
                       {/* Image */}
                       <div className="relative bg-gray-50 h-44 overflow-hidden">
@@ -1319,12 +1600,12 @@ export default function Home() {
                           fill
                           src={product.image}
                           alt={product.name}
-                          className="w-full h-full object-cover p-3 transition-transform duration-500 group-hover:scale-110"
+                          className="w-full h-full object-cover p-3 transition-transform duration-500 group-hover:scale-103"
                         />
                       </div>
 
                       {/* Info */}
-                      <div className="p-3 flex flex-col flex-grow">
+                      <div className="p-3 flex flex-col flex-grow ">
                         <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">
                           {product.category || "Toy"}
                         </p>
@@ -1377,7 +1658,7 @@ export default function Home() {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 bg-[#E84393] text-white px-6 py-3 rounded-full shadow-[0_10px_40px_rgba(232,67,147,0.4)] flex items-center gap-3 transition-all duration-300 transform translate-y-0 opacity-100">
+        <div className="fixed bottom-6 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-max -translate-x-1/2 transform items-center gap-3 rounded-full bg-[#E84393] px-4 py-3 text-white opacity-100 shadow-[0_10px_40px_rgba(232,67,147,0.4)] transition-all duration-300 translate-y-0 sm:bottom-10 sm:w-auto sm:px-6">
           <span className="text-xl">✅</span>
           <span className="font-bold text-sm tracking-wide">
             {toastMessage}

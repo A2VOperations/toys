@@ -2,23 +2,27 @@ import Toy from '../models/Toy';
 import dbConnect from '../dbConfig/db';
 import {
   uploadImageToCloudinary,
-  deleteImageFromCloudinary,
+  deleteWithRetry,
 } from '../lib/cloudinary';
 
-// ─────────────────────────────────────────
-// Shared: upload array of base64 → Cloudinary URLs
-// Runs uploads in parallel for speed
-// ─────────────────────────────────────────
+const MAX_LIMIT = 200;
+const MAX_PAGE  = 1000;
+
 async function processImages(images) {
   if (!images?.length) return [];
 
-  // Separate already-uploaded URLs from new base64 strings
   const results = await Promise.all(
     images.map((img) => {
-      if (img.startsWith("http")) return img; // already a Cloudinary URL
-      return uploadImageToCloudinary(img);    // upload base64
+      if (typeof img === 'string' && img.startsWith('http')) return img;
+      return uploadImageToCloudinary(img);
     })
   );
+
+  const failed = results.filter((r) => !r);
+  if (failed.length) {
+    throw new Error(`${failed.length} image(s) failed to upload to Cloudinary.`);
+  }
+
   return results;
 }
 
@@ -27,16 +31,13 @@ async function processImages(images) {
 // ─────────────────────────────────────────
 export const addToy = async (data) => {
   await dbConnect();
-
   const imageUrls = await processImages(data.images);
-
   const toy = new Toy({ ...data, images: imageUrls });
   return await toy.save();
 };
 
 // ─────────────────────────────────────────
-// GET TOYS (with filtering + pagination)
-// Optimized: projection to skip heavy fields when listing
+// GET TOYS
 // ─────────────────────────────────────────
 export const getToys = async (query = {}) => {
   await dbConnect();
@@ -45,22 +46,22 @@ export const getToys = async (query = {}) => {
     title, category, brand, gender, age, tags,
     page = 1, limit = 9, sortBy, latestUploaded,
     minPrice, maxPrice,
-    fields, // optional: comma-separated field projection
+    fields,
   } = query;
 
   const mongoQuery = {};
 
-  if (title) mongoQuery.title = { $regex: title, $options: "i" };
+  if (title)    mongoQuery.title    = { $regex: title, $options: 'i' };
   if (category) mongoQuery.category = category;
-  if (brand) mongoQuery.brand = brand;
-  if (gender) mongoQuery.gender = gender;
-  if (age) mongoQuery.age = age;
+  if (brand)    mongoQuery.brand    = brand;
+  if (gender)   mongoQuery.gender   = gender;
+  if (age)      mongoQuery.age      = age;
 
   if (tags) {
-    const tagsArray = tags.split(',').map(t => t.trim()).filter(Boolean);
+    const tagsArray = tags.split(',').map((t) => t.trim()).filter(Boolean);
     if (tagsArray.length > 0) {
       mongoQuery.tags = {
-        $in: tagsArray.map(t => new RegExp(`^${t}$`, 'i')),
+        $in: tagsArray.map((t) => new RegExp(`^${t}$`, 'i')),
       };
     }
   }
@@ -72,23 +73,20 @@ export const getToys = async (query = {}) => {
   }
 
   let sortQuery = { createdAt: -1 };
-  if (sortBy === "oldest" || latestUploaded === "false") sortQuery = { createdAt: 1 };
-  if (sortBy === "price_asc")  sortQuery = { price: 1 };
-  if (sortBy === "price_desc") sortQuery = { price: -1 };
-  if (sortBy === "title_asc")  sortQuery = { title: 1 };
-  if (sortBy === "title_desc") sortQuery = { title: -1 };
+  if (sortBy === 'oldest' || latestUploaded === 'false') sortQuery = { createdAt: 1 };
+  if (sortBy === 'price_asc')  sortQuery = { price:  1 };
+  if (sortBy === 'price_desc') sortQuery = { price: -1 };
+  if (sortBy === 'title_asc')  sortQuery = { title:  1 };
+  if (sortBy === 'title_desc') sortQuery = { title: -1 };
 
-  const parsedPage  = Math.max(1, parseInt(page, 10));
-  const parsedLimit = Math.max(1, parseInt(limit, 10));
+  const parsedPage  = Math.min(Math.max(1, parseInt(page,  10) || 1), MAX_PAGE);
+  const parsedLimit = Math.min(Math.max(1, parseInt(limit, 10) || 9), MAX_LIMIT);
   const skip = (parsedPage - 1) * parsedLimit;
 
-  // Projection: for listing pages we don't need `description`
-  // (saves bandwidth on every list request)
   const projection = fields
-    ? fields.split(",").reduce((acc, f) => ({ ...acc, [f.trim()]: 1 }), {})
-    : { description: 0 }; // exclude heavy field by default on lists
+    ? fields.split(',').reduce((acc, f) => ({ ...acc, [f.trim()]: 1 }), {})
+    : { description: 0 };
 
-  // Run count + fetch in parallel
   const [toys, totalItems] = await Promise.all([
     Toy.find(mongoQuery, projection)
       .sort(sortQuery)
@@ -102,12 +100,40 @@ export const getToys = async (query = {}) => {
 
   return {
     toys,
-    pagination: { totalItems, totalPages, currentPage: parsedPage, pageSize: parsedLimit },
+    pagination: {
+      totalItems,
+      totalPages,
+      currentPage: parsedPage,
+      pageSize: parsedLimit,
+    },
   };
 };
 
 // ─────────────────────────────────────────
-// GET BY ID — full document including description
+// GET HOME PAGE TOYS
+// ─────────────────────────────────────────
+export const getHomePageToys = async ({ limit = 20 } = {}) => {
+  await dbConnect();
+
+  const safeLimit = Math.min(Math.max(1, parseInt(limit, 10) || 20), MAX_LIMIT);
+
+  // Run both in parallel
+  const [toys, totalItems] = await Promise.all([
+    Toy.find(
+      {},
+      { title: 1, category: 1, brand: 1, age: 1, price: 1, images: 1, createdAt: 1 }
+    )
+      .sort({ createdAt: -1 })
+      .limit(safeLimit)
+      .lean(),
+    Toy.countDocuments(), // ← real total count
+  ]);
+
+  return { toys, totalItems };
+};
+
+// ─────────────────────────────────────────
+// GET BY ID
 // ─────────────────────────────────────────
 export const getToyById = async (id) => {
   await dbConnect();
@@ -116,7 +142,6 @@ export const getToyById = async (id) => {
 
 // ─────────────────────────────────────────
 // UPDATE TOY
-// Replaces old Cloudinary images + uploads new ones
 // ─────────────────────────────────────────
 export const updateToy = async (id, body) => {
   await dbConnect();
@@ -129,21 +154,30 @@ export const updateToy = async (id, body) => {
   let imageUrls;
 
   if (images?.length) {
-    // Get the existing toy to clean up old Cloudinary images
-    const existing = await Toy.findById(id).select("images").lean();
+    const existing = await Toy.findById(id).select('images').lean();
 
-    // Upload new images (parallel)
-    imageUrls = await processImages(images);
+    // Split into kept old URLs vs new base64 uploads
+    const keepUrls  = images.filter((img) => img.startsWith('http'));
+    const newBase64 = images.filter((img) => !img.startsWith('http'));
 
-    // Delete old Cloudinary images that are being replaced
-    if (existing?.images?.length) {
-      const oldCloudinaryImages = existing.images.filter(
-        (url) => url.startsWith("https://res.cloudinary.com")
-      );
-      // Fire-and-forget deletion (don't block the update)
-      Promise.all(oldCloudinaryImages.map(deleteImageFromCloudinary)).catch(
-        (err) => console.error("Cloudinary cleanup error:", err)
-      );
+    // Upload only new images
+    const uploadedUrls = await Promise.all(
+      newBase64.map((img) => uploadImageToCloudinary(img))
+    );
+
+    // Final image list
+    imageUrls = [...keepUrls, ...uploadedUrls];
+
+    // Find old images that were actually removed
+    const removedImages = existing?.images?.filter(
+      (oldUrl) =>
+        oldUrl.startsWith('https://res.cloudinary.com') &&
+        !keepUrls.includes(oldUrl)
+    );
+
+    // ── await so Next.js doesn't kill the function before deletion completes ──
+    if (removedImages?.length) {
+      await Promise.all(removedImages.map(deleteWithRetry));
     }
   }
 
@@ -161,20 +195,22 @@ export const updateToy = async (id, body) => {
 };
 
 // ─────────────────────────────────────────
-// DELETE TOY — also removes images from Cloudinary
+// DELETE TOY
 // ─────────────────────────────────────────
 export const deleteToy = async (id) => {
   await dbConnect();
 
-  const toy = await Toy.findById(id).select("images").lean();
+  const toy = await Toy.findById(id).select('images').lean();
+  if (!toy) throw new Error(`Toy not found: ${id}`);
 
   if (toy?.images?.length) {
-    const cloudinaryImages = toy.images.filter(
-      (url) => url.startsWith("https://res.cloudinary.com")
+    const cloudinaryImages = toy.images.filter((url) =>
+      url.startsWith('https://res.cloudinary.com')
     );
-    Promise.all(cloudinaryImages.map(deleteImageFromCloudinary)).catch(
-      (err) => console.error("Cloudinary delete error:", err)
-    );
+
+    if (cloudinaryImages.length) {
+      await Promise.all(cloudinaryImages.map(deleteWithRetry)); // ← await + deleteWithRetry
+    }
   }
 
   return await Toy.findByIdAndDelete(id);

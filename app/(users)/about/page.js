@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import Testimonials from "../testimonials";
 import "swiper/css";
 import Link from "next/link";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import { PiStarFourFill } from "react-icons/pi";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -92,25 +95,57 @@ const categories = [
   { icon: "🔬", label: "Science Kits" },
 ];
 
-export function CategoryCarousel() {
-  const doubled = [...categories, ...categories, ...categories];
+const promoTags = [
+  "Puzzles",
+  "Cubes",
+  "Toy Car",
+  "Girls Doll",
+  "Balloons",
+  "Or Plate",
+  "Puzzles",
+  "Cubes",
+  "Toy Car",
+  "Girls Doll",
+  "Balloons",
+  "Or Plate",
+];
+
+function ExperienceBadge() {
+  const circleText = "30 Years Experience - 30 Years Experience - ";
+
   return (
-    <div className="bg-white border-y-2 border-pink-100 py-4 overflow-hidden">
-      <div className="flex w-max scrollX hover:[animation-play-state:paused]">
-        {doubled.map((cat, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-2 px-7 border-r-2 border-dashed border-pink-100 cursor-pointer group shrink-0 select-none"
+    <div className="absolute top-4 right-4 md:right-10 z-20 flex h-[150px] w-[150px] items-center justify-center rounded-full bg-white shadow-xl shadow-pink-200/70">
+      <div
+        className="absolute inset-0 animate-spin"
+        style={{ animationDuration: "12s" }}
+      >
+        <svg viewBox="0 0 120 120" className="h-full w-full">
+          <defs>
+            <path
+              id="experience-circle"
+              d="M 60,60 m -42,0 a 42,42 0 1,1 84,0 a 42,42 0 1,1 -84,0"
+            />
+          </defs>
+          <text
+            fill="#ec4899"
+            fontSize="10"
+            fontWeight="800"
+            letterSpacing="2.3"
           >
-            <span className="text-xl group-hover:scale-125 transition-transform duration-200">
-              {cat.icon}
-            </span>
-            <span className="text-sm font-bold text-gray-700 whitespace-nowrap tracking-wide group-hover:text-pink-500 transition-colors">
-              {cat.label}
-            </span>
-            <span className="text-pink-400 font-black text-base ml-1">+</span>
-          </div>
-        ))}
+            <textPath href="#experience-circle" startOffset="0%">
+              {circleText}
+            </textPath>
+          </text>
+        </svg>
+      </div>
+
+      <div className="relative flex h-[66px] w-[66px] flex-col items-center justify-center rounded-full border-2 border-pink-200 bg-linear-to-br from-pink-50 to-white">
+        <span className="text-pink-500 text-xl font-black leading-tight">
+          15+
+        </span>
+        <span className="text-[9px] tracking-[2px] text-gray-400 font-bold uppercase">
+          Years
+        </span>
       </div>
     </div>
   );
@@ -305,15 +340,9 @@ export function BrandsSection() {
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Heading */}
         <div className="text-center mb-12">
-          <span className="inline-block bg-yellow-100 text-yellow-700 text-xs font-black tracking-widest uppercase px-4 py-1.5 rounded-full mb-3">
-            🏆 Our Partners
-          </span>
-          <h2 className="text-3xl md:text-4xl font-black text-gray-800">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
             Shop by <span className="text-pink-500">Brands</span>
           </h2>
-          <p className="text-gray-400 text-sm mt-2 font-semibold">
-            Handpicked collection of the world's most beloved toy brands
-          </p>
         </div>
 
         {/* States */}
@@ -339,7 +368,10 @@ export function BrandsSection() {
         <div className="text-center mt-12 pt-8 border-t-2 border-dashed border-pink-200">
           <p className="text-gray-400 text-sm font-semibold">
             Discover our full collection —{" "}
-            <Link href="/shop" className="text-pink-500 font-black hover:underline">
+            <Link
+              href="/shop"
+              className="text-pink-500 font-black hover:underline"
+            >
               Browse All Toys →
             </Link>
           </p>
@@ -369,41 +401,32 @@ export default function AboutSection() {
               🌈
             </span>
 
-            <div className="w-[320px] h-[320px] md:w-[400px] md:h-[400px] rounded-full bg-gradient-to-br from-pink-200 to-pink-100 relative overflow-hidden flex items-end justify-center border-4 border-white shadow-2xl shadow-pink-200">
+            <div className="w-[320px] h-80 md:w-120 md:h-130 rounded-t-full rounded-br-full relative overflow-hidden flex items-end justify-center border-4 border-white shadow-2xl shadow-pink-200">
               <Image
                 src="/about/about-1.jpg"
                 alt="girl"
-                fill
-                className="object-cover"
+                height={400}
+                width={400}
+                className="h-full w-full object-cover"
               />
             </div>
 
-            <div className="absolute bottom-[-20px] right-4 md:right-8 w-[150px] h-[150px] md:w-[190px] md:h-[190px] rounded-full bg-gradient-to-br from-blue-200 to-blue-100 overflow-hidden border-[5px] border-white shadow-xl shadow-blue-100 z-10">
+            <div className="absolute -bottom-2 right-4 md:right-8 w-[180px] h-[160px] md:w-[240px] md:h-[240px] rounded-t-full  rounded-bl-full bg-linear-to-br from-blue-200 to-blue-100 overflow-hidden border-[5px] border-white shadow-xl shadow-blue-100 z-10">
               <Image
                 src="/about/about-2.jpg"
                 alt="boy"
-                fill
+                height={400}
+                width={400}
                 className="object-cover"
               />
             </div>
 
-            <div className="absolute top-6 right-6 md:right-12 w-[90px] h-[90px] rounded-full bg-white border-2 border-pink-200 shadow-lg flex flex-col items-center justify-center z-20">
-              <span className="text-pink-500 text-xl font-black leading-tight">
-                30+
-              </span>
-              <span className="text-[9px] tracking-[2px] text-gray-400 font-bold uppercase">
-                Years
-              </span>
-            </div>
+            <ExperienceBadge />
           </div>
 
           {/* RIGHT: Text */}
           <div>
-            <span className="inline-block bg-pink-100 text-pink-500 text-xs font-black tracking-widest uppercase px-4 py-1.5 rounded-full mb-4">
-              ✨ Our Story
-            </span>
-
-            <h2 className="text-3xl md:text-4xl font-black leading-snug mb-4 text-gray-800">
+            <h2 className="text-3xl md:text-4xl font-bold leading-snug mb-4 text-gray-800">
               We are a retail business in the Ecommerce{" "}
               <span className="text-pink-500">Products and accessories</span>{" "}
               for kids
@@ -449,7 +472,43 @@ export default function AboutSection() {
         </div>
       </section>
 
-      <CategoryCarousel />
+      {/* ── PROMO TICKER ── */}
+      <section className="bg-white">
+        <div className="bg-white py-4 overflow-hidden border-3 border-dashed border-[#f5a1c8]">
+          <style>{`
+          .ticker-swiper .swiper-wrapper {
+            transition-timing-function: linear !important;
+          }
+        `}</style>
+          <Swiper
+            modules={[Autoplay]}
+            spaceBetween={0}
+            slidesPerView="auto"
+            loop={true}
+            speed={4000}
+            autoplay={{
+              delay: 0,
+              disableOnInteraction: false,
+            }}
+            allowTouchMove={false}
+            className="ticker-swiper flex items-center h-full"
+          >
+            {promoTags.map((t, i) => (
+              <SwiperSlide
+                key={i}
+                className="w-auto! flex items-center justify-center pt-3 pb-3"
+              >
+                <div className="flex flex-row items-center justify-center gap-4">
+                  <span className="mx-10 text-2xl font-bold tracking-tight text-slate-900 uppercase whitespace-nowrap md:text-2xl">
+                    {t}
+                  </span>
+                  <PiStarFourFill className="text-slate-900" />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </section>
       <BrandsSection />
       <Testimonials />
     </>

@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
+const ROWS_OPTIONS = [10, 20, 50];
 
 export default function MyShopPage() {
   const router = useRouter();
@@ -12,6 +14,10 @@ export default function MyShopPage() {
   const [deletingId, setDeletingId] = useState(null);
   const [confirmId, setConfirmId] = useState(null);
 
+  // ── pagination state ──────────────────────────────────────────────
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
   useEffect(() => {
     fetchToys();
   }, []);
@@ -19,7 +25,7 @@ export default function MyShopPage() {
   async function fetchToys() {
     setLoading(true);
     try {
-      const res = await fetch("/api/toys");
+      const res = await fetch("/api/toys?limit=1000");
       const data = await res.json();
       setToys(data.toys || []);
     } catch (err) {
@@ -46,18 +52,44 @@ export default function MyShopPage() {
     }
   }
 
-  const filtered = toys.filter((t) =>
-    [t.title, t.category, t.brand, t.gender, t.age]
-      .join(" ")
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
+  // ── derived data ──────────────────────────────────────────────────
+  const filtered = useMemo(() => {
+    return toys.filter((t) =>
+      [t.title, t.category, t.brand, t.gender, t.age]
+        .join(" ")
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    );
+  }, [toys, search]);
+
+  // Reset to page 1 whenever search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  const paginated = filtered.slice(startIdx, endIdx);
+
+  // Build page number list with ellipsis
+  function getPageNumbers() {
+    if (totalPages <= 5) return Array.from({ length: totalPages }, (_, i) => i + 1);
+    const pages = [];
+    if (currentPage <= 3) {
+      pages.push(1, 2, 3, "…", totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      pages.push(1, "…", totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      pages.push(1, "…", currentPage - 1, currentPage, currentPage + 1, "…", totalPages);
+    }
+    return pages;
+  }
 
   return (
     <div
-      className="min-h-screen py-10 px-4"
+      className="min-h-screen py-10 px-4 bg-gray-200"
       style={{
-        background: "linear-gradient(135deg, #fff5f9 0%, #fffdf0 50%, #f0fff4 100%)",
         fontFamily: "'Nunito', sans-serif",
       }}
     >
@@ -65,115 +97,89 @@ export default function MyShopPage() {
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
         .shop-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-
         .shop-table thead tr th {
-          background: #1a1a2e;
-          color: white;
-          font-size: 10px;
-          font-weight: 800;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          padding: 14px 16px;
-          text-align: left;
+          background: #1a1a2e; color: white; font-size: 10px; font-weight: 800;
+          letter-spacing: 0.18em; text-transform: uppercase;
+          padding: 14px 16px; text-align: left;
         }
         .shop-table thead tr th:first-child { border-radius: 14px 0 0 0; }
         .shop-table thead tr th:last-child  { border-radius: 0 14px 0 0; }
-
-        .shop-table tbody tr {
-          background: white;
-          transition: background 0.15s ease, transform 0.15s ease;
-        }
+        .shop-table tbody tr { background: white; transition: background 0.15s ease; }
         .shop-table tbody tr:hover { background: #fff5fb; }
-
         .shop-table tbody tr td {
-          padding: 13px 16px;
-          font-size: 13px;
-          font-weight: 600;
-          color: #1a1a2e;
-          border-bottom: 1px solid #f3f3f3;
-          vertical-align: middle;
+          padding: 13px 16px; font-size: 13px; font-weight: 600;
+          color: #1a1a2e; border-bottom: 1px solid #f3f3f3; vertical-align: middle;
         }
-
         .shop-table tbody tr:last-child td:first-child { border-radius: 0 0 0 14px; }
         .shop-table tbody tr:last-child td:last-child  { border-radius: 0 0 14px 0; }
         .shop-table tbody tr:last-child td { border-bottom: none; }
 
-        .badge {
-          display: inline-block;
-          padding: 3px 10px;
-          border-radius: 99px;
-          font-size: 10px;
-          font-weight: 800;
-          letter-spacing: 0.04em;
-        }
-        .badge-pink  { background: #fff0f7; color: #E84393; }
-        .badge-yellow{ background: #fffbe0; color: #b07d00; }
-        .badge-green { background: #f0fff4; color: #16a34a; }
-        .badge-gray  { background: #f5f5f5; color: #888; }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 10px; font-weight: 800; letter-spacing: 0.04em; }
+        .badge-pink   { background: #fff0f7; color: #E84393; }
+        .badge-yellow { background: #fffbe0; color: #b07d00; }
+        .badge-green  { background: #f0fff4; color: #16a34a; }
+        .badge-gray   { background: #f5f5f5; color: #888; }
 
         .btn-edit {
-          padding: 6px 14px;
-          border-radius: 99px;
-          font-size: 11px;
-          font-weight: 800;
-          background: linear-gradient(135deg, #E84393, #FFB800);
-          color: white;
-          border: none;
-          cursor: pointer;
-          transition: opacity 0.15s ease, transform 0.15s ease;
-          text-decoration: none;
-          display: inline-block;
+          padding: 6px 14px; border-radius: 99px; font-size: 11px; font-weight: 800;
+          background: linear-gradient(135deg, #E84393, #FFB800); color: white;
+          border: none; cursor: pointer; transition: opacity 0.15s, transform 0.15s;
+          text-decoration: none; display: inline-block;
         }
         .btn-edit:hover { opacity: 0.85; transform: translateY(-1px); }
 
         .btn-delete {
-          padding: 6px 14px;
-          border-radius: 99px;
-          font-size: 11px;
-          font-weight: 800;
-          background: white;
-          color: #E84393;
-          border: 2px solid #fbb6d4;
-          cursor: pointer;
-          transition: all 0.15s ease;
+          padding: 6px 14px; border-radius: 99px; font-size: 11px; font-weight: 800;
+          background: white; color: #E84393; border: 2px solid #fbb6d4;
+          cursor: pointer; transition: all 0.15s;
         }
         .btn-delete:hover { background: #fff0f7; transform: translateY(-1px); }
         .btn-delete:disabled { opacity: 0.4; cursor: not-allowed; }
 
         .search-input {
-          width: 100%;
-          padding: 12px 18px 12px 44px;
-          border-radius: 99px;
-          border: 2px solid #f0f0f0;
-          background: white;
-          font-family: 'Nunito', sans-serif;
-          font-size: 14px;
-          font-weight: 600;
-          color: #1a1a2e;
-          outline: none;
-          box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+          width: 100%; padding: 12px 18px 12px 44px; border-radius: 99px;
+          border: 2px solid #f0f0f0; background: white;
+          font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 600;
+          color: #1a1a2e; outline: none; box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+          transition: border-color 0.2s, box-shadow 0.2s;
         }
-        .search-input:focus {
-          border-color: #E84393;
-          box-shadow: 0 4px 20px rgba(232,67,147,0.12);
-        }
+        .search-input:focus { border-color: #E84393; box-shadow: 0 4px 20px rgba(232,67,147,0.12); }
         .search-input::placeholder { color: #ccc; font-weight: 600; }
 
+        /* ── Pagination ───────────────────────────────────── */
+        .pagination-bar {
+          display: flex; align-items: center; justify-content: space-between;
+          flex-wrap: wrap; gap: 12px; margin-top: 16px;
+          padding: 12px 18px; background: white;
+          border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+        .pagination-info { font-size: 12px; font-weight: 700; color: #888; }
+        .page-btn {
+          min-width: 32px; height: 32px; padding: 0 10px;
+          border-radius: 99px; border: 2px solid #f0f0f0;
+          background: white; color: #1a1a2e;
+          font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800;
+          cursor: pointer; transition: all 0.15s;
+        }
+        .page-btn:hover:not(:disabled) { border-color: #E84393; color: #E84393; }
+        .page-btn.active { background: linear-gradient(135deg, #E84393, #FFB800); border-color: transparent; color: white; }
+        .page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+        .page-ellipsis { font-size: 13px; font-weight: 800; color: #ccc; padding: 0 4px; }
+        .rows-select {
+          font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700;
+          padding: 5px 10px; border-radius: 99px; border: 2px solid #f0f0f0;
+          background: white; color: #1a1a2e; cursor: pointer; outline: none;
+        }
+        .rows-select:focus { border-color: #E84393; }
+
         .confirm-overlay {
-          position: fixed; inset: 0;
-          background: rgba(0,0,0,0.35);
-          backdrop-filter: blur(4px);
-          display: flex; align-items: center; justify-content: center;
-          z-index: 999;
+          position: fixed; inset: 0; background: rgba(0,0,0,0.35);
+          backdrop-filter: blur(4px); display: flex; align-items: center;
+          justify-content: center; z-index: 999;
         }
         .confirm-box {
-          background: white;
-          border-radius: 24px;
-          padding: 36px 32px;
-          max-width: 360px;
-          width: 90%;
-          text-align: center;
+          background: white; border-radius: 24px; padding: 36px 32px;
+          max-width: 360px; width: 90%; text-align: center;
           box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         }
       `}</style>
@@ -197,7 +203,6 @@ export default function MyShopPage() {
               {toys.length} products total
             </p>
           </div>
-
           <Link href="/admin/home/addProduct">
             <button
               className="px-6 py-3 rounded-full text-white font-black text-sm tracking-wide shadow-lg hover:opacity-90 transition-all active:scale-95"
@@ -245,121 +250,145 @@ export default function MyShopPage() {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl shadow-md">
-            <table className="shop-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Image</th>
-                  <th>Title</th>
-                  <th>Category</th>
-                  <th>Brand</th>
-                  <th>Age</th>
-                  <th>Gender</th>
-                  <th>Stock</th>
-                  <th>Price</th>
-                  <th>Tags</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((toy, idx) => (
-                  <tr key={toy._id}>
-                    {/* # */}
-                    <td className="text-gray-400 text-xs font-bold">{idx + 1}</td>
-
-                    {/* Image */}
-                    <td>
-                      <div className="w-12 h-12 rounded-xl overflow-hidden bg-pink-50 flex items-center justify-center">
-                        {toy.images?.[0] ? (
-                          <img
-                            src={toy.images[0]}
-                            alt={toy.title}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <span className="text-xl">🧸</span>
-                        )}
-                      </div>
-                    </td>
-
-                    {/* Title */}
-                    <td>
-                      <span className="font-bold text-[#1a1a2e]">{toy.title}</span>
-                    </td>
-
-                    {/* Category */}
-                    <td>
-                      <span className="badge badge-pink">{toy.category}</span>
-                    </td>
-
-                    {/* Brand */}
-                    <td className="text-gray-500">{toy.brand}</td>
-
-                    {/* Age */}
-                    <td className="text-gray-500">{toy.age || "—"}</td>
-
-                    {/* Gender */}
-                    <td>
-                      <span className={`badge ${
-                        toy.gender === "Boy" ? "badge-yellow" :
-                        toy.gender === "Girl" ? "badge-pink" : "badge-gray"
-                      }`}>
-                        {toy.gender}
-                      </span>
-                    </td>
-
-                    {/* Stock */}
-                    <td>
-                      <span className={`badge ${toy.stock > 0 ? "badge-green" : "badge-gray"}`}>
-                        {toy.stock > 0 ? `${toy.stock} in stock` : "Out of stock"}
-                      </span>
-                    </td>
-
-                    {/* price */}
-                    <td>
-                      <span className="badge badge-green">₹{toy.price ?? "—"}</span>
-                    </td>
-
-                    {/* Tags */}
-                    <td>
-                      <div className="flex flex-wrap gap-1">
-                        {toy.tags?.length > 0
-                          ? toy.tags.map((tag) => (
-                              <span key={tag} className="badge badge-yellow">{tag}</span>
-                            ))
-                          : <span className="text-gray-300 text-xs font-bold">—</span>
-                        }
-                      </div>
-                    </td>
-
-                    {/* Actions */}
-                    <td>
-                      <div className="flex items-center gap-2">
-                        <Link href={`/admin/home/products/${toy._id}`} className="btn-edit">
-                          ✏️ Edit
-                        </Link>
-                        <button
-                          className="btn-delete"
-                          disabled={deletingId === toy._id}
-                          onClick={() => setConfirmId(toy._id)}
-                        >
-                          {deletingId === toy._id ? "…" : "🗑️ Delete"}
-                        </button>
-                      </div>
-                    </td>
+          <>
+            <div className="overflow-x-auto rounded-2xl shadow-md">
+              <table className="shop-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Stock</th>
+                    <th>Price</th>
+                    <th>Tags</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {paginated.map((toy, idx) => (
+                    <tr key={toy._id}>
+                      <td className="text-gray-400 text-xs font-bold">{startIdx + idx + 1}</td>
 
-        {/* Row count */}
-        {!loading && filtered.length > 0 && (
-          <p className="text-xs font-bold text-gray-400 mt-4 text-right">
-            Showing {filtered.length} of {toys.length} products
-          </p>
+                      <td>
+                        <div className="w-12 h-12 rounded-xl overflow-hidden bg-pink-50 flex items-center justify-center">
+                          {toy.images?.[0] ? (
+                            <img src={toy.images[0]} alt={toy.title} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-xl">🧸</span>
+                          )}
+                        </div>
+                      </td>
+
+                      <td><span className="font-bold text-[#1a1a2e]">{toy.title}</span></td>
+                      <td><span className="badge badge-pink">{toy.category}</span></td>
+                      <td className="text-gray-500">{toy.brand}</td>
+                      <td className="text-gray-500">{toy.age || "—"}</td>
+                      <td>
+                        <span className={`badge ${
+                          toy.gender === "Boy" ? "badge-yellow" :
+                          toy.gender === "Girl" ? "badge-pink" : "badge-gray"
+                        }`}>
+                          {toy.gender}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={`badge ${toy.stock > 0 ? "badge-green" : "badge-gray"}`}>
+                          {toy.stock > 0 ? `${toy.stock} in stock` : "Out of stock"}
+                        </span>
+                      </td>
+                      <td><span className="badge badge-green">₹{toy.price ?? "—"}</span></td>
+                      <td>
+                        <div className="flex flex-wrap gap-1">
+                          {toy.tags?.length > 0
+                            ? toy.tags.map((tag) => (
+                                <span key={tag} className="badge badge-yellow">{tag}</span>
+                              ))
+                            : <span className="text-gray-300 text-xs font-bold">—</span>
+                          }
+                        </div>
+                      </td>
+                      <td>
+                        <div className="flex items-center gap-2">
+                          <Link href={`/admin/home/products/${toy._id}`} className="btn-edit">
+                            Edit
+                          </Link>
+                          <button
+                            className="btn-delete"
+                            disabled={deletingId === toy._id}
+                            onClick={() => setConfirmId(toy._id)}
+                          >
+                            {deletingId === toy._id ? "…" : "Delete"}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* ── PAGINATION BAR ── */}
+            <div className="pagination-bar">
+              {/* Info */}
+              <span className="pagination-info">
+                Showing {startIdx + 1}–{Math.min(endIdx, filtered.length)} of {filtered.length} products
+              </span>
+
+              {/* Page buttons */}
+              <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                <button
+                  className="page-btn"
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                  disabled={currentPage === 1}
+                >
+                  ← Prev
+                </button>
+
+                {getPageNumbers().map((page, i) =>
+                  page === "…" ? (
+                    <span key={`ellipsis-${i}`} className="page-ellipsis">…</span>
+                  ) : (
+                    <button
+                      key={page}
+                      className={`page-btn ${currentPage === page ? "active" : ""}`}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </button>
+                  )
+                )}
+
+                <button
+                  className="page-btn"
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next →
+                </button>
+              </div>
+
+              {/* Rows per page */}
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontSize: "12px", fontWeight: 700, color: "#888" }}>Rows per page:</span>
+                <select
+                  className="rows-select"
+                  value={itemsPerPage}
+                  onChange={(e) => {
+                    setItemsPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                >
+                  {ROWS_OPTIONS.map((n) => (
+                    <option key={n} value={n}>{n}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </>
         )}
       </div>
 

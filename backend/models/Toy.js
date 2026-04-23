@@ -8,7 +8,7 @@ const ToySchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
-  stock: { type: Number, default: 1 },
+  stock: { type: Number, default: 3 },
   description: { type: String },
   gender: { type: String, enum: ['Boy', 'Girl', 'Unisex'] },
   age: { type: String },

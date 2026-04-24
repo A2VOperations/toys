@@ -62,7 +62,7 @@ const MEGA = {
 function AnnouncementBar() {
   return (
     <div
-      className="relative w-full h-[36px] flex items-center px-4 md:px-6"
+      className="relative w-full h-[36px] flex items-center px-3 md:px-6"
       style={{
         background:
           "linear-gradient(90deg, #b5105a 0%, #e84393 45%, #ff6b9d 75%, #e84393 100%)",
@@ -81,7 +81,8 @@ function AnnouncementBar() {
           width: 1px;
           height: 14px;
           background: rgba(255,255,255,0.4);
-          margin: 0 12px;
+          margin: 0 10px;
+          flex-shrink: 0;
         }
         .ann-dropdown {
           display: flex;
@@ -91,14 +92,14 @@ function AnnouncementBar() {
           padding: 2px 4px;
           border-radius: 4px;
           transition: background 0.15s;
+          white-space: nowrap;
         }
         .ann-dropdown:hover { background: rgba(255,255,255,0.15); }
-        .ann-dropdown svg { opacity: 0.85; }
+        .ann-dropdown svg { opacity: 0.85; flex-shrink: 0; }
       `}</style>
 
-      {/* LEFT — Open Hours + Live Chat */}
-      <div className="flex items-center gap-1 text-white text-[0.68rem] font-semibold whitespace-nowrap flex-1">
-        {/* Clock icon */}
+      {/* LEFT — Open Hours + Live Chat (md+ only) */}
+      <div className="hidden md:flex items-center gap-1 text-white text-[0.68rem] font-semibold whitespace-nowrap flex-1">
         <svg
           width="13"
           height="13"
@@ -116,7 +117,6 @@ function AnnouncementBar() {
 
         <div className="ann-divider" />
 
-        {/* Headset icon */}
         <svg
           width="13"
           height="13"
@@ -135,16 +135,14 @@ function AnnouncementBar() {
       </div>
 
       {/* CENTER — Promo text */}
-      <div className="text-white text-[0.68rem] md:text-[0.72rem] whitespace-nowrap text-center">
+      <div className="flex-1 md:flex-none text-white text-[0.65rem] sm:text-[0.68rem] md:text-[0.72rem] whitespace-nowrap text-center">
         Supper Value Deals –{" "}
         <strong className="font-800">Save more with coupons 2BD30X</strong>
       </div>
 
-      {/* RIGHT — Language + Currency */}
-      <div className="flex items-center gap-1 text-white text-[0.68rem] font-semibold whitespace-nowrap flex-1 justify-end">
-        {/* Language */}
+      {/* RIGHT — Language + Currency (sm+ only) */}
+      <div className="hidden sm:flex items-center gap-1 text-white text-[0.68rem] font-semibold whitespace-nowrap flex-1 justify-end">
         <div className="ann-dropdown">
-          {/* Flag icon */}
           <svg
             width="16"
             height="16"
@@ -175,7 +173,6 @@ function AnnouncementBar() {
 
         <div className="ann-divider" />
 
-        {/* Currency */}
         <div className="ann-dropdown">
           <svg
             width="14"

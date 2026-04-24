@@ -61,7 +61,7 @@ const CARDS = [
   {
     icon: <MailIcon />,
     label: "Email Address",
-    value: process.env.EMAIL_FROM || "toysforkidsdelhi@gmail.com",
+    value: process.env.EMAIL_FROM || "operation.a2vgroups@gmail.com",
     iconBg: "bg-violet-50",
     iconColor: "text-violet-600",
   },
@@ -83,16 +83,34 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
+  const [error, setError] = useState("");
 
-  const handleChange = (e) =>
+  const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    if (error) setError("");
+  };
 
   const handleSend = () => {
     const { name, email, phone, subject, message } = form;
     if (!name || !email || !message) {
-      alert("Please fill in your name, email, and message.");
+      setError("Please fill in your name, email, and message.");
       return;
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (phone) {
+      const phoneRegex = /^\+?[0-9\s\-()]{7,15}$/;
+      if (!phoneRegex.test(phone)) {
+        setError("Please enter a valid phone number.");
+        return;
+      }
+    }
+
     const text = encodeURIComponent(
       `👋 *New Contact Request*\n\n` +
         `*Name:* ${name}\n` +
@@ -155,7 +173,7 @@ export default function ContactPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Let's <em className="not-italic text-[#f74872]">Talk</em>
+              Let&apos;s <em className="not-italic text-[#f74872]">Talk</em>
               <br />
               Toys &amp; More
             </h1>
@@ -167,7 +185,7 @@ export default function ContactPage() {
               style={{ fontSize: 15, fontWeight: 300 }}
             >
               A question about your order, a partnership idea, or just want to
-              say hi — we're here and happy to help.
+              say hi — we&apos;re here and happy to help.
             </p>
           </div>
 
@@ -270,7 +288,7 @@ export default function ContactPage() {
             className="mb-8 font-['Playfair_Display',serif] text-[2rem] font-bold leading-tight"
             style={{ color: "#0f0a0c" }}
           >
-            We'd love to
+            We&apos;d love to
             <br />
             hear from you
           </h2>
@@ -307,6 +325,8 @@ export default function ContactPage() {
                 type="text"
                 placeholder="+92 300 1234567"
                 value={form.phone}
+                minLength={10}
+                maxLength={10}
                 onChange={handleChange}
                 className="contact-input"
               />
@@ -338,6 +358,11 @@ export default function ContactPage() {
           </div>
 
           {/* Submit */}
+          {error && (
+            <div className="mb-3.5 text-red-500 text-sm font-medium text-center">
+              {error}
+            </div>
+          )}
           <button
             onClick={handleSend}
             className={[
@@ -409,7 +434,7 @@ export default function ContactPage() {
                 style={{ animation: "pulse-dot 2s ease-in-out infinite" }}
               />
               <span className="text-xs font-semibold text-[#f74872]">
-                We're open today
+                We&apos;re open today
               </span>
             </div>
           </div>

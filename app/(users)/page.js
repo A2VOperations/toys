@@ -23,7 +23,7 @@ const isBannerActive = (banner) => {
 
 const categories = [
   {
-    label: "Indoor Games",
+    label: "Card Category",
     color: "#2ecc71",
     stroke: "#00b894",
     bg: "#e8f8f0",
@@ -31,7 +31,7 @@ const categories = [
     image: "/home page/category-1.png",
   },
   {
-    label: "Puzzle Games",
+    label: "Kids Toys",
     color: "#f39c12",
     stroke: "#e67e22",
     bg: "#fef9e7",
@@ -39,7 +39,7 @@ const categories = [
     image: "/home page/category-2.png",
   },
   {
-    label: "Kids Books",
+    label: "Return Gifts",
     color: "#9b59b6",
     stroke: "#8e44ad",
     bg: "#f5eef8",
@@ -47,7 +47,7 @@ const categories = [
     image: "/home page/category-3.png",
   },
   {
-    label: "Balloons Cards",
+    label: "School Stationery",
     color: "#e74c3c",
     stroke: "#c0392b",
     bg: "#fdecea",
@@ -55,7 +55,7 @@ const categories = [
     image: "/home page/category-4.png",
   },
   {
-    label: "Water Toys",
+    label: "Lunch Boxes",
     color: "#ff69b4",
     stroke: "#e91e8c",
     bg: "#fde7f3",
@@ -63,7 +63,7 @@ const categories = [
     image: "/home page/category-5.png",
   },
   {
-    label: "Kids Toys",
+    label: "Water Bottles",
     color: "#3498db",
     stroke: "#2980b9",
     bg: "#eaf4fc",
@@ -71,7 +71,7 @@ const categories = [
     image: "/home page/category-6.png",
   },
   {
-    label: "Puzzle Games",
+    label: "School Bags",
     color: "#f39c12",
     stroke: "#e67e22",
     bg: "#fef9e7",
@@ -83,24 +83,27 @@ const categories = [
 const featuredBanners = [
   {
     tag: "FEATURED",
-    label: "Baby Toy's",
+    label: "School Picks",
     price: "₹0.99",
     bg: "bg-[#0bb31b]",
     image: "/home page/feature-1.webp",
+    link: "/shop?category=Lunch Box And Bottles,School Bags,Return Gifts Stationary",
   },
   {
     tag: "HOT DEAL",
-    label: "Gaming",
+    label: "Learning Toys",
     price: "₹34.00",
     bg: "bg-[#e81a3c]",
     image: "/home page/feature-2.webp",
+    link: "/shop?category=Educational Toys,Puzzles",
   },
   {
     tag: "LATEST",
-    label: "Accessories",
+    label: "Creative Play",
     price: "₹35.99",
     bg: "bg-[#1a6ce8]",
     image: "/home page/feature-3.webp",
+    link: "/shop?category=Puzzles,Board Games",
   },
 ];
 
@@ -140,13 +143,6 @@ const heroStars = [
   { size: "text-4xl", top: "top-[60%]", right: "right-[8%]", delay: "1.7s" },
   { size: "text-xl", top: "bottom-12", left: "left-[34%]", delay: "2.6s" },
 ];
-
-const Stars = ({ count = 5 }) => (
-  <span className="text-[#FFB800] text-xs">
-    {"★".repeat(count)}
-    {"☆".repeat(5 - count)}
-  </span>
-);
 
 function ProductRatingStars({ rating }) {
   return (
@@ -748,15 +744,20 @@ export default function Home() {
           <div
             className={`relative z-10 flex-1 px-5 text-center md:text-left transition-all duration-1000 transform ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
           >
-            <p className="text-lg text-orange-600 mb-3 font-bold w-fit">
-              TOYS FOR KIDS
+            <p className="text-xs mt-2 sm:text-lg md:text-lg text-orange-600 mb-3 font-extrabold w-fit mx-auto md:mx-0 uppercase">
+              Welcome to the World of Joy
             </p>
-            <h1 className="mb-6 text-3xl font-extrabold leading-[1.1] text-slate-900 sm:text-4xl md:text-6xl">
-              Fun Toys & <br />
-              Lunch Boxes for
+            <h1 className="mb-4 text-2xl sm:text-4xl md:text-5xl font-extrabold leading-[1.1] text-slate-900">
+              From Playtime <br />
+              to School Time,
               <br />
-              <span className="text-[#f52c6c]">Every Happy Kid</span>
+              <span className="text-[#f52c6c]">We Bring You the Best</span>
             </h1>
+            <p className="text-gray-600 dark:text-gray-500 mb-8 leading-relaxed">
+              Discover the ultimate collection of toys, educational stationery,
+              and unique return gifts. High-quality kids' essentials delivered
+              at prices both shops and parents love.
+            </p>
             <Link
               href="/shop"
               className="bg-white text-[#f52c6c] hover:text-white hover:bg-[#f52c6c] hover:border hover:border-white hover:border-dashed border border-dashed border-pink-500 px-5 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg shadow-pink-200 hover:scale-105 active:scale-95 transition-all"
@@ -858,6 +859,7 @@ export default function Home() {
         {featuredBanners.map((b) => (
           <div
             key={b.label}
+            onClick={() => router.push(b.link)}
             className={`${b.bg} h-auto sm:h-65 rounded-xl flex flex-col sm:flex-row items-center justify-between text-white group hover:-translate-y-2 transition-transform cursor-pointer shadow-xl overflow-hidden gap-4 sm:gap-0`}
           >
             <div className="z-10 mx-auto flex w-full flex-col items-center p-2 pt-6 text-center sm:w-auto sm:p-5 sm:pt-5">
@@ -866,7 +868,8 @@ export default function Home() {
               </span>
               <h3 className="text-3xl font-bold leading-tight">{b.label}</h3>
               <Link
-                href="/shop"
+                href={b.link}
+                onClick={(e) => e.stopPropagation()}
                 className="text-center bg-white/50 text-gray/80 border border-dashed px-5 py-2 rounded-full text-sm font-black shadow-lg w-fit mt-5 sm:mt-10"
               >
                 Shop Now
@@ -887,9 +890,9 @@ export default function Home() {
       </section>
 
       {bannerData && isBannerActive(bannerData) && (
-        <section className="relative mx-auto w-full mt-6 sm:mt-10 mb-6 sm:mb-10 px-3 sm:px-0">
+        <section className="relative mx-auto w-full mt-6 sm:mt-10 mb-6 sm:mb-10 sm:px-0">
           {/* Outer glow frame */}
-          <div className="relative overflow-hidden rounded-2xl sm:rounded-none shadow-[0_20px_50px_-12px_rgba(232,67,147,0.25)] sm:shadow-[0_32px_80px_-12px_rgba(232,67,147,0.25)]">
+          <div className="relative overflow-hidden sm:rounded-none shadow-[0_20px_50px_-12px_rgba(232,67,147,0.25)] sm:shadow-[0_32px_80px_-12px_rgba(232,67,147,0.25)]">
             <Swiper
               modules={[Autoplay, Navigation]}
               autoplay={{
@@ -915,8 +918,8 @@ export default function Home() {
                     />
 
                     {/* Overlays - stronger on mobile for readability */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 sm:via-black/30 to-black/20 sm:to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40 sm:to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/50 sm:via-black/30 to-black/20 sm:to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-black/40 sm:to-transparent" />
 
                     {/* TOP: Countdown Timer - centered on mobile, top-right on desktop */}
                     <div className="absolute top-3 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:top-8 sm:right-10 z-20 flex flex-col items-center sm:items-end gap-1.5 sm:gap-3">
@@ -1255,7 +1258,6 @@ export default function Home() {
                         <h3 className="text-lg font-black leading-tight">
                           {d.name}
                         </h3>
-                        <Stars />
                         <p className="text-2xl font-black text-[#E84393]">
                           {d.price}
                         </p>
@@ -1585,7 +1587,7 @@ export default function Home() {
               <span className="inline-block bg-white/20 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3">
                 Special Offer
               </span>
-              <h3 className="text-white text-4xl mb-6 font-black leading-tight drop-shadow-sm">
+              <h3 className="text-white text-4xl mb-6 font-black leading-tight drop-shadow-sm z-1000">
                 Buy One
                 <br />
                 Get One
@@ -1600,7 +1602,7 @@ export default function Home() {
 
             {/* Toy images collage */}
             <div className="absolute right-6 bottom-4 flex gap-3 items-end z-10 group-hover:scale-105 transition-transform duration-500">
-              <div className="relative w-24 h-24 rounded-full overflow-hidden ring-4 ring-white/40 shadow-xl">
+              <div className="relative w-24 h-24 rounded-full overflow-hidden hidden md:block lg:block ring-4 ring-white/40 shadow-xl">
                 <Image
                   src="/home page/feature-2.webp"
                   alt="Toy 1"

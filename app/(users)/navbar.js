@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { CATEGORIES, CATEGORY_EMOJIS } from "./categories";
+import { getCartCount } from "./cartStorage";
 
 /* ── WhatsApp from .env ── */
 const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567";
@@ -209,12 +210,30 @@ function AnnouncementBar() {
 /* ════════════════════════════════════════
    Main Navbar
    ════════════════════════════════════════ */
-export default function Navbar({ cartCount = 0, onCartClick }) {
+export default function Navbar({ onCartClick }) {
+  const [localCartCount, setLocalCartCount] = useState(0);
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileShopSubmenu, setMobileShopSubmenu] = useState(false);
   const timerRef = useRef(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    // Initial count
+    setLocalCartCount(getCartCount());
+
+    const updateCount = () => {
+      setLocalCartCount(getCartCount());
+    };
+
+    window.addEventListener("cartUpdated", updateCount);
+    window.addEventListener("storage", updateCount); // Handle changes from other tabs
+    
+    return () => {
+      window.removeEventListener("cartUpdated", updateCount);
+      window.removeEventListener("storage", updateCount);
+    };
+  }, []);
 
   useEffect(() => {
     setMegaOpen(false);
@@ -328,9 +347,9 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
               style={{ fontFamily: "'Nunito', sans-serif" }}
             >
               <span>🛒 Cart</span>
-              {cartCount > 0 && (
+              {localCartCount > 0 && (
                 <span className="absolute -top-2 -right-2 w-5 h-5 bg-[#e84393] text-white rounded-full text-[0.6rem] font-black flex items-center justify-center border-2 border-white">
-                  {cartCount}
+                  {localCartCount}
                 </span>
               )}
             </Link>
@@ -740,7 +759,7 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
           }}
           className="mx-5 mb-5 py-3 bg-[#e84393] text-white no-underline text-center rounded-full font-extrabold flex items-center justify-center gap-2"
         >
-          🛒 View Cart {cartCount > 0 && `(${cartCount})`}
+          🛒 View Cart {localCartCount > 0 && `(${localCartCount})`}
         </Link>
       </div>
     </>

@@ -26,6 +26,12 @@ async function processImages(images) {
   return results;
 }
 
+// Helper: parse a comma-separated param into a trimmed, non-empty array
+function parseMulti(value) {
+  if (!value) return [];
+  return value.split(',').map((v) => v.trim()).filter(Boolean);
+}
+
 // ─────────────────────────────────────────
 // ADD TOY
 // ─────────────────────────────────────────
@@ -51,27 +57,54 @@ export const getToys = async (query = {}) => {
 
   const mongoQuery = {};
 
-  if (title)    mongoQuery.title    = { $regex: title, $options: 'i' };
-  if (category) mongoQuery.category = category;
-  if (brand)    mongoQuery.brand    = brand;
-  if (gender)   mongoQuery.gender   = gender;
-  if (age)      mongoQuery.age      = age;
+  // ── Text search (partial, case-insensitive) ──────────────────────────────
+  if (title) mongoQuery.title = { $regex: title, $options: 'i' };
 
-  if (tags) {
-    const tagsArray = tags.split(',').map((t) => t.trim()).filter(Boolean);
-    if (tagsArray.length > 0) {
-      mongoQuery.tags = {
-        $in: tagsArray.map((t) => new RegExp(`^${t}$`, 'i')),
-      };
-    }
+  // ── Multi-value filters (comma-separated → $in) ──────────────────────────
+  const categories = parseMulti(category);
+  if (categories.length) {
+    mongoQuery.category = categories.length === 1
+      ? { $regex: `^${categories[0]}$`, $options: 'i' }
+      : { $in: categories.map((c) => new RegExp(`^${c}$`, 'i')) };
   }
 
+  const brands = parseMulti(brand);
+  if (brands.length) {
+    mongoQuery.brand = brands.length === 1
+      ? { $regex: `^${brands[0]}$`, $options: 'i' }
+      : { $in: brands.map((b) => new RegExp(`^${b}$`, 'i')) };
+  }
+
+  const genders = parseMulti(gender);
+  if (genders.length) {
+    mongoQuery.gender = genders.length === 1
+      ? { $regex: `^${genders[0]}$`, $options: 'i' }
+      : { $in: genders.map((g) => new RegExp(`^${g}$`, 'i')) };
+  }
+
+  const ages = parseMulti(age);
+  if (ages.length) {
+    mongoQuery.age = ages.length === 1
+      ? { $regex: `^${ages[0]}$`, $options: 'i' }
+      : { $in: ages.map((a) => new RegExp(`^${a}$`, 'i')) };
+  }
+
+  // Tags: match ANY of the selected tags ($in)
+  const tagsArray = parseMulti(tags);
+  if (tagsArray.length) {
+    mongoQuery.tags = {
+      $in: tagsArray.map((t) => new RegExp(`^${t}$`, 'i')),
+    };
+  }
+
+  // ── Price range ───────────────────────────────────────────────────────────
   if (minPrice || maxPrice) {
     mongoQuery.price = {};
     if (minPrice) mongoQuery.price.$gte = Number(minPrice);
     if (maxPrice) mongoQuery.price.$lte = Number(maxPrice);
   }
 
+  // ── Sort ──────────────────────────────────────────────────────────────────
   let sortQuery = { createdAt: -1 };
   if (sortBy === 'oldest' || latestUploaded === 'false') sortQuery = { createdAt: 1 };
   if (sortBy === 'price_asc')  sortQuery = { price:  1 };
@@ -79,6 +112,7 @@ export const getToys = async (query = {}) => {
   if (sortBy === 'title_asc')  sortQuery = { title:  1 };
   if (sortBy === 'title_desc') sortQuery = { title: -1 };
 
+  // ── Pagination ────────────────────────────────────────────────────────────
   const parsedPage  = Math.min(Math.max(1, parseInt(page,  10) || 1), MAX_PAGE);
   const parsedLimit = Math.min(Math.max(1, parseInt(limit, 10) || 9), MAX_LIMIT);
   const skip = (parsedPage - 1) * parsedLimit;
@@ -117,7 +151,6 @@ export const getHomePageToys = async ({ limit = 20 } = {}) => {
 
   const safeLimit = Math.min(Math.max(1, parseInt(limit, 10) || 20), MAX_LIMIT);
 
-  // Run both in parallel
   const [toys, totalItems] = await Promise.all([
     Toy.find(
       {},
@@ -126,7 +159,7 @@ export const getHomePageToys = async ({ limit = 20 } = {}) => {
       .sort({ createdAt: -1 })
       .limit(safeLimit)
       .lean(),
-    Toy.countDocuments(), // ← real total count
+    Toy.countDocuments(),
   ]);
 
   return { toys, totalItems };
@@ -156,19 +189,15 @@ export const updateToy = async (id, body) => {
   if (images?.length) {
     const existing = await Toy.findById(id).select('images').lean();
 
-    // Split into kept old URLs vs new base64 uploads
     const keepUrls  = images.filter((img) => img.startsWith('http'));
     const newBase64 = images.filter((img) => !img.startsWith('http'));
 
-    // Upload only new images
     const uploadedUrls = await Promise.all(
       newBase64.map((img) => uploadImageToCloudinary(img))
     );
 
-    // Final image list
     imageUrls = [...keepUrls, ...uploadedUrls];
 
-    // Find old images that were actually removed
     const removedImages = existing?.images?.filter(
       (oldUrl) =>
         oldUrl.includes('cloudinary.com') &&
@@ -177,7 +206,6 @@ export const updateToy = async (id, body) => {
 
     console.log("Images to be removed from Cloudinary during update:", removedImages);
 
-    // ── await so Next.js doesn't kill the function before deletion completes ──
     if (removedImages?.length) {
       await Promise.all(removedImages.map(deleteWithRetry));
       console.log("Update deletion attempts finished.");
@@ -234,4 +262,4 @@ export const deleteToy = async (id) => {
   const result = await Toy.findByIdAndDelete(id);
   console.log("Database deletion result:", result ? "SUCCESS" : "FAILED");
   return result;
-};
+};

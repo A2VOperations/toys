@@ -7,6 +7,13 @@ export default function ScrollToTop() {
   const [scrollPercent, setScrollPercent] = useState(0);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  useEffect(() => {
     const onScroll = () => {
       const scrollY = window.scrollY;
       const docHeight =

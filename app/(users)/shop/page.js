@@ -71,7 +71,7 @@ function ShopPageContent() {
     ages: [],
   });
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  const isInitialMount = useRef(true);
+  const [isFirstSyncComplete, setIsFirstSyncComplete] = useState(false);
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
 
@@ -121,6 +121,7 @@ function ShopPageContent() {
       ...prev,
       currentPage: Number.isNaN(pageFromUrl) || pageFromUrl < 1 ? 1 : pageFromUrl,
     }));
+    setIsFirstSyncComplete(true);
   }, [searchParams]);
 
   const urlQueryString = useMemo(() => {
@@ -245,10 +246,7 @@ function ShopPageContent() {
 
   // Debounced effect for text filters
   useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
+    if (!isFirstSyncComplete) return;
 
     const timer = setTimeout(() => {
       const currentParams = buildSearchParams(filters);
@@ -262,7 +260,7 @@ function ShopPageContent() {
     }, 600);
 
     return () => clearTimeout(timer);
-  }, [filters.title, filters.minPrice, filters.maxPrice]);
+  }, [isFirstSyncComplete, filters.title, filters.minPrice, filters.maxPrice]);
 
   const handleApplyFilters = (event) => {
     if (event) event.preventDefault();
@@ -540,72 +538,78 @@ function ShopPageContent() {
                   Categories
                 </h3>
                 <div className="space-y-3.5">
+                  {/* All Categories */}
                   <label className="flex items-center gap-3.5 cursor-pointer group">
                     <input
-                      type="radio"
-                      name="category"
-                      value=""
+                      type="checkbox"
                       checked={filters.category === ""}
-                      onChange={handleChange}
+                      onChange={() => {
+                        const next = { ...filters, category: "" };
+                        setFilters(next);
+                        setPagination((p) => ({ ...p, currentPage: 1 }));
+                        router.push(`${pathname}?${buildSearchParams(next)}`, { scroll: false });
+                      }}
                       className="peer sr-only"
                     />
-                    <div className="w-[18px] h-[18px] rounded-[3px] border border-gray-200 peer-checked:bg-[#f74872] peer-checked:border-[#f74872] flex items-center justify-center transition-all bg-gray-50 group-hover:border-gray-400">
+                    <div className={`w-[18px] h-[18px] rounded-[3px] border flex items-center justify-center transition-all
+                      ${filters.category === ""
+                        ? "bg-[#f74872] border-[#f74872]"
+                        : "border-gray-200 bg-gray-50 group-hover:border-gray-400"}`}
+                    >
                       {filters.category === "" && (
-                        <svg
-                          className="w-[10px] h-[10px] text-white"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="3"
-                            d="M5 13l4 4L19 7"
-                          />
+                        <svg className="w-[10px] h-[10px] text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                         </svg>
                       )}
                     </div>
-                    <span className="text-gray-500 text-[15px] peer-checked:text-[#f74872] transition-colors leading-none">
+                    <span className={`text-[15px] leading-none transition-colors ${filters.category === "" ? "text-[#f74872]" : "text-gray-500"}`}>
                       All Categories
                     </span>
                   </label>
 
-                  {CATEGORIES.map((cat) => (
-                    <label
-                      key={cat}
-                      className="flex items-center gap-3.5 cursor-pointer group"
-                    >
-                      <input
-                        type="radio"
-                        name="category"
-                        value={cat}
-                        checked={filters.category === cat}
-                        onChange={handleChange}
-                        className="peer sr-only"
-                      />
-                      <div className="w-[18px] h-[18px] rounded-[3px] border border-gray-200 peer-checked:bg-[#f74872] peer-checked:border-[#f74872] flex items-center justify-center transition-all bg-gray-50 group-hover:border-gray-400">
-                        {filters.category === cat && (
-                          <svg
-                            className="w-[10px] h-[10px] text-white"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="3"
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        )}
-                      </div>
-                      <span className="text-gray-500 text-[15px] peer-checked:text-[#f74872] transition-colors leading-none">
-                        {cat}
-                      </span>
-                    </label>
-                  ))}
+                  {/* Individual Categories - multi-select */}
+                  {CATEGORIES.map((cat) => {
+                    const selected = filters.category
+                      .split(",")
+                      .filter(Boolean)
+                      .includes(cat);
+
+                    const handleCatToggle = () => {
+                      const current = filters.category.split(",").filter(Boolean);
+                      const updated = selected
+                        ? current.filter((c) => c !== cat)
+                        : [...current, cat];
+                      const next = { ...filters, category: updated.join(",") };
+                      setFilters(next);
+                      setPagination((p) => ({ ...p, currentPage: 1 }));
+                      router.push(`${pathname}?${buildSearchParams(next)}`, { scroll: false });
+                    };
+
+                    return (
+                      <label key={cat} className="flex items-center gap-3.5 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={selected}
+                          onChange={handleCatToggle}
+                          className="peer sr-only"
+                        />
+                        <div className={`w-[18px] h-[18px] rounded-[3px] border flex items-center justify-center transition-all
+                          ${selected
+                            ? "bg-[#f74872] border-[#f74872]"
+                            : "border-gray-200 bg-gray-50 group-hover:border-gray-400"}`}
+                        >
+                          {selected && (
+                            <svg className="w-[10px] h-[10px] text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </div>
+                        <span className={`text-[15px] leading-none transition-colors ${selected ? "text-[#f74872]" : "text-gray-500"}`}>
+                          {cat}
+                        </span>
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -672,7 +676,7 @@ function ShopPageContent() {
                       onChange={handleChange}
                       placeholder="Min"
                       min="0"
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-3 py-2.5 text-sm focus:outline-none focus:border-[#f74872]"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-3 py-2.5 text-sm focus:outline-none focus:border-[#f74872] text-black"
                     />
                   </div>
                   <span className="text-gray-400">-</span>
@@ -687,7 +691,7 @@ function ShopPageContent() {
                       onChange={handleChange}
                       placeholder="Max"
                       min="0"
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-3 py-2.5 text-sm focus:outline-none focus:border-[#f74872]"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-3 py-2.5 text-sm focus:outline-none focus:border-[#f74872] text-black"
                     />
                   </div>
                 </div>

@@ -404,7 +404,7 @@ export default function AboutSection() {
             <div className="w-[320px] h-80 md:w-120 md:h-130 rounded-t-full rounded-br-full relative overflow-hidden flex items-end justify-center border-4 border-white shadow-2xl shadow-pink-200">
               <Image
                 src="/about/about-1.jpg"
-                alt="girl"
+                alt="Toy for kids"
                 height={400}
                 width={400}
                 className="h-full w-full object-cover"
@@ -414,7 +414,7 @@ export default function AboutSection() {
             <div className="absolute -bottom-2 right-4 md:right-8 w-[180px] h-[160px] md:w-[240px] md:h-[240px] rounded-t-full  rounded-bl-full bg-linear-to-br from-blue-200 to-blue-100 overflow-hidden border-[5px] border-white shadow-xl shadow-blue-100 z-10">
               <Image
                 src="/about/about-2.jpg"
-                alt="boy"
+                alt="Toy for kids"
                 height={400}
                 width={400}
                 className="object-cover"

@@ -267,7 +267,7 @@ function PopularProductCard({ product, onAddToCart }) {
           height={300}
           src={product.image}
           alt={product.name}
-          className="h-48 w-full object-contain transition-transform duration-500 group-hover:scale-105"
+          className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
         {/* Optional: Category badge on image */}
@@ -659,7 +659,7 @@ export default function Home() {
           <div className="absolute bottom-10 left-0 hidden sm:block md:bottom-20 md:left-2">
             <Image
               src="/home page/shape-4.png"
-              alt="Hero Toy"
+              alt="toys for kids"
               width={300}
               height={300}
               priority
@@ -668,7 +668,7 @@ export default function Home() {
             />
             <Image
               src="/home page/shape-3.png"
-              alt="Hero Toy"
+              alt="toys for kids"
               width={400}
               height={400}
               priority
@@ -676,10 +676,10 @@ export default function Home() {
               className="object-contain animate-floatUpDown"
             />
           </div>
-          <div className="absolute top-12 right-[45%] hidden md:block">
+          <div className="absolute top-12 right-[50%] hidden md:block">
             <Image
               src="/home page/shape-6.png"
-              alt="Hero Toy"
+              alt="toys for kids"
               width={400}
               height={400}
               priority
@@ -691,7 +691,7 @@ export default function Home() {
           <div className="absolute right-4 top-10 hidden sm:block md:right-10 md:top-20">
             <Image
               src="/home page/shape-7.png"
-              alt="Hero Toy"
+              alt="toys for kids"
               width={400}
               height={400}
               priority
@@ -702,7 +702,7 @@ export default function Home() {
           <div className="absolute right-4 top-24 hidden sm:block md:right-10 md:top-40">
             <Image
               src="/home page/shape-8.png"
-              alt="Hero Toy"
+              alt="toys for kids"
               width={400}
               height={400}
               priority
@@ -713,7 +713,7 @@ export default function Home() {
           <div className="absolute bottom-12 right-[20%] hidden lg:block">
             <Image
               src="/home page/shape-9.png"
-              alt="Hero Toy"
+              alt="toys for kids"
               width={400}
               height={400}
               priority
@@ -724,7 +724,7 @@ export default function Home() {
           <div className="absolute bottom-0 right-0 hidden sm:block">
             <Image
               src="/home page/shape-10.png"
-              alt="Hero Toy"
+              alt="toys for kids"
               width={200}
               height={200}
               priority
@@ -738,7 +738,7 @@ export default function Home() {
           >
             <Image
               src="/home page/girl with toys.png"
-              alt="Hero Toy"
+              alt="toys for kids"
               width={400}
               height={400}
               priority
@@ -746,8 +746,11 @@ export default function Home() {
             />
           </div>
           <div
-            className={`relative z-10 flex-1 text-center md:text-left transition-all duration-1000 transform ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+            className={`relative z-10 flex-1 px-5 text-center md:text-left transition-all duration-1000 transform ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
           >
+            <p className="text-lg text-orange-600 mb-3 font-bold w-fit">
+              TOYS FOR KIDS
+            </p>
             <h1 className="mb-6 text-3xl font-extrabold leading-[1.1] text-slate-900 sm:text-4xl md:text-6xl">
               Fun Toys & <br />
               Lunch Boxes for
@@ -779,7 +782,7 @@ export default function Home() {
         <div className="absolute right-5 top-40 hidden lg:block">
           <Image
             src="/home page/shape-6.png"
-            alt="Hero Toy"
+            alt="toys for kids"
             width={400}
             height={400}
             priority
@@ -835,7 +838,7 @@ export default function Home() {
                       alt={c.label}
                       width={90}
                       height={90}
-                      className="absolute left-1/2 top-16 -translate-x-1/2 -translate-y-1/2 rounded-full object-cover transition-transform duration-200 group-hover:scale-110"
+                      className="absolute left-21 top-16 -translate-x-1/2 -translate-y-1/2 rounded-full object-cover transition-transform duration-200 group-hover:scale-110"
                       style={{ width: 90, height: 90, background: c.bg }}
                     />
                   </div>
@@ -1002,7 +1005,7 @@ export default function Home() {
         <div className="absolute top-20 hidden lg:block">
           <Image
             src="/home page/shape-20.png"
-            alt="Hero Toy"
+            alt="Toy for kids"
             width={400}
             height={400}
             priority
@@ -1085,7 +1088,7 @@ export default function Home() {
         <div className="pointer-events-none absolute left-10 top-550 hidden lg:block -z-10">
           <Image
             src="/home page/shape-24.png"
-            alt="Hero Toy"
+            alt="Toy for kids"
             width={400}
             height={400}
             priority
@@ -1096,7 +1099,7 @@ export default function Home() {
         <div className="pointer-events-none absolute top-448 right-[45%] hidden lg:block -z-10">
           <Image
             src="/home page/shape-17.png"
-            alt="Hero Toy"
+            alt="Toy for kids"
             width={400}
             height={400}
             priority
@@ -1107,7 +1110,7 @@ export default function Home() {
         <div className="pointer-events-none absolute top-460 right-130 hidden lg:block -z-10">
           <Image
             src="/home page/shape-25.png"
-            alt="Hero Toy"
+            alt="Toy for kids"
             width={400}
             height={400}
             priority
@@ -1324,7 +1327,7 @@ export default function Home() {
         <div className="pointer-events-none absolute right-8 top-152 hidden lg:block -z-10 xl:right-20">
           <Image
             src="/home page/shape-26.png"
-            alt="Hero Toy"
+            alt="toys for kids"
             width={220}
             height={220}
             priority
@@ -1337,7 +1340,7 @@ export default function Home() {
             {/* Background Image */}
             <Image
               src="/home page/ads-1.jpg"
-              alt="toy"
+              alt="toy for kids"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover"
@@ -1437,7 +1440,7 @@ export default function Home() {
         <div className="pointer-events-none absolute -top-62 left-10 hidden lg:block -z-10">
           <Image
             src="/home page/shape-33.png"
-            alt="Hero Toy"
+            alt="Toy for kids"
             width={400}
             height={400}
             priority
@@ -1448,7 +1451,7 @@ export default function Home() {
         <div className="pointer-events-none absolute -top-62 right-10 hidden lg:block -z-10">
           <Image
             src="/home page/shape-29.png"
-            alt="Hero Toy"
+            alt="Toy for kids"
             width={400}
             height={400}
             priority
@@ -1519,7 +1522,7 @@ export default function Home() {
         <div className="pointer-events-none absolute -right-10 hidden lg:block -z-10">
           <Image
             src="/home page/shape-27.png"
-            alt="Hero Toy"
+            alt="Toy for kids"
             width={400}
             height={400}
             priority
@@ -1663,7 +1666,7 @@ export default function Home() {
         <div className="pointer-events-none absolute hidden -z-10 lg:block">
           <Image
             src="/home page/shape-28.png"
-            alt="Hero Toy"
+            alt="Toy for kids"
             width={400}
             height={400}
             priority
@@ -1673,7 +1676,7 @@ export default function Home() {
         <div className="pointer-events-none absolute top-2 right-[35%] hidden -z-10 lg:block">
           <Image
             src="/home page/shape-30.png"
-            alt="Hero Toy"
+            alt="Toy for kids"
             width={400}
             height={400}
             priority

@@ -287,7 +287,7 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
                   <button
                     onMouseEnter={openMega}
                     onMouseLeave={closeMega}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[1rem] font-extrabold cursor-pointer border-none transition-all duration-200 nb-font
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[0.88rem] font-extrabold cursor-pointer border-none transition-all duration-200 nb-font
                       ${megaOpen || pathname === "/shop" ? "bg-[#fce4ef] text-[#e84393]" : "bg-transparent text-[#555] hover:bg-[#fce4ef] hover:text-[#e84393]"}`}
                     style={{ fontFamily: "'Nunito', sans-serif" }}
                   >

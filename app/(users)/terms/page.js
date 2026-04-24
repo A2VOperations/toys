@@ -1,260 +1,493 @@
 "use client";
-import { useState } from "react";
 
 const sections = [
   {
     id: "s1",
     title: "Acceptance of Terms",
+    icon: "📄",
     content: (
-      <>
-        <p>By accessing or using the Kiddex website, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our website or services.</p>
-        <p>These terms apply to all visitors, users, and customers of Kiddex. We may update these terms from time to time, and your continued use of the site constitutes acceptance of any changes.</p>
-      </>
+      <p>
+        By accessing or using the Kiddex website, you agree to be bound by these
+        Terms and Conditions. Your continued use of the site after any updates
+        constitutes acceptance of the revised terms.
+      </p>
     ),
   },
   {
     id: "s2",
-    title: "Use of Our Website",
+    title: "Return Eligibility",
+    icon: "↩️",
     content: (
       <>
-        <p>You agree to use this website only for lawful purposes and in a manner that does not infringe the rights of others. You must not:</p>
+        <p>
+          We <strong>only accept returns</strong> in the following cases:
+        </p>
         <ul>
-          <li>Use the site in any way that is unlawful or fraudulent</li>
-          <li>Attempt to gain unauthorised access to our systems or data</li>
-          <li>Transmit any harmful, offensive, or unsolicited material</li>
-          <li>Reproduce or redistribute content without written permission</li>
+          <li>
+            The product received is <strong>damaged</strong>
+          </li>
+          <li>
+            The product is <strong>defective</strong>
+          </li>
+          <li>
+            The product is <strong>wrong or missing items</strong>
+          </li>
         </ul>
-        <p>We reserve the right to restrict or terminate access for any user who violates these conditions.</p>
+        <div className="kx-highlight">
+          <strong>Mandatory:</strong> A clear unboxing video from the moment the
+          package is opened is required as proof. Returns without video proof
+          will be rejected.
+        </div>
       </>
     ),
   },
   {
     id: "s3",
-    title: "Products & Orders",
+    title: "Conditions for Returns",
+    icon: "✅",
     content: (
-      <>
-        <p>All products listed on Kiddex are subject to availability. We reserve the right to limit quantities or discontinue any product at any time without prior notice.</p>
-        <p>Placing an order constitutes an offer to purchase. We reserve the right to accept or decline any order. You will receive a confirmation email once your order is accepted and payment is verified.</p>
-        <div className="highlight">⚠️ All toys sold on Kiddex are intended for children aged 3 and above unless otherwise stated. Please check age suitability on individual product pages.</div>
-      </>
+      <ul>
+        <li>The product must be unused and in original packaging</li>
+        <li>
+          All return shipments <strong>must be prepaid</strong>
+        </li>
+        <li>
+          <strong>COD return packages will be rejected</strong>
+        </li>
+        <li>
+          You are responsible for <strong>all return shipping costs</strong> to
+          our warehouse
+        </li>
+        <li>
+          Returns must be requested within <strong>24–48 hours</strong> of
+          delivery (for damage cases)
+        </li>
+      </ul>
     ),
   },
   {
     id: "s4",
-    title: "Pricing & Payment",
+    title: "Order Cancellation",
+    icon: "🚫",
     content: (
-      <>
-        <p>All prices on Kiddex are displayed in Indian Rupees (₹) and include applicable taxes unless stated otherwise. We reserve the right to change prices at any time without notice.</p>
-        <p>We accept payments via UPI, credit/debit cards, net banking, and other methods available at checkout. All transactions are processed securely through our payment partners.</p>
-        <p>In the event of a pricing error, we reserve the right to cancel affected orders and issue a full refund.</p>
-      </>
+      <ul>
+        <li>
+          Orders can only be cancelled <strong>before they are shipped</strong>{" "}
+          from our warehouse
+        </li>
+        <li>
+          Once an order is dispatched,{" "}
+          <strong>cancellations are not possible</strong>
+        </li>
+        <li>
+          Prepaid cancellations (if approved before dispatch) may take a few
+          days depending on the payment gateway
+        </li>
+      </ul>
     ),
   },
   {
     id: "s5",
-    title: "Shipping & Delivery",
+    title: "Refunds",
+    icon: "💰",
     content: (
       <>
-        <p>We offer free delivery on orders above ₹50. Delivery timelines vary by location and are estimates only — we are not liable for delays caused by courier partners or unforeseen circumstances.</p>
-        <ul>
-          <li>Standard delivery: 4–7 business days</li>
-          <li>Express delivery: 1–3 business days (where available)</li>
-          <li>Remote locations may take longer</li>
-        </ul>
-        <p>Risk of loss and title for items pass to you upon delivery to the carrier.</p>
+        <p>
+          Refunds are provided only after the returned item is received,
+          inspected, and approved. Refunds will be issued to the original
+          payment method.
+        </p>
+        <div className="kx-highlight">
+          ⚠️ <strong>No refunds</strong> for: missing unboxing video · return
+          requests after the allowed time · used, damaged, or incomplete
+          products returned by the customer.
+        </div>
       </>
     ),
   },
   {
     id: "s6",
-    title: "Returns & Refunds",
+    title: "Non-Returnable Items",
+    icon: "🔒",
     content: (
-      <>
-        <p>We want you to be completely satisfied. If you are not happy with your purchase, you may return eligible items within <strong>7 days</strong> of delivery.</p>
-        <ul>
-          <li>Items must be unused, in original packaging, with all tags intact</li>
-          <li>Damaged, opened, or used items are not eligible for return</li>
-          <li>Refunds are processed within 5–7 business days of receiving the return</li>
-        </ul>
-        <p>To initiate a return, please contact us at <a href="mailto:support@kiddex.in">support@kiddex.in</a> with your order details.</p>
-      </>
+      <ul>
+        <li>Customised or personalised products</li>
+        <li>Products damaged due to customer handling</li>
+        <li>Items purchased during special sale events</li>
+      </ul>
     ),
   },
   {
     id: "s7",
-    title: "Intellectual Property",
+    title: "Pricing & Payment",
+    icon: "₹",
     content: (
-      <>
-        <p>All content on this website — including logos, images, text, graphics, and product descriptions — is the property of Kiddex and is protected by applicable intellectual property laws.</p>
-        <p>You may not copy, reproduce, distribute, or create derivative works from any content without our explicit written consent.</p>
-      </>
+      <p>
+        All prices are in Indian Rupees (₹) and include applicable taxes. We
+        accept UPI, credit/debit cards, and net banking. In the event of a
+        pricing error, we reserve the right to cancel affected orders and issue
+        a full refund.
+      </p>
     ),
   },
   {
     id: "s8",
-    title: "Limitation of Liability",
+    title: "Intellectual Property",
+    icon: "©️",
     content: (
-      <>
-        <p>To the maximum extent permitted by law, Kiddex shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our website or products.</p>
-        <p>Our total liability for any claim related to a purchase shall not exceed the amount you paid for that specific product.</p>
-      </>
+      <p>
+        All content on this website — logos, images, text, and product
+        descriptions — is the property of Kiddex and protected by applicable IP
+        laws. Reproduction without written consent is prohibited.
+      </p>
     ),
   },
   {
     id: "s9",
     title: "Governing Law",
+    icon: "⚖️",
     content: (
-      <p>These Terms and Conditions are governed by and construed in accordance with the laws of India. Any disputes arising from these terms shall be subject to the exclusive jurisdiction of the courts in India.</p>
+      <p>
+        These Terms are governed by the laws of India. Any disputes shall be
+        subject to the exclusive jurisdiction of courts in India.
+      </p>
     ),
   },
   {
     id: "s10",
     title: "Contact Us",
+    icon: "📬",
     content: (
-      <>
-        <p>If you have any questions about these Terms and Conditions, please reach out to us:</p>
-        <ul>
-          <li><strong>Email:</strong> support@kiddex.in</li>
-          <li><strong>Phone:</strong> +91 98765 43210</li>
-          <li><strong>Address:</strong> Kiddex Store, New Delhi, India</li>
-        </ul>
-      </>
+      <ul>
+        <li>
+          <strong>Email:</strong>{" "}
+          <a href={`mailto:${process.env.EMAIL_FROM}`}>
+            {process.env.EMAIL_FROM || "operation.a2vgroups@gmail.com"}
+          </a>
+        </li>
+        <li>
+          <strong>Phone:</strong> {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}
+        </li>
+        <li>
+          <strong>Address:</strong> {process.env.NEXT_PUBLIC_ADDRESS}
+        </li>
+      </ul>
     ),
   },
 ];
 
 export default function TermsPage() {
-  const [activeSection, setActiveSection] = useState(null);
-
   return (
     <>
+      {/*
+        SCOPED STYLES ONLY — no global resets, no body/html/*, no @import tailwindcss, no @theme.
+        All class names prefixed with kx- to avoid clashing with your navbar/footer/topbar.
+      */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600&display=swap');
 
-        @import "tailwindcss";
+        /* Pink palette:
+           Page bg    : #FFE4EC  (blush from photo)
+           Accent     : #D63A7A  (deep rose)
+           Accent2    : #F472A8  (mid pink)
+           Light pink : #FFF0F5  (toc/highlight bg)
+           Border     : #F9BFDA  (dividers, borders)
+           Text dark  : #3B1A2E  (headings)
+           Text body  : #6B3352  (body copy)
+        */
 
-        @theme {
-          --color-kpink: #E8197A;
-          --color-kyellow: #FFB800;
-          --color-kbg: #FDB347;
-          --color-kdark: #1a1a2e;
-          --color-kpurple: #3a2a4e;
-          --font-nunito: 'Nunito', sans-serif;
-          --font-body: 'Nunito Sans', sans-serif;
+        @keyframes kx-gradientShift {
+          0%, 100% { background-position: 0% 50%; }
+          50%       { background-position: 100% 50%; }
+        }
+        @keyframes kx-float {
+          0%, 100% { transform: translateY(0); }
+          50%       { transform: translateY(-8px); }
+        }
+        @keyframes kx-fadeUp {
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        .kx-root {
+          background: #FFE4EC;
+          padding: 40px 16px 60px;
+          position: relative;
+          overflow: hidden;
+          box-sizing: border-box;
+        }
+        .kx-root *, .kx-root *::before, .kx-root *::after {
+          box-sizing: border-box;
+        }
 
-        body {
+        /* Decorative blobs */
+        .kx-blob {
+          position: absolute;
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .kx-blob1 {
+          width: 300px; height: 300px;
+          top: -70px; right: -70px;
+          background: radial-gradient(circle, #F472A855, transparent);
+          animation: kx-float 8s ease-in-out infinite;
+        }
+        .kx-blob2 {
+          width: 240px; height: 240px;
+          bottom: -60px; left: -60px;
+          background: radial-gradient(circle, #D63A7A33, transparent);
+          animation: kx-float 11s ease-in-out infinite reverse;
+        }
+        .kx-blob3 {
+          width: 160px; height: 160px;
+          top: 40%; left: -40px;
+          background: radial-gradient(circle, #F9BFDA55, transparent);
+          animation: kx-float 13s ease-in-out infinite;
+        }
+
+        /* Card */
+        .kx-card {
+          background: #fff;
+          border-radius: 22px;
+          max-width: 800px;
+          margin: 0 auto;
+          box-shadow:
+            0 8px 40px rgba(214,58,122,0.14),
+            0 2px 8px rgba(214,58,122,0.06);
+          overflow: hidden;
+          position: relative;
+          z-index: 1;
+        }
+
+        /* Header */
+        .kx-header {
+          background: linear-gradient(135deg, #D63A7A, #F472A8, #C02060, #F472A8, #D63A7A);
+          background-size: 300% 300%;
+          animation: kx-gradientShift 5s ease infinite;
+          padding: 48px 32px;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+        }
+        .kx-header-circle1 {
+          position: absolute; top: -24px; left: -24px;
+          width: 160px; height: 160px; border-radius: 50%;
+          background: rgba(255,255,255,0.12);
+        }
+        .kx-header-circle2 {
+          position: absolute; bottom: -28px; right: -28px;
+          width: 200px; height: 200px; border-radius: 50%;
+          background: rgba(255,255,255,0.10);
+        }
+        .kx-header-circle3 {
+          position: absolute; top: 20px; right: 80px;
+          width: 80px; height: 80px; border-radius: 50%;
+          background: rgba(255,255,255,0.08);
+        }
+        .kx-header-inner { position: relative; z-index: 1; }
+
+        .kx-badge {
+          display: inline-block;
+          background: rgba(255,255,255,0.22);
+          color: #fff;
+          font-family: 'Nunito', sans-serif;
+          font-weight: 800;
+          font-size: 10px;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          padding: 6px 18px;
+          border-radius: 100px;
+          border: 1.5px solid rgba(255,255,255,0.4);
+          margin-bottom: 16px;
+        }
+        .kx-title {
+          font-family: 'Nunito', sans-serif;
+          font-weight: 900;
+          font-size: clamp(24px, 5vw, 40px);
+          color: #fff;
+          line-height: 1.2;
+          margin: 0 0 8px;
+          text-shadow: 0 2px 12px rgba(180,20,80,0.25);
+        }
+        .kx-subtitle {
+          font-size: 12px;
+          color: rgba(255,255,255,0.82);
+          font-weight: 600;
+          margin: 0;
           font-family: 'Nunito Sans', sans-serif;
-          background: #FDB347;
-          min-height: 100vh;
         }
 
-        html { scroll-behavior: smooth; }
+        /* Body */
+        .kx-body { padding: 32px 36px 44px; }
 
-        @keyframes gradientShift {
-          0%,100% { background-position: 0% 50%; }
-          50%      { background-position: 100% 50%; }
+        /* TOC */
+        .kx-toc {
+          background: #FFF0F5;
+          border: 2px solid #F9BFDA;
+          border-radius: 14px;
+          padding: 20px 24px;
+          margin-bottom: 36px;
         }
-        .grad-animate {
-          background: linear-gradient(135deg,#E8197A,#FFB800,#E8197A);
+        .kx-toc-label {
+          font-family: 'Nunito', sans-serif;
+          font-weight: 800;
+          font-size: 11px;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          color: #D63A7A;
+          margin: 0 0 12px;
+        }
+        .kx-toc ol {
+          padding-left: 18px;
+          margin: 0;
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+          gap: 4px 24px;
+        }
+        .kx-toc a {
+          font-size: 13px;
+          font-weight: 600;
+          color: #3B1A2E;
+          text-decoration: none;
+          font-family: 'Nunito Sans', sans-serif;
+          transition: color 0.15s;
+        }
+        .kx-toc a:hover { color: #D63A7A; }
+
+        /* Sections */
+        .kx-section {
+          margin-bottom: 28px;
+          scroll-margin-top: 20px;
+          animation: kx-fadeUp 0.3s ease both;
+        }
+        .kx-section-head {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 10px;
+        }
+        .kx-num {
+          width: 34px; height: 34px; min-width: 34px;
+          border-radius: 9px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: 'Nunito', sans-serif;
+          font-weight: 900;
+          font-size: 13px;
+          color: #fff;
+          background: linear-gradient(135deg, #D63A7A, #F472A8, #D63A7A);
           background-size: 200% 200%;
-          animation: gradientShift 4s ease infinite;
+          animation: kx-gradientShift 5s ease infinite;
+          flex-shrink: 0;
+          box-shadow: 0 3px 10px rgba(214,58,122,0.3);
+        }
+        .kx-section-title {
+          font-family: 'Nunito', sans-serif;
+          font-weight: 800;
+          font-size: 17px;
+          color: #3B1A2E;
+          margin: 0;
         }
 
-        @keyframes float {
-          0%,100% { transform: translateY(0); }
-          50%      { transform: translateY(-6px); }
+        /* Prose */
+        .kx-prose {
+          padding-left: 46px;
+          font-family: 'Nunito Sans', sans-serif;
         }
-        .blob {
-          position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
-        }
-        .blob1 {
-          width: 320px; height: 320px; top: -80px; right: -80px;
-          background: radial-gradient(circle,#E8197A33,transparent);
-          animation: float 8s ease-in-out infinite;
-        }
-        .blob2 {
-          width: 240px; height: 240px; bottom: -60px; left: -60px;
-          background: radial-gradient(circle,#FFB80044,transparent);
-          animation: float 10s ease-in-out infinite reverse;
-        }
-
-        @keyframes fadeUp {
-          from { opacity:0; transform:translateY(16px); }
-          to   { opacity:1; transform:translateY(0); }
-        }
-        .section-row { animation: fadeUp 0.35s ease both; }
-
-        .highlight {
-          background: #fff8f0;
-          border-left: 4px solid #FFB800;
-          border-radius: 0 12px 12px 0;
-          padding: 12px 16px;
-          margin-top: 10px;
+        .kx-prose p {
           font-size: 14px;
-          color: #3a2a4e;
+          color: #6B3352;
+          margin: 0 0 8px;
+          line-height: 1.75;
+        }
+        .kx-prose p:last-child { margin-bottom: 0; }
+        .kx-prose ul {
+          padding-left: 18px;
+          margin: 0 0 8px;
+        }
+        .kx-prose ul li {
+          font-size: 14px;
+          color: #6B3352;
+          margin-bottom: 5px;
+          list-style: disc;
+          line-height: 1.75;
+        }
+        .kx-prose strong { color: #3B1A2E; }
+        .kx-prose a { color: #D63A7A; font-weight: 700; text-decoration: none; }
+
+        /* Highlight box */
+        .kx-highlight {
+          background: #FFF0F5;
+          border-left: 4px solid #F472A8;
+          border-radius: 0 10px 10px 0;
+          padding: 10px 14px;
+          margin-top: 10px;
+          font-size: 13px;
+          color: #6B3352;
+          line-height: 1.65;
+          font-family: 'Nunito Sans', sans-serif;
         }
 
-        .prose p { font-size:15px; color:#3a2a4e; margin-bottom:10px; line-height:1.75; }
-        .prose ul { padding-left:20px; margin-bottom:10px; }
-        .prose ul li { font-size:15px; color:#3a2a4e; margin-bottom:6px; list-style:disc; line-height:1.75; }
-        .prose a { color:#E8197A; font-weight:700; text-decoration:none; }
-        .prose strong { color:#1a1a2e; }
-        .prose p:last-child { margin-bottom:0; }
+        .kx-divider {
+          border: none;
+          border-top: 1.5px solid #F9BFDA;
+          margin: 0 0 28px;
+        }
+
+        /* Footer */
+        .kx-footer {
+          background: #FFF0F5;
+          border-top: 1.5px solid #F9BFDA;
+          padding: 16px 32px;
+          text-align: center;
+          font-size: 12px;
+          color: #C08090;
+          font-weight: 600;
+          font-family: 'Nunito Sans', sans-serif;
+        }
+        .kx-footer a { color: #D63A7A; text-decoration: none; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+          .kx-root { padding: 24px 12px 48px; }
+          .kx-header { padding: 32px 20px; }
+          .kx-body { padding: 24px 18px 32px; }
+          .kx-prose { padding-left: 0; }
+          .kx-toc { padding: 16px; }
+          .kx-toc ol { grid-template-columns: 1fr; }
+          .kx-footer { padding: 14px 20px; }
+        }
       `}</style>
 
-      <div className="blob blob1" />
-      <div className="blob blob2" />
+      <div className="kx-root">
+        <div className="kx-blob kx-blob1" />
+        <div className="kx-blob kx-blob2" />
+        <div className="kx-blob kx-blob3" />
 
-      <div style={{ position:"relative", zIndex:1, padding:"48px 20px 64px" }}>
-        <div style={{
-          background:"#fff",
-          borderRadius:"24px",
-          maxWidth:"820px",
-          margin:"0 auto",
-          boxShadow:"0 8px 40px rgba(232,25,122,0.12),0 2px 8px rgba(0,0,0,0.06)",
-          overflow:"hidden",
-        }}>
-
+        <div className="kx-card">
           {/* Header */}
-          <div className="grad-animate" style={{ padding:"52px 40px", textAlign:"center", position:"relative", overflow:"hidden" }}>
-            <div style={{ position:"absolute", top:-20, left:-20, width:160, height:160, borderRadius:"50%", background:"rgba(255,255,255,0.1)" }} />
-            <div style={{ position:"absolute", bottom:-30, right:-30, width:200, height:200, borderRadius:"50%", background:"rgba(255,255,255,0.1)" }} />
-            <div style={{ position:"relative", zIndex:1 }}>
-              <span style={{
-                display:"inline-block", background:"rgba(255,255,255,0.2)", color:"#fff",
-                fontFamily:"Nunito,sans-serif", fontWeight:800, fontSize:11, letterSpacing:"1.5px",
-                textTransform:"uppercase", padding:"6px 18px", borderRadius:"100px",
-                border:"1.5px solid rgba(255,255,255,0.35)", marginBottom:16,
-              }}>📄 Legal</span>
-              <h1 style={{ fontFamily:"Nunito,sans-serif", fontWeight:900, fontSize:"clamp(28px,5vw,44px)", color:"#fff", lineHeight:1.2, marginBottom:8 }}>
-                Terms &amp; Conditions
-              </h1>
-              <p style={{ fontSize:13, color:"rgba(255,255,255,0.8)", fontWeight:600 }}>
-                Last updated: June 1, 2025 · Effective immediately
-              </p>
+          <div className="kx-header">
+            <div className="kx-header-circle1" />
+            <div className="kx-header-circle2" />
+            <div className="kx-header-circle3" />
+            <div className="kx-header-inner">
+              <div className="kx-badge">Legal</div>
+              <h1 className="kx-title">Terms &amp; Conditions</h1>
+              <p className="kx-subtitle">Effective immediately</p>
             </div>
           </div>
 
           {/* Body */}
-          <div style={{ padding:"40px 48px 52px" }}>
-
+          <div className="kx-body">
             {/* TOC */}
-            <div style={{ background:"#fff8f0", border:"2px solid #FFB800", borderRadius:16, padding:"24px 28px", marginBottom:44 }}>
-              <h3 style={{ fontFamily:"Nunito,sans-serif", fontWeight:800, fontSize:12, letterSpacing:"1px", textTransform:"uppercase", color:"#E8197A", marginBottom:14 }}>
-                📋 Contents
-              </h3>
-              <ol style={{ paddingLeft:20, display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))", gap:"6px 32px" }}>
+            <div className="kx-toc">
+              <p className="kx-toc-label"> Contents</p>
+              <ol>
                 {sections.map((s, i) => (
                   <li key={s.id}>
-                    <a
-                      href={`#${s.id}`}
-                      style={{ fontSize:14, fontWeight:600, color:"#1a1a2e", textDecoration:"none", transition:"color 0.15s" }}
-                      onMouseEnter={e => e.target.style.color = "#E8197A"}
-                      onMouseLeave={e => e.target.style.color = "#1a1a2e"}
-                    >
+                    <a href={`#${s.id}`}>
                       {i + 1}. {s.title}
                     </a>
                   </li>
@@ -267,39 +500,26 @@ export default function TermsPage() {
               <div key={s.id}>
                 <div
                   id={s.id}
-                  className="section-row"
-                  style={{ marginBottom: 36, scrollMarginTop: 24, animationDelay: `${i * 0.05}s` }}
+                  className="kx-section"
+                  style={{ animationDelay: `${i * 0.04}s` }}
                 >
-                  <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:14 }}>
-                    <div
-                      className="grad-animate"
-                      style={{
-                        width:38, height:38, minWidth:38, borderRadius:10,
-                        display:"flex", alignItems:"center", justifyContent:"center",
-                        fontFamily:"Nunito,sans-serif", fontWeight:900, fontSize:15, color:"#fff",
-                      }}
-                    >
-                      {i + 1}
-                    </div>
-                    <h2 style={{ fontFamily:"Nunito,sans-serif", fontWeight:800, fontSize:19, color:"#1a1a2e" }}>
-                      {s.title}
-                    </h2>
+                  <div className="kx-section-head">
+                    <div className="kx-num">{i + 1}</div>
+                    <h2 className="kx-section-title">{s.title}</h2>
                   </div>
-                  <div className="prose" style={{ paddingLeft:52 }}>
-                    {s.content}
-                  </div>
+                  <div className="kx-prose">{s.content}</div>
                 </div>
-                {i < sections.length - 1 && (
-                  <hr style={{ border:"none", borderTop:"1.5px solid #ffe0f0", margin:"0 0 36px" }} />
-                )}
+                {i < sections.length - 1 && <hr className="kx-divider" />}
               </div>
             ))}
           </div>
 
           {/* Footer */}
-          <div style={{ background:"#fff0f6", borderTop:"1.5px solid #ffd0e8", padding:"18px 40px", textAlign:"center", fontSize:13, color:"#aaa", fontWeight:600 }}>
+          <div className="kx-footer">
             © {new Date().getFullYear()} Kiddex · Made with ❤️ for little ones ·{" "}
-            <a href="mailto:support@kiddex.in" style={{ color:"#E8197A" }}>support@kiddex.in</a>
+            <a href={`mailto:${process.env.EMAIL_FROM}`}>
+              {process.env.EMAIL_FROM || "operation.a2vgroups@gmail.com"}
+            </a>
           </div>
         </div>
       </div>

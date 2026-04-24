@@ -42,37 +42,37 @@ export default function ProductDetailPage() {
   });
 
   useEffect(() => {
-    if (id) fetchToy();
-  }, [id]);
-
-  async function fetchToy() {
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/toys/${id}`);
-      const data = await res.json();
-      if (res.ok) {
-        setToy(data.toy);
-        setFormData({
-          title: data.toy.title || "",
-          category: data.toy.category || "Action Figures",
-          brand: data.toy.brand || "",
-          stock: data.toy.stock ?? 0,
-          description: data.toy.description || "",
-          gender: data.toy.gender || "Unisex",
-          age: data.toy.age || "",
-          tags: data.toy.tags || [],
-          price: data.toy.price ?? 0,
-        });
-      } else {
-        alert("Product not found");
-        router.push("/admin/home/shop");
+    async function fetchToy() {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/toys/${id}`);
+        const data = await res.json();
+        if (res.ok) {
+          setToy(data.toy);
+          setFormData({
+            title: data.toy.title || "",
+            category: data.toy.category || "Action Figures",
+            brand: data.toy.brand || "",
+            stock: data.toy.stock ?? 0,
+            description: data.toy.description || "",
+            gender: data.toy.gender || "Unisex",
+            age: data.toy.age || "",
+            tags: data.toy.tags || [],
+            price: data.toy.price ?? 0,
+          });
+        } else {
+          alert("Product not found");
+          router.push("/admin/home/shop");
+        }
+      } catch (err) {
+        alert("Error loading product");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      alert("Error loading product");
-    } finally {
-      setLoading(false);
     }
-  }
+
+    if (id) fetchToy();
+  }, [id, router]);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);

@@ -11,6 +11,16 @@ import { PiStarFourFill } from "react-icons/pi";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
+const isBannerActive = (banner) => {
+  if (!banner?.startDate || !banner?.endDate) return false;
+
+  const now = new Date().getTime();
+  const start = new Date(banner.startDate).getTime();
+  const end = new Date(banner.endDate).getTime();
+
+  return now >= start && now <= end;
+};
+
 const categories = [
   {
     label: "Indoor Games",
@@ -334,6 +344,9 @@ export default function Home() {
   const [popularCurrent, setPopularCurrent] = useState(0);
   const [popularVisible, setPopularVisible] = useState(5);
   const [toastMessage, setToastMessage] = useState("");
+  const [bannerData, setBannerData] = useState(null);
+  const [bannerLoading, setBannerLoading] = useState(true);
+  const [bannerTimer, setBannerTimer] = useState({ h: 0, m: 0, s: 0 });
 
   const showToast = (message) => {
     setToastMessage(message);
@@ -487,6 +500,76 @@ export default function Home() {
     fetchCollectionProducts();
   }, [activeGender]);
 
+  // Fetch banner: immediately on mount, then poll
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchBanner = async () => {
+      try {
+        const res = await fetch("/api/banner", { cache: "no-store" });
+        if (cancelled) return;
+        if (res.ok) {
+          const data = await res.json();
+          setBannerData(data);
+        } else {
+          setBannerData(null);
+        }
+      } catch (err) {
+        console.error("Banner refresh failed", err);
+        if (!cancelled) setBannerData(null);
+      } finally {
+        if (!cancelled) setBannerLoading(false);
+      }
+    };
+
+    fetchBanner(); // ✅ run immediately
+    const interval = setInterval(fetchBanner, 30000); // every 30s is plenty
+
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Countdown timer
+  useEffect(() => {
+    if (!bannerData?.endDate) return;
+
+    const tick = () => {
+      const now = Date.now();
+      const start = new Date(bannerData.startDate).getTime();
+      const end = new Date(bannerData.endDate).getTime();
+
+      if (now < start || now >= end) {
+        setBannerData(null);
+        return;
+      }
+
+      const diff = end - now;
+      setBannerTimer({
+        h: Math.floor(diff / 3_600_000),
+        m: Math.floor((diff % 3_600_000) / 60_000),
+        s: Math.floor((diff % 60_000) / 1000),
+      });
+    };
+
+    tick(); // ✅ run immediately so timer doesn't show 0:00:00 for 1s
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [bannerData?.startDate, bannerData?.endDate]);
+
+  // Helper used by your JSX
+  const isBannerActive = (b) => {
+    if (!b?.startDate || !b?.endDate) return false;
+    const now = Date.now();
+    return (
+      now >= new Date(b.startDate).getTime() &&
+      now < new Date(b.endDate).getTime()
+    );
+  };
+
+  const pad = (n) => String(n).padStart(2, "0");
+
   useEffect(() => {
     setTimeout(() => setHeroVisible(true), 100);
     const t = setInterval(() => {
@@ -512,7 +595,6 @@ export default function Home() {
     return () => clearInterval(t);
   }, []);
 
-  const pad = (n) => String(n).padStart(2, "0");
   const addToCart = (product) => {
     if (!product || !product._id) {
       setCartCount((c) => c + 1);
@@ -560,6 +642,7 @@ export default function Home() {
           className="block h-auto w-full scale-y-[-1] bg-[linear-gradient(78.33deg,#FFCF78_5.9%,#FEE2B1_97.88%)]"
         />
       </section>
+
       <section className="relative overflow-hidden bg-[linear-gradient(78.33deg,#FFCF78_5.9%,#FEE2B1_97.88%)] px-4 py-14 sm:px-5 sm:py-18 md:py-22">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-32 -top-24 h-56 w-56 rounded-full bg-white/30 blur-3xl" />
@@ -654,7 +737,7 @@ export default function Home() {
             className={`relative z-10 mx-auto flex h-[260px] w-[260px] items-center justify-center rounded-full text-[120px] transition-all duration-1000 delay-200 animate-bounce-slow transform sm:h-[320px] sm:w-[320px] sm:text-[150px] md:mx-20 md:h-[350px] md:w-[400px] md:text-[180px] ${heroVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"}`}
           >
             <Image
-              src="/home page/hero-girl-1.webp"
+              src="/home page/girl with toys.png"
               alt="Hero Toy"
               width={400}
               height={400}
@@ -687,7 +770,7 @@ export default function Home() {
           alt="Decorative shape divider"
           width={1920}
           height={180}
-          className="block h-auto w-full bg-[linear-gradient(78.33deg,_#FFCF78_5.9%,_#FEE2B1_97.88%)]"
+          className="block h-auto w-full bg-[linear-gradient(78.33deg,#FFCF78_5.9%,#FEE2B1_97.88%)]"
         />
       </section>
 
@@ -799,6 +882,120 @@ export default function Home() {
           </div>
         ))}
       </section>
+
+      {bannerData && isBannerActive(bannerData) && (
+        <section className="relative mx-auto w-full mt-6 sm:mt-10 mb-6 sm:mb-10 px-3 sm:px-0">
+          {/* Outer glow frame */}
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-none shadow-[0_20px_50px_-12px_rgba(232,67,147,0.25)] sm:shadow-[0_32px_80px_-12px_rgba(232,67,147,0.25)]">
+            <Swiper
+              modules={[Autoplay, Navigation]}
+              autoplay={{
+                delay: bannerData.timing || 5000,
+                disableOnInteraction: false,
+              }}
+              navigation={
+                (bannerData.images || bannerData.urls || []).length > 1
+              }
+              loop={(bannerData.images || bannerData.urls || []).length > 1}
+              className="w-full h-[380px] xs:h-[420px] sm:h-[450px] md:h-[550px] lg:h-[600px]"
+            >
+              {(bannerData.images || bannerData.urls || []).map((img, idx) => (
+                <SwiperSlide key={idx}>
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={img}
+                      alt={`Banner ${idx + 1}`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1200px"
+                      className="object-cover"
+                      priority={idx === 0}
+                    />
+
+                    {/* Overlays - stronger on mobile for readability */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 sm:via-black/30 to-black/20 sm:to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40 sm:to-transparent" />
+
+                    {/* TOP: Countdown Timer - centered on mobile, top-right on desktop */}
+                    <div className="absolute top-3 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:top-8 sm:right-10 z-20 flex flex-col items-center sm:items-end gap-1.5 sm:gap-3">
+                      <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-white/80 bg-black/40 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-full">
+                        Offer ends in
+                      </span>
+
+                      <div className="flex items-center gap-1 sm:gap-1.5">
+                        {[
+                          { val: pad(bannerTimer.h), label: "HRS" },
+                          { val: pad(bannerTimer.m), label: "MIN" },
+                          { val: pad(bannerTimer.s), label: "SEC" },
+                        ].map((unit, i) => (
+                          <div
+                            key={unit.label}
+                            className="flex items-center gap-1 sm:gap-1.5"
+                          >
+                            <div className="flex flex-col items-center">
+                              <div className="bg-black/55 backdrop-blur-xl border border-white/15 w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-2xl">
+                                <span className="text-white text-sm sm:text-xl md:text-2xl font-black tabular-nums tracking-tight">
+                                  {unit.val}
+                                </span>
+                              </div>
+                              <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-white/70 mt-0.5 sm:mt-1">
+                                {unit.label}
+                              </span>
+                            </div>
+                            {i < 2 && (
+                              <span className="text-white/50 text-base sm:text-xl font-black mb-3 sm:mb-4">
+                                :
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* LEFT: Text + CTA */}
+                    <div className="absolute inset-0 flex flex-col justify-end pb-8 sm:pb-0 px-5 sm:px-12 sm:justify-center text-center sm:text-left items-center sm:items-start z-10">
+                      <span className="inline-flex items-center gap-2 w-fit mb-3 sm:mb-4 bg-[#E84393]/90 backdrop-blur-sm text-white text-[9px] sm:text-[10px] font-black uppercase tracking-[0.18em] sm:tracking-[0.2em] px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-lg">
+                        <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping inline-block" />
+                        Limited Time Offer
+                      </span>
+
+                      <h2 className="text-white text-2xl sm:text-4xl md:text-5xl font-black leading-tight drop-shadow-xl max-w-xs sm:max-w-md mb-4 sm:mb-6">
+                        Shop Our <br className="hidden sm:block" />
+                        <span className="text-[#FFD700]">Best Deals</span> Today
+                      </h2>
+
+                      <Link
+                        href="/shop"
+                        className="w-fit bg-white text-[#E84393] hover:bg-[#E84393] hover:text-white border-2 border-white/60 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 shadow-xl hover:scale-105 active:scale-95"
+                      >
+                        Shop Now →
+                      </Link>
+                    </div>
+
+                    {/* Slide indicator dots */}
+                    {(bannerData.images || bannerData.urls || []).length >
+                      1 && (
+                      <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+                        {(bannerData.images || bannerData.urls || []).map(
+                          (_, dotIdx) => (
+                            <span
+                              key={dotIdx}
+                              className={`block h-1.5 rounded-full bg-white transition-all duration-300 ${
+                                dotIdx === idx
+                                  ? "w-6 opacity-100"
+                                  : "w-1.5 opacity-40"
+                              }`}
+                            />
+                          ),
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </section>
+      )}
 
       {/* ── POPULAR PICKS ── */}
       <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
@@ -1124,7 +1321,7 @@ export default function Home() {
       </section>
 
       <section className="relative isolate overflow-hidden bg-white py-14 md:py-16">
-        <div className="pointer-events-none absolute right-8 top-[38rem] hidden lg:block -z-10 xl:right-20">
+        <div className="pointer-events-none absolute right-8 top-152 hidden lg:block -z-10 xl:right-20">
           <Image
             src="/home page/shape-26.png"
             alt="Hero Toy"
@@ -1136,7 +1333,7 @@ export default function Home() {
         </div>
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* LEFT BANNER */}
-          <div className="relative min-h-[260px] overflow-hidden rounded-3xl shadow-xl md:col-span-1 md:min-h-[auto]">
+          <div className="relative min-h-[260px] overflow-hidden rounded-3xl shadow-xl md:col-span-1 md:min-h-auto">
             {/* Background Image */}
             <Image
               src="/home page/ads-1.jpg"
@@ -1292,7 +1489,7 @@ export default function Home() {
             {promoTags.map((t, i) => (
               <SwiperSlide
                 key={i}
-                className="!w-auto flex items-center justify-center"
+                className="w-auto! flex items-center justify-center"
               >
                 <div className="flex flex-row items-center justify-center gap-4">
                   <span className="mx-6 text-lg font-bold tracking-tight text-slate-900 uppercase whitespace-nowrap sm:mx-8 sm:text-xl md:mx-10 md:text-2xl">
@@ -1364,7 +1561,7 @@ export default function Home() {
                 alt="Puzzle toy"
                 fill
                 sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-contain object-right-bottom"
+                className="object-contain object-bottom-right"
               />
             </div>
           </div>
@@ -1454,7 +1651,7 @@ export default function Home() {
                 alt="Kids toy"
                 fill
                 sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-contain object-right-bottom"
+                className="object-contain object-bottom-right"
               />
             </div>
           </div>
@@ -1605,7 +1802,7 @@ export default function Home() {
                       </div>
 
                       {/* Info */}
-                      <div className="p-3 flex flex-col flex-grow ">
+                      <div className="p-3 flex flex-col grow ">
                         <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">
                           {product.category || "Toy"}
                         </p>

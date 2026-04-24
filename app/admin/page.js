@@ -453,7 +453,7 @@ export default function AuthPage() {
                 </button>
               </div>
               <div className="modal-note">
-                <strong>Note:</strong> Your password is never emailed directly. You will receive a secure link to set a new password. If you don't receive it, contact your administrator.
+                <strong>Note:</strong> Your password is never emailed directly. You will receive a secure link to set a new password. If you don&apos;t receive it, contact your administrator.
               </div>
             </div>
           </div>

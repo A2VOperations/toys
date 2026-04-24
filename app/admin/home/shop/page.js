@@ -19,22 +19,20 @@ export default function MyShopPage() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
+    async function fetchToys() {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/toys?limit=1000");
+        const data = await res.json();
+        setToys(data.toys || []);
+      } catch (err) {
+        console.error("Failed to fetch toys:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
     fetchToys();
   }, []);
-
-  async function fetchToys() {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/toys?limit=1000");
-      const data = await res.json();
-      setToys(data.toys || []);
-    } catch (err) {
-      console.error("Failed to fetch toys:", err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   async function handleDelete(id) {
     setDeletingId(id);
     try {
@@ -58,7 +56,7 @@ export default function MyShopPage() {
       [t.title, t.category, t.brand, t.gender, t.age]
         .join(" ")
         .toLowerCase()
-        .includes(search.toLowerCase())
+        .includes(search.toLowerCase()),
     );
   }, [toys, search]);
 
@@ -74,14 +72,23 @@ export default function MyShopPage() {
 
   // Build page number list with ellipsis
   function getPageNumbers() {
-    if (totalPages <= 5) return Array.from({ length: totalPages }, (_, i) => i + 1);
+    if (totalPages <= 5)
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
     const pages = [];
     if (currentPage <= 3) {
       pages.push(1, 2, 3, "…", totalPages);
     } else if (currentPage >= totalPages - 2) {
       pages.push(1, "…", totalPages - 2, totalPages - 1, totalPages);
     } else {
-      pages.push(1, "…", currentPage - 1, currentPage, currentPage + 1, "…", totalPages);
+      pages.push(
+        1,
+        "…",
+        currentPage - 1,
+        currentPage,
+        currentPage + 1,
+        "…",
+        totalPages,
+      );
     }
     return pages;
   }
@@ -185,7 +192,6 @@ export default function MyShopPage() {
       `}</style>
 
       <div className="max-w-7xl mx-auto">
-
         {/* HEADER */}
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
@@ -220,10 +226,16 @@ export default function MyShopPage() {
         <div className="relative mb-6 max-w-md">
           <svg
             className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 w-4 h-4"
-            fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.5}
+            viewBox="0 0 24 24"
           >
-            <path strokeLinecap="round" strokeLinejoin="round"
-              d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"
+            />
           </svg>
           <input
             className="search-input"
@@ -237,7 +249,9 @@ export default function MyShopPage() {
         {loading ? (
           <div className="flex flex-col items-center py-24 gap-4">
             <div className="text-5xl animate-spin">🎡</div>
-            <p className="text-sm font-bold text-gray-400">Loading your products…</p>
+            <p className="text-sm font-bold text-gray-400">
+              Loading your products…
+            </p>
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center py-24 text-center">
@@ -246,7 +260,9 @@ export default function MyShopPage() {
               {search ? "No results found" : "Your shop is empty"}
             </h2>
             <p className="text-sm text-gray-400 font-semibold mt-1">
-              {search ? `No products match "${search}"` : "Start by adding your first product"}
+              {search
+                ? `No products match "${search}"`
+                : "Start by adding your first product"}
             </p>
           </div>
         ) : (
@@ -271,49 +287,82 @@ export default function MyShopPage() {
                 <tbody>
                   {paginated.map((toy, idx) => (
                     <tr key={toy._id}>
-                      <td className="text-gray-400 text-xs font-bold">{startIdx + idx + 1}</td>
+                      <td className="text-gray-400 text-xs font-bold">
+                        {startIdx + idx + 1}
+                      </td>
 
                       <td>
                         <div className="w-12 h-12 rounded-xl overflow-hidden bg-pink-50 flex items-center justify-center">
                           {toy.images?.[0] ? (
-                            <img src={toy.images[0]} alt={toy.title} className="w-full h-full object-cover" />
+                            <img
+                              src={toy.images[0]}
+                              alt={toy.title}
+                              className="w-full h-full object-cover"
+                            />
                           ) : (
                             <span className="text-xl">🧸</span>
                           )}
                         </div>
                       </td>
 
-                      <td><span className="font-bold text-[#1a1a2e]">{toy.title}</span></td>
-                      <td><span className="badge badge-pink">{toy.category}</span></td>
+                      <td>
+                        <span className="font-bold text-[#1a1a2e]">
+                          {toy.title}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="badge badge-pink">{toy.category}</span>
+                      </td>
                       <td className="text-gray-500">{toy.brand}</td>
                       <td className="text-gray-500">{toy.age || "—"}</td>
                       <td>
-                        <span className={`badge ${
-                          toy.gender === "Boy" ? "badge-yellow" :
-                          toy.gender === "Girl" ? "badge-pink" : "badge-gray"
-                        }`}>
+                        <span
+                          className={`badge ${
+                            toy.gender === "Boy"
+                              ? "badge-yellow"
+                              : toy.gender === "Girl"
+                                ? "badge-pink"
+                                : "badge-gray"
+                          }`}
+                        >
                           {toy.gender}
                         </span>
                       </td>
                       <td>
-                        <span className={`badge ${toy.stock > 0 ? "badge-green" : "badge-gray"}`}>
-                          {toy.stock > 0 ? `${toy.stock} in stock` : "Out of stock"}
+                        <span
+                          className={`badge ${toy.stock > 0 ? "badge-green" : "badge-gray"}`}
+                        >
+                          {toy.stock > 0
+                            ? `${toy.stock} in stock`
+                            : "Out of stock"}
                         </span>
                       </td>
-                      <td><span className="badge badge-green">₹{toy.price ?? "—"}</span></td>
+                      <td>
+                        <span className="badge badge-green">
+                          ₹{toy.price ?? "—"}
+                        </span>
+                      </td>
                       <td>
                         <div className="flex flex-wrap gap-1">
-                          {toy.tags?.length > 0
-                            ? toy.tags.map((tag) => (
-                                <span key={tag} className="badge badge-yellow">{tag}</span>
-                              ))
-                            : <span className="text-gray-300 text-xs font-bold">—</span>
-                          }
+                          {toy.tags?.length > 0 ? (
+                            toy.tags.map((tag) => (
+                              <span key={tag} className="badge badge-yellow">
+                                {tag}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-gray-300 text-xs font-bold">
+                              —
+                            </span>
+                          )}
                         </div>
                       </td>
                       <td>
                         <div className="flex items-center gap-2">
-                          <Link href={`/admin/home/products/${toy._id}`} className="btn-edit">
+                          <Link
+                            href={`/admin/home/products/${toy._id}`}
+                            className="btn-edit"
+                          >
                             Edit
                           </Link>
                           <button
@@ -335,11 +384,14 @@ export default function MyShopPage() {
             <div className="pagination-bar">
               {/* Info */}
               <span className="pagination-info">
-                Showing {startIdx + 1}–{Math.min(endIdx, filtered.length)} of {filtered.length} products
+                Showing {startIdx + 1}–{Math.min(endIdx, filtered.length)} of{" "}
+                {filtered.length} products
               </span>
 
               {/* Page buttons */}
-              <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "4px" }}
+              >
                 <button
                   className="page-btn"
                   onClick={() => setCurrentPage((p) => p - 1)}
@@ -350,7 +402,9 @@ export default function MyShopPage() {
 
                 {getPageNumbers().map((page, i) =>
                   page === "…" ? (
-                    <span key={`ellipsis-${i}`} className="page-ellipsis">…</span>
+                    <span key={`ellipsis-${i}`} className="page-ellipsis">
+                      …
+                    </span>
                   ) : (
                     <button
                       key={page}
@@ -359,7 +413,7 @@ export default function MyShopPage() {
                     >
                       {page}
                     </button>
-                  )
+                  ),
                 )}
 
                 <button
@@ -372,8 +426,14 @@ export default function MyShopPage() {
               </div>
 
               {/* Rows per page */}
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <span style={{ fontSize: "12px", fontWeight: 700, color: "#888" }}>Rows per page:</span>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <span
+                  style={{ fontSize: "12px", fontWeight: 700, color: "#888" }}
+                >
+                  Rows per page:
+                </span>
                 <select
                   className="rows-select"
                   value={itemsPerPage}
@@ -383,7 +443,9 @@ export default function MyShopPage() {
                   }}
                 >
                   {ROWS_OPTIONS.map((n) => (
-                    <option key={n} value={n}>{n}</option>
+                    <option key={n} value={n}>
+                      {n}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -397,11 +459,15 @@ export default function MyShopPage() {
         <div className="confirm-overlay" onClick={() => setConfirmId(null)}>
           <div className="confirm-box" onClick={(e) => e.stopPropagation()}>
             <div className="text-5xl mb-4">🗑️</div>
-            <h3 className="text-xl font-black mb-2" style={{ color: "#1a1a2e" }}>
+            <h3
+              className="text-xl font-black mb-2"
+              style={{ color: "#1a1a2e" }}
+            >
               Delete this product?
             </h3>
             <p className="text-sm text-gray-400 font-semibold mb-6">
-              This action cannot be undone. The product will be permanently removed.
+              This action cannot be undone. The product will be permanently
+              removed.
             </p>
             <div className="flex gap-3 justify-center">
               <button
@@ -414,7 +480,9 @@ export default function MyShopPage() {
                 onClick={() => handleDelete(confirmId)}
                 disabled={deletingId === confirmId}
                 className="px-6 py-2.5 rounded-full text-white text-sm font-black transition-all hover:opacity-90"
-                style={{ background: "linear-gradient(135deg, #E84393, #ff6b6b)" }}
+                style={{
+                  background: "linear-gradient(135deg, #E84393, #ff6b6b)",
+                }}
               >
                 {deletingId === confirmId ? "Deleting…" : "Yes, Delete"}
               </button>

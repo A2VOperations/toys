@@ -377,7 +377,7 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
               style={{ gridTemplateColumns: "1fr 1fr 1fr 320px" }}
             >
               {/* Col 1 */}
-              <div className="p-9 border-r border-[#fce4ef]">
+              <div className="p-9 border-r border-[#fce4ef] overflow-y-auto max-h-[450px] scrollbar-thin scrollbar-track-[#fce4ef] scrollbar-thumb-[#e84393] hover:scrollbar-thumb-[#c73580] scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
                 <h4 className="text-[0.66rem] font-black tracking-[0.18em] uppercase mb-5 pb-3 border-b-2 border-[#fce4ef] flex items-center gap-2 text-[#e84393]">
                   🗂️ Categories
                 </h4>

@@ -15,6 +15,11 @@ export const readCartItems = () => {
   }
 };
 
+export const getCartCount = () => {
+  const items = readCartItems();
+  return items.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+};
+
 export const writeCartItems = (items) => {
   if (typeof window === "undefined") {
     return { ok: false, items: [] };
@@ -28,6 +33,10 @@ export const writeCartItems = (items) => {
     }));
     
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(minimalItems));
+    
+    // Notify components that cart has changed
+    window.dispatchEvent(new Event("cartUpdated"));
+    
     return { ok: true, items: minimalItems };
   } catch {
     return { ok: false, items: readCartItems() };

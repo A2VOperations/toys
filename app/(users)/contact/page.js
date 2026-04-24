@@ -379,7 +379,7 @@ export default function ContactPage() {
               referrerPolicy="no-referrer-when-downgrade"
               className="block h-full w-full border-0 transition-[filter] duration-[400ms]"
               style={{ filter: "grayscale(20%) saturate(90%)" }}
-              // Tailwind can't toggle :hover filter on iframe; inline onMouseEnter/Leave works:
+              // Tailwind can't togg le :hover filter on iframe; inline onMouseEnter/Leave works:
               onMouseEnter={(e) => (e.currentTarget.style.filter = "none")}
               onMouseLeave={(e) =>
                 (e.currentTarget.style.filter = "grayscale(20%) saturate(90%)")

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, Suspense } from "react";
+import { useCallback, useEffect, useMemo, useState, Suspense, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -71,6 +71,7 @@ function ShopPageContent() {
     ages: [],
   });
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const isInitialMount = useRef(true);
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
 
@@ -209,17 +210,22 @@ function ShopPageContent() {
   }, []);
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFilters((prev) => {
-      const next = { ...prev, [name]: value };
+    const { name, value, type } = event.target;
+    const isSelection = type === "radio" || event.target.tagName === "SELECT";
 
-      if (name === "sortBy") {
-        if (value === "latest") next.latestUploaded = true;
-        if (value === "oldest") next.latestUploaded = false;
-      }
+    const next = { ...filters, [name]: value };
 
-      return next;
-    });
+    if (name === "sortBy") {
+      if (value === "latest") next.latestUploaded = true;
+      if (value === "oldest") next.latestUploaded = false;
+    }
+
+    setFilters(next);
+
+    if (isSelection) {
+      setPagination((p) => ({ ...p, currentPage: 1 }));
+      router.push(`${pathname}?${buildSearchParams(next)}`, { scroll: false });
+    }
   };
 
   const handleTagToggle = (tag) => {
@@ -228,9 +234,35 @@ function ShopPageContent() {
       const tags = isSelected
         ? prev.tags.filter((item) => item !== tag)
         : [...prev.tags, tag];
-      return { ...prev, tags };
+      const next = { ...prev, tags };
+
+      setPagination((p) => ({ ...p, currentPage: 1 }));
+      router.push(`${pathname}?${buildSearchParams(next)}`, { scroll: false });
+
+      return next;
     });
   };
+
+  // Debounced effect for text filters
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const currentParams = buildSearchParams(filters);
+      const urlParams = searchParams.toString();
+
+      // Only push if the state-based params are different from URL params
+      if (currentParams !== urlParams) {
+        setPagination((prev) => ({ ...prev, currentPage: 1 }));
+        router.push(`${pathname}?${currentParams}`, { scroll: false });
+      }
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [filters.title, filters.minPrice, filters.maxPrice]);
 
   const handleApplyFilters = (event) => {
     if (event) event.preventDefault();
@@ -664,15 +696,9 @@ function ShopPageContent() {
               <div className="flex gap-3">
                 <button
                   onClick={handleResetFilters}
-                  className="flex-1 py-3 rounded-full bg-gray-100 text-gray-600 text-sm font-bold hover:bg-gray-200 transition-colors"
+                  className="w-full py-3 rounded-full bg-gray-100 text-gray-600 text-sm font-bold hover:bg-gray-200 transition-colors"
                 >
-                  Reset
-                </button>
-                <button
-                  onClick={handleApplyFilters}
-                  className="flex-[2] py-3 rounded-full bg-[#f74872] text-white text-sm font-bold hover:bg-[#d8355b] transition-colors shadow-md shadow-[#f74872]/20"
-                >
-                  Apply Filters
+                  Reset All Filters
                 </button>
               </div>
             </div>

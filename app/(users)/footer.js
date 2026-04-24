@@ -51,7 +51,7 @@ const STARS = [
 export default function Footer() {
   const [name, setName] = useState("");
 
-  const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  // const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const openWA = () => {
     const msg = encodeURIComponent(
@@ -111,7 +111,7 @@ export default function Footer() {
               <p> road kamalpur </p>
               <p> Burari Delhi 110084</p>
               <p> {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""} </p>
-              <p> {process.env.EMAIL_FROM || "toysforkidsdelhi@gmail.com"} </p>
+              <p> {process.env.EMAIL_FROM || "operation.a2vgroups@gmail.com"} </p>
             </div>
             <div className={styles.socials}>
               <a
@@ -220,11 +220,11 @@ export default function Footer() {
       <div className={styles.bottomBar}>
         <div className={styles.bottomInner}>
           <p className={styles.copyright}>
-            Copyright © 2025 <a href="/">Kiddex</a>, Inc. All Rights Reserved
+            Copyright © 2025 Kiddex, Inc. All Rights Reserved
           </p>
-          <button onClick={scrollTop} className={styles.scrollTopBtn}>
+          {/* <button onClick={scrollTop} className={styles.scrollTopBtn}>
             ↑
-          </button>
+          </button> */}
         </div>
       </div>
     </footer>

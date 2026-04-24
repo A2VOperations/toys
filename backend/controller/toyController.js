@@ -171,13 +171,16 @@ export const updateToy = async (id, body) => {
     // Find old images that were actually removed
     const removedImages = existing?.images?.filter(
       (oldUrl) =>
-        oldUrl.startsWith('https://res.cloudinary.com') &&
+        oldUrl.includes('cloudinary.com') &&
         !keepUrls.includes(oldUrl)
     );
+
+    console.log("Images to be removed from Cloudinary during update:", removedImages);
 
     // ── await so Next.js doesn't kill the function before deletion completes ──
     if (removedImages?.length) {
       await Promise.all(removedImages.map(deleteWithRetry));
+      console.log("Update deletion attempts finished.");
     }
   }
 
@@ -198,20 +201,37 @@ export const updateToy = async (id, body) => {
 // DELETE TOY
 // ─────────────────────────────────────────
 export const deleteToy = async (id) => {
+  console.log("--- deleteToy Called ---", id);
   await dbConnect();
 
   const toy = await Toy.findById(id).select('images').lean();
-  if (!toy) throw new Error(`Toy not found: ${id}`);
+  console.log("Toy found for deletion:", toy);
 
-  if (toy?.images?.length) {
-    const cloudinaryImages = toy.images.filter((url) =>
-      url.startsWith('https://res.cloudinary.com')
-    );
-
-    if (cloudinaryImages.length) {
-      await Promise.all(cloudinaryImages.map(deleteWithRetry)); // ← await + deleteWithRetry
-    }
+  if (!toy) {
+    console.error("Toy not found for deletion:", id);
+    throw new Error(`Toy not found: ${id}`);
   }
 
-  return await Toy.findByIdAndDelete(id);
-};
+  if (toy?.images?.length) {
+    const cloudinaryImages = toy.images.filter((url) => {
+      const isCloudinary = url && typeof url === 'string' && url.includes('cloudinary.com');
+      console.log(`Checking image: ${url} -> isCloudinary: ${isCloudinary}`);
+      return isCloudinary;
+    });
+
+    console.log("Cloudinary images to delete:", cloudinaryImages);
+
+    if (cloudinaryImages.length) {
+      await Promise.all(cloudinaryImages.map(deleteWithRetry));
+      console.log("All Cloudinary deletion attempts finished.");
+    } else {
+      console.log("No Cloudinary images found in the toy's images array.");
+    }
+  } else {
+    console.log("Toy has no images or images array is empty.");
+  }
+
+  const result = await Toy.findByIdAndDelete(id);
+  console.log("Database deletion result:", result ? "SUCCESS" : "FAILED");
+  return result;
+};

@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { writeCartItems } from "../../cartStorage";
 
 export default function ProductDetailsPage() {
   const { id } = useParams();
@@ -102,7 +104,7 @@ const addToCart = () => {
       });
     }
 
-    localStorage.setItem(cartKey, JSON.stringify(existingItems));
+    writeCartItems(existingItems);
     setCartMessage("Added to cart.");
   } catch (_error) {
     setCartMessage("Could not update cart.");
@@ -151,7 +153,9 @@ const addToCart = () => {
             {/* Image Gallery */}
             <div className="flex flex-col gap-4">
               <div className="group relative aspect-square w-full overflow-hidden rounded-2xl bg-gray-100">
-                <img
+                <Image
+                  width={1000}
+  height={1000}
                   src={selectedImage || imageList[0]}
                   alt={product.title}
                   className="h-full w-full object-cover object-center"
@@ -170,7 +174,9 @@ const addToCart = () => {
                           : "opacity-70 hover:opacity-100 hover:ring-2 hover:ring-gray-300 hover:ring-offset-2"
                       }`}
                     >
-                      <img
+                      <Image
+                        width={1000}
+  height={1000}
                         src={imageUrl}
                         alt={`${product.title} view`}
                         className="h-full w-full object-cover object-center bg-gray-100"

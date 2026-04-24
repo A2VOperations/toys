@@ -7,6 +7,7 @@ const navLinks = [
   { name: "Home", path: "/admin/home" },
   { name: "Add Products", path: "/admin/home/addProduct" },
   { name: "My Shop", path: "/admin/home/shop" },
+  { name: "Banners", path: "/admin/home/banners" },
   { name: "Settings", path: "/admin/home/settings" },
 ];
 
@@ -20,8 +21,6 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
 
   return (
     <>
-      
-
       <nav className="sticky top-0 z-[999] border-b border-[#f0f0f0] bg-white px-5 py-3 shadow-[0_2px_12px_rgba(0,0,0,0.07)]">
         <div className="grid gap-4 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
           <div className="flex items-center gap-1 text-[28px] font-black tracking-[-0.06em] lg:justify-self-start">

@@ -108,9 +108,9 @@ export default function LegalLayout({
             className="px-8 py-6 text-center text-xs font-semibold"
             style={{ background: '#fff0f6', color: '#999', borderTop: '1.5px solid #ffd0e8' }}
           >
-            © {new Date().getFullYear()} Kiddex · Made with love for little ones ·{' '}
-            <a href="mailto:support@kiddex.in" style={{ color: '#E8197A' }}>
-              support@kiddex.in
+            © {new Date().getFullYear()} Toys for Kids · Made with love for little ones ·{' '}
+            <a href="mailto:support@Toys for Kids.in" style={{ color: '#E8197A' }}>
+              support@Toys for Kids.in
             </a>
           </div>
         </div>

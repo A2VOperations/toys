@@ -541,10 +541,9 @@ export default function AddToyForm() {
             </div>
 
             <div className="field-card">
-              <h3 className="section-label">Brand <span className="text-xl">*</span></h3>
+              <h3 className="section-label">Brand</h3>
               <input
                 className="toy-input"
-                required
                 placeholder="e.g. LEGO, Mattel"
                 value={formData.brand}
                 onChange={(e) =>

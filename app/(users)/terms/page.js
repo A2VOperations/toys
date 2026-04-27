@@ -4,7 +4,7 @@ const SUPPORT_EMAIL = "operation.a2vgroups@gmail.com";
 const SUPPORT_NUMBER =
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919999999999";
 const SUPPORT_ADDRESS =
-  process.env.NEXT_PUBLIC_ADDRESS || "Kiddex Store, New Delhi, India";
+  process.env.NEXT_PUBLIC_ADDRESS || "Toys for Kids Store, New Delhi, India";
 
 const sections = [
   {
@@ -13,7 +13,7 @@ const sections = [
     icon: "📄",
     content: (
       <p>
-        By accessing or using the Kiddex website, you agree to be bound by these
+        By accessing or using the Toys for Kids website, you agree to be bound by these
         Terms and Conditions. Your continued use of the site after any updates
         constitutes acceptance of the revised terms.
       </p>
@@ -154,7 +154,7 @@ const sections = [
     content: (
       <p>
         All content on this website — logos, images, text, and product
-        descriptions — is the property of Kiddex and protected by applicable IP
+        descriptions — is the property of Toys for Kids and protected by applicable IP
         laws. Reproduction without written consent is prohibited.
       </p>
     ),

@@ -205,6 +205,11 @@ export default function BannerManager() {
 
   return (
     <>
+      {/* Nunito font — matches all other admin pages */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+      `}</style>
+
       {/* TOAST */}
       {toast.show && (
         <div
@@ -268,8 +273,14 @@ export default function BannerManager() {
       <div className="min-h-screen bg-[#F0F2F5] p-4 md:p-8 lg:p-12">
         <div className="max-w-6xl mx-auto">
           <header className="mb-8">
+            <div
+              className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-1.5 text-xs font-bold tracking-widest uppercase shadow-sm mb-3"
+              style={{ color: "#E84393" }}
+            >
+              <span>🏪</span> My Banner
+            </div>
             <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
-              Banner Scheduler
+              Banner <span className="text-[#E84393]">Scheduler</span>
             </h1>
             <p className="text-gray-500 font-medium">
               Schedule and automate platform hero content.

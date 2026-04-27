@@ -123,7 +123,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#0f0a0c] font-['DM_Sans',sans-serif]">
+    <div className="min-h-screen bg-white text-[#0f0a0c]">
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-[#ffcf7d] px-12 pb-20 pt-[100px] max-sm:px-6 max-sm:pt-20 max-sm:pb-16">
         {/* noise overlay */}
@@ -167,13 +167,13 @@ export default function ContactPage() {
             </div>
 
             <h1
-              className="font-['Playfair_Display',serif] font-black leading-[1.05] text-[#2b1a12]"
+              className=" font-black leading-[1.05] text-[#2b1a12]"
               style={{
                 fontSize: "clamp(3rem,6vw,5.5rem)",
                 letterSpacing: "-0.02em",
               }}
             >
-              Let&apos;s <em className="not-italic text-[#f74872]">Talk</em>
+              Let&apos;s <span className="not-italic text-[#f74872]">Talk</span>
               <br />
               Toys &amp; More
             </h1>
@@ -181,14 +181,14 @@ export default function ContactPage() {
             <div className="my-5 h-0.5 w-12 bg-[#f74872]" />
 
             <p
-              className="max-w-[340px] leading-[1.7] text-[#2b1a12] !font-semibold"
+              className="max-w-[340px] leading-[1.7] text-[#2b1a12] font-semibold!"
               style={{ fontSize: 15, fontWeight: 300 }}
             >
               A question about your order, a partnership idea, or just want to
               say hi — we&apos;re here and happy to help.
             </p>
           </div>
-
+              
           {/* right stats – hidden on mobile */}
           <div className="hidden flex-col items-end gap-3 md:flex ">
             {[
@@ -205,13 +205,13 @@ export default function ContactPage() {
                 )}
                 <div className="text-right">
                   <div
-                    className="font-['Playfair_Display',serif] font-bold leading-none text-white"
+                    className=" font-bold leading-none text-white"
                     style={{ fontSize: "3.8rem" }}
                   >
                     {num}
                     <span className="text-[#f74872]">{suffix}</span>
                   </div>
-                  <div className="mt-1 text-[11px] font-medium uppercase tracking-[0.1em] text-[#2b1a12] font-semibold">
+                  <div className="mt-1 text-[11px] uppercase tracking-widest text-[#2b1a12] font-semibold">
                     {label}
                   </div>
                 </div>
@@ -285,7 +285,7 @@ export default function ContactPage() {
             Send a Message
           </div>
           <h2
-            className="mb-8 font-['Playfair_Display',serif] text-[2rem] font-bold leading-tight"
+            className="mb-8 text-[2rem] font-bold leading-tight"
             style={{ color: "#0f0a0c" }}
           >
             We&apos;d love to
@@ -418,7 +418,7 @@ export default function ContactPage() {
               <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2b1a12]">
                 Working Hours
               </div>
-              <div className="font-['Playfair_Display',serif] text-2xl font-bold text-[#2b1a12]">
+              <div className=" text-2xl font-bold text-[#2b1a12]">
                 9 AM – 10 PM
               </div>
             </div>
@@ -443,7 +443,7 @@ export default function ContactPage() {
 
       {/* ── Global styles (animation + shared input style) ── */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
         @keyframes pulse-dot {
           0%, 100% { opacity: 1; transform: scale(1); }
@@ -455,7 +455,7 @@ export default function ContactPage() {
           border: 1.5px solid #ecdde2;
           border-radius: 12px;
           padding: 14px 16px;
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Nunito', sans-serif;
           font-size: 14px;
           font-weight: 400;
           color: #0f0a0c;

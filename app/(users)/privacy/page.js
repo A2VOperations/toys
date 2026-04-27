@@ -4,7 +4,7 @@ const SUPPORT_EMAIL = process.env.EMAIL_FROM || "operation.a2vgroups@gmail.com";
 const SUPPORT_NUMBER =
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919999999999";
 const SUPPORT_ADDRESS =
-  process.env.NEXT_PUBLIC_ADDRESS || "Kiddex Store, New Delhi, India";
+  process.env.NEXT_PUBLIC_ADDRESS || "Toys for Kids Store, New Delhi, India";
 
 const sections = [
   {

@@ -518,7 +518,7 @@ export default async function HomePage() {
                     </div>
                     <div className="card-title-text">{product.title}</div>
                     <div className="card-meta">
-                      {product.brand} · {product.age}
+                      {product.brand ? `${product.brand} · ` : "Self · "}{product.age}
                     </div>
 
                     <div

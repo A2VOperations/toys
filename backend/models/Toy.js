@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const ToySchema = new mongoose.Schema({
   title: { type: String, required: true },
   category: { type: String, required: true }, // Dropdown: Toys, Brand, etc.
-  brand: { type: String, required: true },
+  brand: { type: String },
   images: {
     type: [String],
     required: true,

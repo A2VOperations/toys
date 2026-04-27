@@ -24,7 +24,7 @@ const IgIcon = () => (
 );
 
 const PRIVACY = `We collect only what's needed to process your orders and improve your experience. Your personal data — name, address, contact details — is stored securely and never sold to third parties. WhatsApp numbers are used solely for order updates. You may request deletion at any time.`;
-const TERMS = `By placing an order you agree to our pricing and delivery terms. All products are subject to availability. Kiddex reserves the right to refuse service. Payments are processed securely. Disputes are governed by local law. We are not liable for courier-caused delays.`;
+const TERMS = `By placing an order you agree to our pricing and delivery terms. All products are subject to availability. Toys for Kids reserves the right to refuse service. Payments are processed securely. Disputes are governed by local law. We are not liable for courier-caused delays.`;
 
 const RESOURCES = [
   { label: "Home", href: "/" },
@@ -220,7 +220,7 @@ export default function Footer() {
       <div className={styles.bottomBar}>
         <div className={styles.bottomInner}>
           <p className={styles.copyright}>
-            Copyright © 2025 Kiddex, Inc. All Rights Reserved
+            Copyright © 2025 Toys for Kids, Inc. All Rights Reserved
           </p>
           {/* <button onClick={scrollTop} className={styles.scrollTopBtn}>
             ↑

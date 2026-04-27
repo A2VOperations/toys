@@ -8,13 +8,13 @@ import Testimonials from "./testimonials";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PiStarFourFill } from "react-icons/pi";
+import { addItemToCart } from "./cartStorage";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
-const isBannerActive = (banner) => {
+const isBannerActive = (banner, now = Date.now()) => {
   if (!banner?.startDate || !banner?.endDate) return false;
 
-  const now = new Date().getTime();
   const start = new Date(banner.startDate).getTime();
   const end = new Date(banner.endDate).getTime();
 
@@ -554,16 +554,6 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [bannerData?.startDate, bannerData?.endDate]);
 
-  // Helper used by your JSX
-  const isBannerActive = (b) => {
-    if (!b?.startDate || !b?.endDate) return false;
-    const now = Date.now();
-    return (
-      now >= new Date(b.startDate).getTime() &&
-      now < new Date(b.endDate).getTime()
-    );
-  };
-
   const pad = (n) => String(n).padStart(2, "0");
 
   useEffect(() => {
@@ -592,36 +582,11 @@ export default function Home() {
   }, []);
 
   const addToCart = (product) => {
-    if (!product || !product._id) {
-      setCartCount((c) => c + 1);
-      return;
-    }
-    try {
-      const stock = Number(product.stock) || 0;
-      if (stock <= 0) {
-        showToast("This product is out of stock.");
-        return;
-      }
-      const existingRaw = localStorage.getItem("cart_items");
-      let existingItems = [];
-      if (existingRaw) {
-        const parsed = JSON.parse(existingRaw);
-        existingItems = Array.isArray(parsed) ? parsed : [];
-      }
-      const existingIndex = existingItems.findIndex(
-        (item) => item.id === product._id,
-      );
-      if (existingIndex >= 0) {
-        const currentQty = Number(existingItems[existingIndex].quantity) || 0;
-        existingItems[existingIndex].quantity = Math.min(currentQty + 1, stock);
-      } else {
-        existingItems.push({ id: product._id, quantity: 1 });
-      }
-      localStorage.setItem("cart_items", JSON.stringify(existingItems));
-      setCartCount((c) => c + 1);
+    const result = addItemToCart(product, 1);
+    if (result.ok) {
       showToast("Added to cart successfully!");
-    } catch (err) {
-      console.error(err);
+    } else {
+      showToast(result.message || "Failed to add to cart.");
     }
   };
 
@@ -639,7 +604,7 @@ export default function Home() {
         />
       </section>
 
-      <section className="relative overflow-hidden bg-[linear-gradient(78.33deg,#FFCF78_5.9%,#FEE2B1_97.88%)] px-4 py-14 sm:px-5 sm:py-18 md:py-22">
+      <section className="relative overflow-hidden bg-[linear-gradient(78.33deg,#FFCF78_5.9%,#FEE2B1_97.88%)] px-4 py-14 sm:px-5 sm:py-[4.5rem] md:py-[5.5rem]">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-32 -top-24 h-56 w-56 rounded-full bg-white/30 blur-3xl" />
           <div className="absolute -bottom-16 -right-12 h-48 w-48 rounded-full bg-[#ff8fc7]/25 blur-3xl" />
@@ -755,7 +720,7 @@ export default function Home() {
             </h1>
             <p className="text-gray-600 dark:text-gray-500 mb-8 leading-relaxed">
               Discover the ultimate collection of toys, educational stationery,
-              and unique return gifts. High-quality kids' essentials delivered
+              and unique return gifts. High-quality kids&apos; essentials delivered
               at prices both shops and parents love.
             </p>
             <Link
@@ -870,7 +835,7 @@ export default function Home() {
               <Link
                 href={b.link}
                 onClick={(e) => e.stopPropagation()}
-                className="text-center bg-white/50 text-gray/80 border border-dashed px-5 py-2 rounded-full text-sm font-black shadow-lg w-fit mt-5 sm:mt-10"
+                className="text-center bg-white/50 text-gray-700 border border-dashed px-5 py-2 rounded-full text-sm font-black shadow-lg w-fit mt-5 sm:mt-10"
               >
                 Shop Now
               </Link>
@@ -1077,7 +1042,7 @@ export default function Home() {
       </section>
 
       {/* ── DEAL OF THE DAY ── */}
-      <section className="leading-none">
+      <section id="dealOf" className="leading-none">
         <Image
           src="/home page/hero-border-2.png"
           alt="Decorative shape divider"
@@ -1545,12 +1510,10 @@ export default function Home() {
 
             {/* Text */}
             <div className="relative z-10">
-              <h3 className="text-white text-2xl font-black leading-tight drop-shadow">
+              <h3 className="text-white text-2xl font-black leading-tight drop-shadow mb-5">
                 Puzzle for Kids
               </h3>
-              <p className="text-white/80 text-sm mt-1 mb-6 font-semibold">
-                From <span className="text-white font-black">₹50 Only</span>
-              </p>
+
               <Link
                 href="/shop"
                 className="mt-5 border-2 border-white/60 text-white text-xs font-black px-6 py-2 rounded-full hover:bg-white hover:text-[#e8294c] transition-all duration-300"
@@ -1587,7 +1550,7 @@ export default function Home() {
               <span className="inline-block bg-white/20 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3">
                 Special Offer
               </span>
-              <h3 className="text-white text-4xl mb-6 font-black leading-tight drop-shadow-sm z-1000">
+              <h3 className="text-white text-4xl mb-6 font-black leading-tight drop-shadow-sm z-[1000]">
                 Buy One
                 <br />
                 Get One
@@ -1635,12 +1598,10 @@ export default function Home() {
 
             {/* Text */}
             <div className="relative z-10">
-              <h3 className="text-white text-2xl font-black leading-tight drop-shadow">
+              <h3 className="text-white text-2xl font-black leading-tight drop-shadow mb-5">
                 Puzzle for Kids
               </h3>
-              <p className="text-white/80 text-sm mt-1 font-semibold mb-6">
-                From <span className="text-white font-black">₹40 Only</span>
-              </p>
+
               <Link
                 href="/shop"
                 className="mt-5 border-2 border-white/60 text-white text-xs font-black px-6 py-2 rounded-full hover:bg-white hover:text-[#16a34a] transition-all duration-300"
@@ -1652,7 +1613,7 @@ export default function Home() {
             {/* Baby / toy image */}
             <div className="absolute right-0 bottom-0 w-[150px] h-[170px] group-hover:scale-105 transition-transform duration-500">
               <Image
-                src="/home page/hero-girl.png"
+                src="/home page/girl with toys.png"
                 alt="Kids toy"
                 fill
                 sizes="(max-width: 768px) 100vw, 33vw"
@@ -1802,7 +1763,7 @@ export default function Home() {
                           fill
                           src={product.image}
                           alt={product.name}
-                          className="w-full h-full object-cover p-3 transition-transform duration-500 group-hover:scale-103"
+                          className="w-full h-full object-cover p-3 transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       </div>
 

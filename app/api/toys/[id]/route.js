@@ -18,9 +18,9 @@ export async function PUT(req, { params }) {
     const body = await req.json();
     const { title, category, brand } = body;
 
-    if (!title || !category || !brand)
+    if (!title || !category)
       return NextResponse.json(
-        { message: "Title, category, and brand are required." },
+        { message: "Title and category are required." },
         { status: 400 }
       );
 

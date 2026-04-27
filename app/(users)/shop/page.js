@@ -398,10 +398,14 @@ function ShopPageContent() {
                     <div className="flex flex-col p-6 flex-1">
                       {/* Meta matching the image's meta structure */}
                       <div className="flex flex-wrap items-center text-[13px] font-medium text-gray-500 mb-3 gap-0">
-                        <span className="hover:text-[#f74872] transition-colors">
-                          {product.brand || "Generics"}
-                        </span>
-                        <span className="mx-3 w-4 h-[1px] bg-gray-300 rounded-full"></span>
+                        {product.brand && (
+                          <>
+                            <span className="hover:text-[#f74872] transition-colors">
+                              {product.brand}
+                            </span>
+                            <span className="mx-3 w-4 h-[1px] bg-gray-300 rounded-full"></span>
+                          </>
+                        )}
                         <span className="hover:text-[#f74872] transition-colors">
                           By {product.category || "General"}
                         </span>

@@ -110,8 +110,163 @@ const promoTags = [
   "Or Plate",
 ];
 
+const whyChooseUs = [
+  "More than 8 years of industry experience",
+  "Wholesale and retail pricing available",
+  "Wide range of toys, gifts, stationery, lunch boxes, bags & swimming items",
+  "Budget-friendly products with good quality",
+  "Bulk order support for retailers, schools, birthday parties & events",
+  "Located in Sant Nagar Burari with trusted customer service",
+  "Regularly updated collection with new and trending kids' products",
+  "Products for all age groups and different gifting needs",
+  "Easy shopping for parents, shop owners, and bulk buyers",
+  "Focus on useful, attractive, and child-friendly products",
+  "Support for return gift planning and product selection",
+  "One-stop solution for school essentials, play items & gifting products",
+  "Flexible options for small quantity and bulk quantity orders",
+  "Trusted for variety, pricing, and product availability",
+];
+
+export function AboutInfoSection() {
+  return (
+    <section className="py-20 px-5 bg-[#f5f1e6] relative overflow-hidden">
+      {/* Dot pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, #f2608a 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+        }}
+      />
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Section heading */}
+        <div className="text-center mb-14">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-snug">
+            Founded & Managed by{" "}
+            <span className="text-pink-500">Jyoti Agarwal</span>
+          </h2>
+          <p className="text-gray-400 mt-3 max-w-2xl mx-auto text-sm leading-relaxed font-medium">
+            With over{" "}
+            <strong className="text-pink-500">
+              8 years of industry experience
+            </strong>
+            , we serve customers with reliable products, fair pricing, and a
+            customer-first approach — understanding what children love, what
+            parents look for, and what retailers need.
+          </p>
+        </div>
+
+        {/* Two-column layout */}
+        <div className="grid md:grid-cols-2 gap-10 mb-14">
+          {/* What we offer */}
+          <div className="bg-white rounded-xl border-2 border-pink-100 p-8 shadow-sm">
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <h3 className="text-2xl font-black text-gray-800">
+                What We Offer
+              </h3>
+            </div>
+            <p className="text-gray-500 text-sm leading-relaxed">
+              We provide a complete collection of kids&apos; toys, school
+              stationery, lunch boxes, water bottles, return gifts, gift sets,
+              swimming accessories, educational toys, puzzles, bags, and many
+              more kids&apos; products at both{" "}
+              <span className="text-pink-500 font-bold">
+                wholesale and retail prices
+              </span>
+              .
+            </p>
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              {[
+                { icon: "🧸", label: "Toys & Dolls" },
+                { icon: "📚", label: "Stationery" },
+                { icon: "🎒", label: "Bags & Bottles" },
+                { icon: "🎁", label: "Return Gifts" },
+                { icon: "🏊", label: "Swimming Items" },
+                { icon: "🧩", label: "Puzzles & Kits" },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="flex items-center gap-2.5 bg-pink-50 rounded-xl px-3 py-2.5 border border-pink-100"
+                >
+                  <span className="text-lg">{item.icon}</span>
+                  <span className="text-xs font-bold text-gray-700">
+                    {item.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Location & aim */}
+          <div className="bg-white rounded-xl border-2 border-blue-100 p-8 shadow-sm">
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <h3 className="text-2xl font-black text-gray-800">
+                Where We Are & Our Aim
+              </h3>
+            </div>
+            <p className="text-gray-500 text-sm leading-relaxed mb-5">
+              Located in{" "}
+              <span className="text-blue-500 font-bold">Sant Nagar Burari</span>
+              , we focus on delivering products that are useful, attractive,
+              budget-friendly, and suitable for different age groups.
+            </p>
+            <p className="text-gray-500 text-sm leading-relaxed">
+              Whether you are looking for a single product, birthday return
+              gifts, school supplies, or bulk products for resale — we are here
+              to provide the right options under one roof.
+            </p>
+            <div className="mt-6 bg-gradient-to-r from-pink-50 to-blue-50 border-2 border-dashed border-pink-200 rounded-2xl p-4 text-center">
+              <p className="text-gray-600 text-sm font-bold italic">
+                &ldquo;To bring quality, variety, and happiness to every
+                customer through products that make kids smile and make shopping
+                easy.&rdquo;
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Why Choose Us */}
+        <div className="bg-white rounded-xl border-2 border-pink-100 p-8 shadow-sm">
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <h3 className="text-3xl font-black text-gray-800">Why Choose Us?</h3>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {whyChooseUs.map((point, i) => (
+              <div
+                key={i}
+                className="flex items-start gap-3 bg-pink-50/60 hover:bg-pink-50 border border-pink-100 hover:border-pink-300 rounded-2xl px-4 py-3 transition-all duration-200 group"
+              >
+                <span className="mt-0.5 w-5 h-5 rounded-full bg-pink-500 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                  <svg
+                    className="w-3 h-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="3"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </span>
+                <p className="text-sm font-semibold text-gray-700 leading-snug">
+                  {point}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ExperienceBadge() {
-  const circleText = "30 Years Experience - 30 Years Experience - ";
+  const circleText = "8+ Years Experience - 8+ Years Experience - ";
 
   return (
     <div className="absolute top-4 right-4 md:right-10 z-20 flex h-[150px] w-[150px] items-center justify-center rounded-full bg-white shadow-xl shadow-pink-200/70">
@@ -141,7 +296,7 @@ function ExperienceBadge() {
 
       <div className="relative flex h-[66px] w-[66px] flex-col items-center justify-center rounded-full border-2 border-pink-200 bg-linear-to-br from-pink-50 to-white">
         <span className="text-pink-500 text-xl font-black leading-tight">
-          15+
+          8+
         </span>
         <span className="text-[9px] tracking-[2px] text-gray-400 font-bold uppercase">
           Years
@@ -326,7 +481,7 @@ export function BrandsSection() {
   }, []);
 
   return (
-    <section className="py-20 px-5 bg-[#f5f1e6] relative overflow-hidden">
+    <section className="py-20 px-5 bg-gray-50 relative overflow-hidden">
       {/* Dot pattern */}
       <div
         className="absolute inset-0 opacity-[0.04] pointer-events-none"
@@ -427,22 +582,29 @@ export default function AboutSection() {
           {/* RIGHT: Text */}
           <div>
             <h2 className="text-3xl md:text-4xl font-bold leading-snug mb-4 text-gray-800">
-              We are a retail business in the Ecommerce{" "}
+              {/* We are a retail business in the Ecommerce{" "}
               <span className="text-pink-500">Products and accessories</span>{" "}
-              for kids
+              for kids */}
+              Trusted for kid&apos;s toys, stationery, gifts & everyday essentials
+              <br />
+              <span className="text-pink-500">retail & wholesale.</span>
             </h2>
 
             <p className="text-gray-500 mb-3 leading-relaxed text-[15px]">
-              <span className="text-pink-500 font-bold">Balloon</span>, with a
+              {/* <span className="text-pink-500 font-bold">Balloon</span>, with a
               rich legacy spanning 12 years, stands as a venerable online
               destination for kids seeking a diverse range of high-quality toys
-              and accessories.
+              and accessories. */}
+              Founded and managed by{" "}
+              <span className="text-pink-500 font-bold">Jyoti Agarwal</span> , we have
+              been working in this industry for more than 8 years, serving
+              customers with reliable products, fair pricing, and a
+              customer-first approach.
             </p>
 
             <p className="text-gray-400 mb-8 leading-relaxed text-sm">
-              All products in our inventory undergo rigorous quality checks to
-              meet or exceed industry standards — instilling confidence in every
-              purchase you make.
+              With years of experience, we understand what children love, what
+              parents look for, and what retailers need for their business.
             </p>
 
             {/* Stats box */}
@@ -509,6 +671,7 @@ export default function AboutSection() {
           </Swiper>
         </div>
       </section>
+      <AboutInfoSection />
       <BrandsSection />
       <Testimonials />
     </>

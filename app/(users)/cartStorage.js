@@ -42,3 +42,32 @@ export const writeCartItems = (items) => {
     return { ok: false, items: readCartItems() };
   }
 };
+
+/**
+ * Centrally managed add-to-cart logic.
+ * Handles stock validation, duplicate items, and dispatches the update event.
+ */
+export const addItemToCart = (product, quantity = 1) => {
+  if (!product) return { ok: false, message: "Invalid product" };
+  
+  const productId = product._id || product.id;
+  if (!productId) return { ok: false, message: "Invalid product ID" };
+
+  const stock = Number(product.stock) || 0;
+  if (stock <= 0) return { ok: false, message: "Out of stock" };
+
+  const currentItems = readCartItems();
+  const existingIndex = currentItems.findIndex((item) => item.id === productId);
+  
+  const finalQuantity = Number(quantity) || 1;
+  let updatedItems = [...currentItems];
+
+  if (existingIndex >= 0) {
+    const currentQty = Number(updatedItems[existingIndex].quantity) || 0;
+    updatedItems[existingIndex].quantity = Math.min(currentQty + finalQuantity, stock);
+  } else {
+    updatedItems.push({ id: productId, quantity: Math.min(finalQuantity, stock) });
+  }
+
+  return writeCartItems(updatedItems);
+};

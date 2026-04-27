@@ -60,10 +60,26 @@ const MEGA = {
 /* ════════════════════════════════════════
    Announcement Carousel — pure React/CSS
    ════════════════════════════════════════ */
+const WaIcon = () => (
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg>
+);
+const FbIcon = () => (
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+  </svg>
+);
+const IgIcon = () => (
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+  </svg>
+);
+
 function AnnouncementBar() {
   return (
     <div
-      className="relative w-full h-[36px] flex items-center px-3 md:px-6"
+      className="relative w-full min-h-9 overflow-hidden flex items-center px-3 md:px-6"
       style={{
         background:
           "linear-gradient(90deg, #b5105a 0%, #e84393 45%, #ff6b9d 75%, #e84393 100%)",
@@ -100,7 +116,7 @@ function AnnouncementBar() {
       `}</style>
 
       {/* LEFT — Open Hours + Live Chat (md+ only) */}
-      <div className="hidden md:flex items-center gap-1 text-white text-[0.68rem] font-semibold whitespace-nowrap flex-1">
+      <div className="hidden md:flex items-center gap-1 text-white text-[0.78rem] font-semibold whitespace-nowrap flex-1">
         <svg
           width="13"
           height="13"
@@ -114,93 +130,47 @@ function AnnouncementBar() {
           <circle cx="12" cy="12" r="10" />
           <polyline points="12 6 12 12 16 14" />
         </svg>
-        <span className="ml-1">Open Hours: Mon – Fri 8am – 6pm</span>
+        <span className="ml-1">Open Hours: 9am – 10pm</span>
 
         <div className="ann-divider" />
-
-        <svg
-          width="13"
-          height="13"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
-          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z" />
-          <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
-        </svg>
-        <span className="ml-1">Live Chat</span>
       </div>
 
       {/* CENTER — Promo text */}
-      <div className="flex-1 md:flex-none text-white text-[0.65rem] sm:text-[0.68rem] md:text-[0.72rem] whitespace-nowrap text-center">
-        Supper Value Deals –{" "}
-        <strong className="font-800">Save more with coupons 2BD30X</strong>
-      </div>
+      <Link href="/#dealOf" className="flex-1 md:flex-none text-white text-[0.75rem] sm:text-[0.78rem] md:text-[0.82rem] whitespace-nowrap text-center">
+        Today’s Deals –{" "}
+        <strong className="font-extrabold">Click to Save More</strong>
+      </Link>
 
       {/* RIGHT — Language + Currency (sm+ only) */}
-      <div className="hidden sm:flex items-center gap-1 text-white text-[0.68rem] font-semibold whitespace-nowrap flex-1 justify-end">
-        <div className="ann-dropdown">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+      <div className="hidden sm:flex items-center gap-1 text-white text-[0.78rem] font-semibold whitespace-nowrap flex-1 justify-end">
+        <div className="flex items-center gap-2">
+          <a
+            href={`https://wa.me/${waNumber}`}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25"
+            aria-label="WhatsApp"
           >
-            <circle cx="12" cy="12" r="10" />
-            <line x1="2" y1="12" x2="22" y2="12" />
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-          </svg>
-          <span>EN</span>
-          <svg
-            width="10"
-            height="10"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
+            <WaIcon />
+          </a>
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25"
+            aria-label="Facebook"
           >
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
-        </div>
-
-        <div className="ann-divider" />
-
-        <div className="ann-dropdown">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            <FbIcon />
+          </a>
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25"
+            aria-label="Instagram"
           >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M9 9h.01M15 9h.01M9 15h.01M15 15h.01" />
-            <path d="M12 6v2m0 8v2M6 12h2m8 0h2" />
-          </svg>
-          <span>USD</span>
-          <svg
-            width="10"
-            height="10"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          >
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
+            <IgIcon />
+          </a>
         </div>
       </div>
     </div>
@@ -228,7 +198,7 @@ export default function Navbar({ onCartClick }) {
 
     window.addEventListener("cartUpdated", updateCount);
     window.addEventListener("storage", updateCount); // Handle changes from other tabs
-    
+
     return () => {
       window.removeEventListener("cartUpdated", updateCount);
       window.removeEventListener("storage", updateCount);
@@ -278,14 +248,14 @@ export default function Navbar({ onCartClick }) {
 
       {/* ── Sticky Nav ── */}
       <nav
-        className="nb-font sticky top-0 z-[1000] bg-white  px-5"
+        className="nb-font sticky top-0 z-[1000] border-b border-pink-100 bg-white px-4 shadow-sm sm:px-5"
         style={{ fontFamily: "'Nunito', sans-serif" }}
       >
-        <div className="max-w-[1280px] mx-auto flex items-center justify-between gap-4 h-[68px]">
+        <div className="max-w-[1280px] mx-auto flex min-w-0 items-center justify-between gap-3 h-[68px] sm:gap-4">
           {/* Logo */}
           <Link
             href="/"
-            className="text-[2rem] font-black leading-none tracking-[-2px] no-underline flex items-center transition-transform duration-200 hover:scale-105"
+            className="shrink-0 text-[1.7rem] font-black leading-none tracking-[-1px] no-underline flex items-center transition-transform duration-200 hover:scale-105 sm:text-[2rem]"
           >
             <span style={{ color: "#e84393" }}>K</span>
             <span style={{ color: "#ff6b35" }}>I</span>
@@ -303,7 +273,7 @@ export default function Navbar({ onCartClick }) {
                   <button
                     onMouseEnter={openMega}
                     onMouseLeave={closeMega}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[0.88rem] font-extrabold cursor-pointer border-none transition-all duration-200 nb-font
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[1.05rem] font-extrabold cursor-pointer border-none transition-all duration-200 nb-font
                       ${megaOpen || pathname === "/shop" ? "bg-[#fce4ef] text-[#e84393]" : "bg-transparent text-[#555] hover:bg-[#fce4ef] hover:text-[#e84393]"}`}
                     style={{ fontFamily: "'Nunito', sans-serif" }}
                   >
@@ -327,7 +297,7 @@ export default function Navbar({ onCartClick }) {
                 <li key={link.name}>
                   <Link
                     href={link.path}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[0.88rem] font-extrabold no-underline transition-all duration-200 nb-font
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[1.05rem] font-extrabold no-underline transition-all duration-200 nb-font
                       ${pathname === link.path ? "bg-[#fce4ef] text-[#e84393]" : "text-[#555] hover:bg-[#fce4ef] hover:text-[#e84393]"}`}
                     style={{ fontFamily: "'Nunito', sans-serif" }}
                   >
@@ -343,7 +313,7 @@ export default function Navbar({ onCartClick }) {
             <Link
               href="/cart"
               onClick={onCartClick}
-              className="flex items-center gap-2 bg-white border-2 border-[#fce4ef] rounded-full px-4 py-2 text-[0.84rem] font-extrabold text-[#555] no-underline relative transition-all duration-200 hover:bg-[#fce4ef] hover:border-[#e84393] hover:text-[#e84393] max-sm:px-3 max-sm:py-1.5 max-sm:text-xs"
+              className="relative flex items-center gap-2 whitespace-nowrap rounded-full border-2 border-[#fce4ef] bg-white px-3 py-1.5 text-sm font-extrabold text-[#555] no-underline transition-all duration-200 hover:border-[#e84393] hover:bg-[#fce4ef] hover:text-[#e84393] sm:px-4 sm:py-2 sm:text-[0.95rem]"
               style={{ fontFamily: "'Nunito', sans-serif" }}
             >
               <span>🛒 Cart</span>
@@ -402,7 +372,7 @@ export default function Navbar({ onCartClick }) {
                     <li key={label}>
                       <Link
                         href={`/shop?category=${encodeURIComponent(label)}`}
-                        className="text-[0.84rem] font-bold text-[#555] no-underline flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-200 hover:bg-[#fff0f6] hover:text-[#e84393] hover:pl-4 group"
+                        className="text-[0.95rem] font-bold text-[#555] no-underline flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-200 hover:bg-[#fff0f6] hover:text-[#e84393] hover:pl-4 group"
                       >
                         <span className="w-2 h-2 rounded-full bg-[#fce4ef] transition-all duration-200 group-hover:bg-[#e84393] group-hover:scale-125" />
                         {CATEGORY_EMOJIS[label] || "🧸"} {label}
@@ -424,7 +394,7 @@ export default function Navbar({ onCartClick }) {
                       <Link
                         key={t}
                         href={`/shop?tags=${encodeURIComponent(tagValue)}`}
-                        className="inline-flex items-center gap-1 bg-[#fff0f6] border-[1.5px] border-[#fce4ef] rounded-full px-3.5 py-1.5 text-[0.78rem] font-bold text-[#e84393] no-underline transition-all duration-200 hover:bg-[#e84393] hover:text-white hover:-translate-y-0.5"
+                        className="inline-flex items-center gap-1 bg-[#fff0f6] border-[1.5px] border-[#fce4ef] rounded-full px-3.5 py-1.5 text-[0.85rem] font-bold text-[#e84393] no-underline transition-all duration-200 hover:bg-[#e84393] hover:text-white hover:-translate-y-0.5"
                       >
                         {t}
                       </Link>
@@ -439,7 +409,7 @@ export default function Navbar({ onCartClick }) {
                     <Link
                       key={g.label}
                       href={`/shop?gender=${encodeURIComponent(g.path)}`}
-                      className="flex flex-col items-center justify-center py-4 px-2.5 rounded-2xl border-2 border-[#fce4ef] no-underline text-[0.78rem] font-extrabold text-[#555] bg-white transition-all duration-200 hover:bg-[#fce4ef] hover:border-[#e84393] hover:text-[#e84393] hover:-translate-y-0.5"
+                      className="flex flex-col items-center justify-center py-4 px-2.5 rounded-2xl border-2 border-[#fce4ef] no-underline text-[0.85rem] font-extrabold text-[#555] bg-white transition-all duration-200 hover:bg-[#fce4ef] hover:border-[#e84393] hover:text-[#e84393] hover:-translate-y-0.5"
                     >
                       <span className="text-2xl">{g.emoji}</span>
                       {g.label}
@@ -458,7 +428,6 @@ export default function Navbar({ onCartClick }) {
                     "New Arrivals",
                     "Best Sellers",
                     "Flash Sale",
-                    "Gift Sets",
                     "Under Rs.1000",
                   ].map((l) => {
                     let href = "/shop";
@@ -472,7 +441,7 @@ export default function Navbar({ onCartClick }) {
                       <li key={l}>
                         <Link
                           href={href}
-                          className="text-[0.84rem] font-bold text-[#555] no-underline flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-200 hover:bg-[#fff0f6] hover:text-[#e84393] hover:pl-4 group"
+                          className="text-[0.95rem] font-bold text-[#555] no-underline flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-200 hover:bg-[#fff0f6] hover:text-[#e84393] hover:pl-4 group"
                         >
                           <span className="w-2 h-2 rounded-full bg-[#fce4ef] transition-all duration-200 group-hover:bg-[#e84393] group-hover:scale-125" />
                           {l}
@@ -573,7 +542,7 @@ export default function Navbar({ onCartClick }) {
               key={link.name}
               href={link.path}
               onClick={closeMobileMenu}
-              className={`flex items-center justify-between py-3.5 no-underline font-extrabold text-base border-b border-[#fce4ef] ${pathname === link.path ? "text-[#e84393]" : "text-[#444]"}`}
+              className={`flex items-center justify-between py-3.5 no-underline font-extrabold text-lg border-b border-[#fce4ef] ${pathname === link.path ? "text-[#e84393]" : "text-[#444]"}`}
             >
               {link.name}
             </Link>
@@ -583,7 +552,7 @@ export default function Navbar({ onCartClick }) {
           <div>
             <button
               onClick={() => setMobileShopSubmenu(!mobileShopSubmenu)}
-              className="w-full flex items-center justify-between py-3.5 font-extrabold text-base border-b border-[#fce4ef] bg-transparent border-none cursor-pointer text-[#444]"
+              className="w-full flex items-center justify-between py-3.5 font-extrabold text-lg border-b border-[#fce4ef] bg-transparent border-none cursor-pointer text-[#444]"
             >
               Shop
               <svg
@@ -613,7 +582,7 @@ export default function Navbar({ onCartClick }) {
                       key={label}
                       href={`/shop?category=${encodeURIComponent(label)}`}
                       onClick={closeMobileMenu}
-                      className="block py-2.5 pl-4 text-[#666] font-semibold text-[0.9rem] no-underline border-b border-[#fce4ef] hover:text-[#e84393]"
+                      className="block py-2.5 pl-4 text-[#666] font-semibold text-[1rem] no-underline border-b border-[#fce4ef] hover:text-[#e84393]"
                     >
                       {CATEGORY_EMOJIS[label] || "🧸"} {label}
                     </Link>
@@ -631,7 +600,7 @@ export default function Navbar({ onCartClick }) {
                           key={t}
                           href={`/shop?tags=${encodeURIComponent(tagValue)}`}
                           onClick={closeMobileMenu}
-                          className="bg-[#fff0f6] border border-[#fce4ef] rounded-full px-3 py-1.5 text-[0.7rem] font-bold text-[#e84393] no-underline"
+                          className="bg-[#fff0f6] border border-[#fce4ef] rounded-full px-3 py-1.5 text-[0.8rem] font-bold text-[#e84393] no-underline"
                         >
                           {t}
                         </Link>
@@ -649,7 +618,7 @@ export default function Navbar({ onCartClick }) {
                         key={g.label}
                         href={`/shop?gender=${encodeURIComponent(g.path)}`}
                         onClick={closeMobileMenu}
-                        className="flex flex-col items-center p-3 rounded-xl border-2 border-[#fce4ef] no-underline text-[0.7rem] font-extrabold text-[#555] bg-white"
+                        className="flex flex-col items-center p-3 rounded-xl border-2 border-[#fce4ef] no-underline text-[0.8rem] font-extrabold text-[#555] bg-white"
                       >
                         <span className="text-2xl">{g.emoji}</span>
                         {g.label}
@@ -665,7 +634,6 @@ export default function Navbar({ onCartClick }) {
                     "New Arrivals",
                     "Best Sellers",
                     "Flash Sale",
-                    "Gift Sets",
                     "Under Rs.1000",
                   ].map((l) => {
                     let href = "/shop";
@@ -680,7 +648,7 @@ export default function Navbar({ onCartClick }) {
                         key={l}
                         href={href}
                         onClick={closeMobileMenu}
-                        className="block py-2.5 pl-4 text-[#666] font-semibold text-[0.9rem] no-underline border-b border-[#fce4ef] hover:text-[#e84393]"
+                        className="block py-2.5 pl-4 text-[#666] font-semibold text-[1rem] no-underline border-b border-[#fce4ef] hover:text-[#e84393]"
                       >
                         {l}
                       </Link>
@@ -694,7 +662,7 @@ export default function Navbar({ onCartClick }) {
           <Link
             href="/contact"
             onClick={closeMobileMenu}
-            className={`flex items-center justify-between py-3.5 no-underline font-extrabold text-base border-b border-[#fce4ef] ${pathname === "/contact" ? "text-[#e84393]" : "text-[#444]"}`}
+            className={`flex items-center justify-between py-3.5 no-underline font-extrabold text-lg border-b border-[#fce4ef] ${pathname === "/contact" ? "text-[#e84393]" : "text-[#444]"}`}
           >
             Contact
           </Link>
@@ -705,7 +673,7 @@ export default function Navbar({ onCartClick }) {
           href={waLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="mx-5 mb-3 py-3 flex items-center justify-center gap-2 rounded-full font-extrabold text-white no-underline text-sm"
+          className="mx-5 mb-3 py-3 flex items-center justify-center gap-2 rounded-full font-extrabold text-white no-underline text-base"
           style={{ background: "#25D366" }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -757,7 +725,7 @@ export default function Navbar({ onCartClick }) {
             if (onCartClick) onCartClick(e);
             closeMobileMenu();
           }}
-          className="mx-5 mb-5 py-3 bg-[#e84393] text-white no-underline text-center rounded-full font-extrabold flex items-center justify-center gap-2"
+          className="mx-5 mb-5 py-3 bg-[#e84393] text-white no-underline text-center rounded-full font-extrabold text-lg flex items-center justify-center gap-2"
         >
           🛒 View Cart {localCartCount > 0 && `(${localCartCount})`}
         </Link>

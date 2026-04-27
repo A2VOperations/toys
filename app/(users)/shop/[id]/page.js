@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { writeCartItems } from "../../cartStorage";
+import { addItemToCart } from "../../cartStorage";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Description Parser
@@ -155,47 +155,11 @@ export default function ProductDetailsPage() {
   };
 
   const addToCart = () => {
-    if (!product) return;
-    const productId = product?._id || product?.id;
-    if (!productId) {
-      setCartMessage("Invalid product data.");
-      return;
-    }
-
-    const stock = Number(product.stock) || 0;
-    if (stock <= 0) {
-      setCartMessage("This product is out of stock.");
-      return;
-    }
-
-    const finalQuantity = Math.min(Math.max(Number(quantity) || 1, 1), stock);
-    const cartKey = "cart_items";
-
-    try {
-      const existingRaw = localStorage.getItem(cartKey);
-      let existingItems = [];
-      if (existingRaw) {
-        const parsed = JSON.parse(existingRaw);
-        existingItems = Array.isArray(parsed) ? parsed : [];
-      }
-
-      const existingIndex = existingItems.findIndex(
-        (item) => item.id === productId,
-      );
-      if (existingIndex >= 0) {
-        const currentQty = Number(existingItems[existingIndex].quantity) || 0;
-        existingItems[existingIndex].quantity = Math.min(
-          currentQty + finalQuantity,
-          stock,
-        );
-      } else {
-        existingItems.push({ id: productId, quantity: finalQuantity });
-      }
-
-      writeCartItems(existingItems);
+    const result = addItemToCart(product, quantity);
+    if (result.ok) {
       setCartMessage("Added to cart.");
-    } catch (_error) {
-      setCartMessage("Could not update cart.");
+    } else {
+      setCartMessage(result.message || "Could not update cart.");
     }
   };
 

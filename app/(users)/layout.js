@@ -11,11 +11,11 @@ import "swiper/css/grid";
 export default function RootLayout({ children }) {
   return (
     <>
-    <Topbar/>
-    <Navbar/>
-    {children}
-    <Footer />
-    <ScrollToTop />
-    </>  
+      <Topbar />
+      <Navbar />
+      {children}
+      <Footer />
+      <ScrollToTop />
+    </>
   );
 }

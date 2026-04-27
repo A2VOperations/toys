@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import styles from "./footer.module.css";
+import Image from "next/image";
 
 const waNumber = (
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567"
@@ -99,19 +100,25 @@ export default function Footer() {
           {/* ── Brand ── */}
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
-              <span>K</span>
-              <span>I</span>
-              <span>D</span>
-              <span>D</span>
-              <span>E</span>
-              <span>X</span>
+              <Image
+                width={150}
+                height={150}
+                src="/Kids For Toy logo.png"
+                alt="logo"
+              />
             </Link>
             <div className={styles.infoText}>
               <p>Kh no 793/1 Budh bazar </p>
               <p> road kamalpur </p>
               <p> Burari Delhi 110084</p>
-              <p> {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""} </p>
-              <p> {process.env.EMAIL_FROM || "operation.a2vgroups@gmail.com"} </p>
+              <p>
+                {" "}
+                {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567"}{" "}
+              </p>
+              <p>
+                {process.env.NEXT_PUBLIC_EMAIL_FROM ||
+                  "toysforkidsdelhi@gmail.com"}
+              </p>
             </div>
             <div className={styles.socials}>
               <a

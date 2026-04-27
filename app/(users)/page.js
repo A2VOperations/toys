@@ -122,13 +122,13 @@ const promoTags = [
   "Puzzles",
   "Cubes",
   "Toy Car",
-  "Girls Doll",
+  "Dolls",
   "Balloons",
   "Or Plate",
   "Puzzles",
   "Cubes",
   "Toy Car",
-  "Girls Doll",
+  "Dolls",
   "Balloons",
   "Or Plate",
 ];
@@ -277,7 +277,7 @@ function PopularProductCard({ product, onAddToCart }) {
       {/* Content Section */}
       <div className="p-4 flex flex-col justify-center items-center">
         {/* Product Name */}
-        <h3 className="text-base font-semibold text-gray-800 line-clamp-2 mb-2 group-hover:text-[#f74872] transition-colors">
+        <h3 className="text-center font-semibold text-gray-800 line-clamp-2 mb-2 group-hover:text-[#f74872] transition-colors">
           {product.name}
         </h3>
 
@@ -693,9 +693,9 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-8 md:flex-row md:gap-12">
+        <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-8 md:flex-row md:gap-8 lg:gap-12">
           <div
-            className={`relative z-10 mx-auto flex h-[260px] w-[260px] items-center justify-center rounded-full text-[120px] transition-all duration-1000 delay-200 animate-bounce-slow transform sm:h-[320px] sm:w-[320px] sm:text-[150px] md:mx-20 md:h-[350px] md:w-[400px] md:text-[180px] ${heroVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"}`}
+            className={`relative z-10 mx-auto flex h-[260px] w-[260px] items-center justify-center rounded-full text-[120px] transition-all duration-1000 delay-200 animate-bounce-slow transform sm:h-[320px] sm:w-[320px] sm:text-[150px] md:mx-4 md:h-[320px] md:w-[320px] lg:mx-12 lg:h-[350px] lg:w-[400px] lg:text-[180px] ${heroVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"}`}
           >
             <Image
               src="/home page/girl with toys.png"
@@ -709,16 +709,16 @@ export default function Home() {
           <div
             className={`relative z-10 flex-1 px-5 text-center md:text-left transition-all duration-1000 transform ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
           >
-            <p className="text-xs mt-2 sm:text-lg md:text-lg text-orange-600 mb-3 font-extrabold w-fit mx-auto md:mx-0 uppercase">
+            <p className="text-xs mt-2 sm:text-lg lg:text-lg text-orange-600 mb-3 font-extrabold w-fit mx-auto md:mx-0 uppercase">
               Welcome to the World of Joy
             </p>
-            <h1 className="mb-4 text-2xl sm:text-4xl md:text-5xl font-extrabold leading-[1.1] text-slate-900">
+            <h1 className="mb-4 text-2xl sm:text-4xl md:text-4xl lg:text-5xl font-extrabold leading-[1.1] text-slate-900">
               From Playtime <br />
               to School Time,
               <br />
               <span className="text-[#f52c6c]">We Bring You the Best</span>
             </h1>
-            <p className="text-gray-600 dark:text-gray-500 mb-8 leading-relaxed">
+            <p className="text-gray-600 dark:text-gray-500 mb-8 leading-relaxed md:text-sm lg:text-base">
               Discover the ultimate collection of toys, educational stationery,
               and unique return gifts. High-quality kids&apos; essentials delivered
               at prices both shops and parents love.

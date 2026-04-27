@@ -61,7 +61,7 @@ const CARDS = [
   {
     icon: <MailIcon />,
     label: "Email Address",
-    value: process.env.EMAIL_FROM || "operation.a2vgroups@gmail.com",
+    value: process.env.NEXT_PUBLIC_EMAIL_FROM || "toysforkidsdelhi@gmail.com",
     iconBg: "bg-violet-50",
     iconColor: "text-violet-600",
   },
@@ -174,8 +174,7 @@ export default function ContactPage() {
               }}
             >
               Let’s <span className="not-italic text-[#f74872]">Talk</span>{" "}
-              <br /> Bulk
-              Orders
+              <br /> Bulk Orders
             </h1>
 
             <div className="my-5 h-0.5 w-12 bg-[#f74872]" />

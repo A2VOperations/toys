@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { CATEGORIES, CATEGORY_EMOJIS } from "./categories";
@@ -136,7 +137,10 @@ function AnnouncementBar() {
       </div>
 
       {/* CENTER — Promo text */}
-      <Link href="/#dealOf" className="flex-1 md:flex-none text-white text-[0.75rem] sm:text-[0.78rem] md:text-[0.82rem] whitespace-nowrap text-center">
+      <Link
+        href="/#dealOf"
+        className="flex-1 md:flex-none text-white text-[0.75rem] sm:text-[0.78rem] md:text-[0.82rem] whitespace-nowrap text-center"
+      >
         Today’s Deals –{" "}
         <strong className="font-extrabold">Click to Save More</strong>
       </Link>
@@ -248,21 +252,41 @@ export default function Navbar({ onCartClick }) {
 
       {/* ── Sticky Nav ── */}
       <nav
-        className="nb-font sticky top-0 z-1000 border-b border-pink-100 bg-white px-4 shadow-sm sm:px-5"
+        className="nb-font sticky top-0 z-1000 bg-white px-5 sm:px-5 "
         style={{ fontFamily: "'Nunito', sans-serif" }}
       >
         <div className="max-w-[1280px] mx-auto flex min-w-0 items-center justify-between gap-3 h-[68px] sm:gap-4">
           {/* Logo */}
           <Link
             href="/"
-            className="shrink-0 text-[1.7rem] font-black leading-none tracking-[-1px] no-underline flex items-center transition-transform duration-200 hover:scale-105 sm:text-[2rem]"
+            className="relative shrink-0 flex items-center w-[120px] md:w-[160px] h-full transition-transform duration-200 z-99999"
           >
-            <span style={{ color: "#e84393" }}>K</span>
-            <span style={{ color: "#ff6b35" }}>I</span>
-            <span style={{ color: "#ffd700" }}>D</span>
-            <span style={{ color: "#4caf50" }}>D</span>
-            <span style={{ color: "#2196f3" }}>E</span>
-            <span style={{ color: "#9c27b0" }}>X</span>
+            {/* Drop-down white background for logo with scalloped/wavy bottom */}
+            <div
+              className="absolute top-0 left-0 w-full bg-white pt-6 pb-5 px-4 flex justify-center flex-col"
+              style={{
+                WebkitMaskImage:
+                  "radial-gradient(circle at 10px calc(100% - 10px), black 10px, transparent 10.5px), linear-gradient(black calc(100% - 10px), transparent 0)",
+                WebkitMaskSize: "20px 100%, 100% 100%",
+                WebkitMaskRepeat: "repeat-x, no-repeat",
+                maskImage:
+                  "radial-gradient(circle at 10px calc(100% - 10px), black 10px, transparent 10.5px), linear-gradient(black calc(100% - 10px), transparent 0)",
+                maskSize: "20px 100%, 100% 100%",
+                maskRepeat: "repeat-x, no-repeat",
+              }}
+            >
+              <Image
+                src="/Kids For Toy logo.png"
+                alt="Logo"
+                width={200}
+                height={200}
+                className="w-full h-auto object-contain max-w-[200px] md:max-w-[200px]"
+                priority
+              />
+              {/* <div className="text-white bg-red-600 text-center font-extrabold text-[0.6rem] mt-2">
+                WHOLESALER OF TRENDING ITEMS
+              </div> */}
+            </div>
           </Link>
 
           {/* Desktop Links */}
@@ -355,27 +379,31 @@ export default function Navbar({ onCartClick }) {
           onMouseLeave={closeMega}
         >
           <div
-            className={`bg-white border-t-[3px] border-t-[#e84393] border-b-2 border-b-[#fce4ef] shadow-[0_24px_80px_rgba(232,67,147,0.13)] transition-all duration-280
+            className={`pb-5 transition-all duration-280 bg-[linear-gradient(78.33deg,#FFCF78_5.9%,#FEE2B1_97.88%)] 
             ${megaOpen ? "opacity-100 visible translate-y-0 pointer-events-auto mega-open" : "opacity-0 invisible -translate-y-3"}`}
           >
+            <div className="flex justify-center pt-15">
+
+            </div>
             <div
-              className="max-w-[1280px] mx-auto grid min-h-[360px]"
-              style={{ gridTemplateColumns: "1fr 1fr 1fr 320px" }}
+              className="max-w-[100vw] mx-auto grid bg-white min-h-[520px]"
+              style={{ gridTemplateColumns: "2.2fr 1.2fr 1fr 280px" }}
             >
               {/* Col 1 */}
-              <div className="p-9 border-r border-[#fce4ef] overflow-y-auto max-h-[450px] scrollbar-thin scrollbar-track-[#fce4ef] scrollbar-thumb-[#e84393] hover:scrollbar-thumb-[#c73580] scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
-                <h4 className="text-[0.66rem] font-black tracking-[0.18em] uppercase mb-5 pb-3 border-b-2 border-[#fce4ef] flex items-center gap-2 text-[#e84393]">
+              <div className="p-8 border-r border-[#fce4ef]">
+                <h4 className="text-[1rem] font-black tracking-[0.18em] uppercase mb-3 pb-2 border-b-2 border-[#fce4ef] flex items-center gap-2 text-[#e84393]">
                   🗂️ Categories
                 </h4>
-                <ul className="list-none p-0 m-0 flex flex-col gap-1.5">
+                <ul className="list-none p-0 m-0 grid grid-cols-2 gap-x-4 gap-y-3">
                   {CATEGORIES.map((label) => (
                     <li key={label}>
                       <Link
                         href={`/shop?category=${encodeURIComponent(label)}`}
-                        className="text-[0.95rem] font-bold text-[#555] no-underline flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-200 hover:bg-[#fff0f6] hover:text-[#e84393] hover:pl-4 group"
+                        className="text-[1rem] font-bold text-[#555] no-underline flex items-center gap-2 px-2 py-1.5 rounded-xl transition-all duration-200 hover:bg-[#fff0f6] hover:text-[#e84393] hover:pl-3 group"
                       >
-                        <span className="w-2 h-2 rounded-full bg-[#fce4ef] transition-all duration-200 group-hover:bg-[#e84393] group-hover:scale-125" />
-                        {CATEGORY_EMOJIS[label] || "🧸"} {label}
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#fce4ef] transition-all duration-200 group-hover:bg-[#e84393] group-hover:scale-125 shrink-0" />
+                        <span className="shrink-0">{CATEGORY_EMOJIS[label] || "🧸"}</span> 
+                        <span className="truncate">{label}</span>
                       </Link>
                     </li>
                   ))}
@@ -383,35 +411,35 @@ export default function Navbar({ onCartClick }) {
               </div>
 
               {/* Col 2 */}
-              <div className="p-9 border-r border-[#fce4ef]">
-                <h4 className="text-[0.66rem] font-black tracking-[0.18em] uppercase mb-5 pb-3 border-b-2 border-[#ffe0d4] flex items-center gap-2 text-[#ff6b35]">
+              <div className="p-8 border-r border-[#fce4ef]">
+                <h4 className="text-[1rem] font-black tracking-[0.18em] uppercase mb-3 pb-2 border-b-2 border-[#ffe0d4] flex items-center gap-2 text-[#ff6b35]">
                   🏷️ Trending Tags
                 </h4>
-                <div className="flex flex-wrap gap-2 mb-7">
+                <div className="flex flex-wrap gap-3 mb-8">
                   {MEGA.tags.map((t) => {
                     const tagValue = t.replace(/[^a-zA-Z\s]/g, "").trim();
                     return (
                       <Link
                         key={t}
                         href={`/shop?tags=${encodeURIComponent(tagValue)}`}
-                        className="inline-flex items-center gap-1 bg-[#fff0f6] border-[1.5px] border-[#fce4ef] rounded-full px-3.5 py-1.5 text-[0.85rem] font-bold text-[#e84393] no-underline transition-all duration-200 hover:bg-[#e84393] hover:text-white hover:-translate-y-0.5"
+                        className="inline-flex items-center gap-1 bg-[#fff0f6] border-[1.5px] border-[#fce4ef] rounded-full px-3 py-1 text-[1rem] font-bold text-[#e84393] no-underline transition-all duration-200 hover:bg-[#e84393] hover:text-white hover:-translate-y-0.5"
                       >
                         {t}
                       </Link>
                     );
                   })}
                 </div>
-                <h4 className="text-[0.66rem] font-black tracking-[0.18em] uppercase mb-5 pb-3 border-b-2 border-[#f3e5f5] flex items-center gap-2 text-[#9c27b0]">
+                <h4 className="text-[1rem] font-black tracking-[0.18em] uppercase mb-3 pb-2 border-b-2 border-[#f3e5f5] flex items-center gap-2 text-[#9c27b0]">
                   👶 Shop by Gender
                 </h4>
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-2 gap-3">
                   {MEGA.genders.map((g) => (
                     <Link
                       key={g.label}
                       href={`/shop?gender=${encodeURIComponent(g.path)}`}
-                      className="flex flex-col items-center justify-center py-4 px-2.5 rounded-2xl border-2 border-[#fce4ef] no-underline text-[0.85rem] font-extrabold text-[#555] bg-white transition-all duration-200 hover:bg-[#fce4ef] hover:border-[#e84393] hover:text-[#e84393] hover:-translate-y-0.5"
+                      className="flex flex-col items-center justify-center rounded-2xl py-2 px-2 border-2 border-[#fce4ef] no-underline text-[1rem] font-extrabold text-[#555] bg-white transition-all duration-200 hover:bg-[#fce4ef] hover:border-[#e84393] hover:text-[#e84393] hover:-translate-y-0.5"
                     >
-                      <span className="text-2xl">{g.emoji}</span>
+                      <span className="text-xl mb-1">{g.emoji}</span>
                       {g.label}
                     </Link>
                   ))}
@@ -419,11 +447,11 @@ export default function Navbar({ onCartClick }) {
               </div>
 
               {/* Col 3 */}
-              <div className="p-9 border-r border-[#fce4ef]">
-                <h4 className="text-[0.66rem] font-black tracking-[0.18em] uppercase mb-5 pb-3 border-b-2 border-[#fce4ef] flex items-center gap-2 text-[#e84393]">
+              <div className="p-8 border-r border-[#fce4ef]">
+                <h4 className="text-[1rem] font-black tracking-[0.18em] uppercase mb-3 pb-2 border-b-2 border-[#fce4ef] flex items-center gap-2 text-[#e84393]">
                   ⚡ Quick Access
                 </h4>
-                <ul className="list-none p-0 m-0 flex flex-col gap-1.5">
+                <ul className="list-none p-0 m-0 flex flex-col gap-3">
                   {[
                     "New Arrivals",
                     "Best Sellers",
@@ -441,9 +469,9 @@ export default function Navbar({ onCartClick }) {
                       <li key={l}>
                         <Link
                           href={href}
-                          className="text-[0.95rem] font-bold text-[#555] no-underline flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-200 hover:bg-[#fff0f6] hover:text-[#e84393] hover:pl-4 group"
+                          className="text-[1rem] font-bold text-[#555] no-underline flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-200 hover:bg-[#fff0f6] hover:text-[#e84393] hover:pl-4 group"
                         >
-                          <span className="w-2 h-2 rounded-full bg-[#fce4ef] transition-all duration-200 group-hover:bg-[#e84393] group-hover:scale-125" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#fce4ef] transition-all duration-200 group-hover:bg-[#e84393] group-hover:scale-125" />
                           {l}
                         </Link>
                       </li>
@@ -454,38 +482,38 @@ export default function Navbar({ onCartClick }) {
 
               {/* Col 4 */}
               <div
-                className="p-10 flex flex-col justify-between"
+                className="p-8 flex flex-col justify-between"
                 style={{
                   background:
                     "linear-gradient(160deg, #fff0f6 0%, #fce4ef 60%, #ffd6eb 100%)",
                 }}
               >
                 <div>
-                  <span className="text-[0.62rem] font-black text-[#e84393] bg-white px-2.5 py-0.5 rounded-2xl border-[1.5px] border-[#fce4ef] self-start inline-block mb-3">
+                  <span className=" text-[0.88rem] font-black text-[#e84393] bg-white px-2.5 py-0.5  border-[1.5px] border-[#fce4ef] self-start inline-block mb-3">
                     ✨ The Toy Stack
                   </span>
-                  <h3 className="text-[2rem] font-black leading-tight text-[#222] mb-3">
+                  <h3 className="text-[1.5rem] font-black leading-tight text-[#222] mb-2">
                     DISCOVER <span style={{ color: "#e84393" }}>PLAYTIME</span>{" "}
                     MAGIC
                   </h3>
-                  <p className="text-[0.8rem] text-[#888] leading-relaxed font-semibold mb-6">
+                  <p className="text-[1rem] text-[#888] leading-relaxed font-semibold mb-5">
                     Curated premium toys for every child. Spark imagination and
                     create memories.
                   </p>
-                  <div className="flex gap-4 mb-6">
+                  <div className="flex gap-4 mb-4">
                     <div>
-                      <div className="text-[1.3rem] font-black text-[#e84393]">
+                      <div className="text-[1.1rem] font-black text-[#e84393]">
                         500+
                       </div>
-                      <div className="text-[0.65rem] text-[#aaa] font-bold uppercase">
+                      <div className="text-[0.6rem] text-[#aaa] font-bold uppercase">
                         Toys
                       </div>
                     </div>
                     <div>
-                      <div className="text-[1.3rem] font-black text-[#e84393]">
+                      <div className="text-[1.1rem] font-black text-[#e84393]">
                         4.9★
                       </div>
-                      <div className="text-[0.65rem] text-[#aaa] font-bold uppercase">
+                      <div className="text-[0.6rem] text-[#aaa] font-bold uppercase">
                         Rating
                       </div>
                     </div>
@@ -493,7 +521,7 @@ export default function Navbar({ onCartClick }) {
                 </div>
                 <Link
                   href="/shop"
-                  className="inline-flex self-start bg-[#e84393] text-white px-5 py-3 rounded-full text-[0.82rem] font-black no-underline shadow-[0_8px_24px_rgba(232,67,147,0.25)] hover:brightness-110 transition-all"
+                  className="inline-flex self-start bg-[#e84393] text-white px-5 py-2.5 rounded-full text-[0.8rem] font-black no-underline shadow-[0_8px_24px_rgba(232,67,147,0.25)] hover:brightness-110 transition-all"
                 >
                   SHOP ALL →
                 </Link>
@@ -516,14 +544,16 @@ export default function Navbar({ onCartClick }) {
       >
         {/* Header */}
         <div className="p-5 border-b-2 border-[#fce4ef] flex justify-between items-center">
-          <span className="text-[1.5rem] font-black tracking-[-1px] flex items-center">
-            <span style={{ color: "#e84393" }}>K</span>
-            <span style={{ color: "#ff6b35" }}>I</span>
-            <span style={{ color: "#ffd700" }}>D</span>
-            <span style={{ color: "#4caf50" }}>D</span>
-            <span style={{ color: "#2196f3" }}>E</span>
-            <span style={{ color: "#9c27b0" }}>X</span>
+          <span className="text-2xl font-black tracking-[-1px] flex items-center">
+            <Image
+              src="/Kids For Toy logo.png"
+              alt="Kiddey's Logo"
+              width={120}
+              height={40}
+              className="object-contain mr-2"
+            />
           </span>
+
           <button
             onClick={closeMobileMenu}
             className="bg-none border-none text-2xl cursor-pointer text-[#e84393] font-black px-3 py-1 rounded-lg hover:bg-[#fce4ef] transition-all"
@@ -574,7 +604,7 @@ export default function Navbar({ onCartClick }) {
             {mobileShopSubmenu && (
               <div className="ml-4 mt-2 mb-2">
                 <div className="mb-6">
-                  <div className="text-[0.7rem] font-black tracking-widest uppercase text-[#e84393] mb-3">
+                  <div className="text-[1rem] font-black tracking-widest uppercase text-[#e84393] mb-3">
                     🗂️ Categories
                   </div>
                   {CATEGORIES.map((label) => (
@@ -589,7 +619,7 @@ export default function Navbar({ onCartClick }) {
                   ))}
                 </div>
                 <div className="mb-6">
-                  <div className="text-[0.7rem] font-black tracking-widest uppercase text-[#e84393] mb-3">
+                  <div className="text-[1rem] font-black tracking-widest uppercase text-[#e84393] mb-3">
                     🏷️ Trending Tags
                   </div>
                   <div className="flex flex-wrap gap-2 mb-4">
@@ -684,7 +714,7 @@ export default function Navbar({ onCartClick }) {
 
         {/* Feature promo */}
         <div
-          className="mx-5 my-2 p-5 rounded-2xl"
+          className="mx-5 my-2 p-5 "
           style={{
             background: "linear-gradient(160deg, #fff0f6 0%, #fce4ef 100%)",
           }}

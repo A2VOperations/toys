@@ -111,7 +111,7 @@ export default function ProductDetailsPage() {
   const [error, setError] = useState("");
 
   const whatsappNumber =
-    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9582399535";
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9643399433";
 
   useEffect(() => {
     const fetchProduct = async () => {

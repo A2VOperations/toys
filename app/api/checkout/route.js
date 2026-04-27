@@ -25,7 +25,7 @@ export async function POST(request) {
     };
 
     const recipientEmail =
-      process.env.EMAIL_TO || "operation.a2vgroups@gmail.com";
+      process.env.NEXT_PUBLIC_EMAIL_TO || "toysforkidsdelhi@gmail.com";
 
     const client = new MailtrapClient({
       token: process.env.MAILTRAP_TOKEN,

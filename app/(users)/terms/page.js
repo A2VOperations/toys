@@ -1,6 +1,6 @@
 "use client";
 
-const SUPPORT_EMAIL = "operation.a2vgroups@gmail.com";
+const SUPPORT_EMAIL = "toysforkidsdelhi@gmail.com";
 const SUPPORT_NUMBER =
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919999999999";
 const SUPPORT_ADDRESS =

@@ -58,54 +58,19 @@ function getCategoryEmoji(category = "") {
     return "🧸";
   if (cat.includes("block")) return "🟥";
   return "🎁";
-}
-
-// ─── Category Carousel ───────────────────────────────────────────────────────
-
-const categories = [
-  { icon: "🚗", label: "Toy Car" },
-  { icon: "👗", label: "Girls Doll" },
-  { icon: "🎈", label: "Balloons" },
-  { icon: "🎨", label: "Color Plate" },
-  { icon: "🧩", label: "Puzzles" },
-  { icon: "🧸", label: "Stuffed Toys" },
-  { icon: "🤖", label: "Robots" },
-  { icon: "🏏", label: "Sports" },
-  { icon: "🎵", label: "Music Toys" },
-  { icon: "🔬", label: "Science Kits" },
-  { icon: "🚗", label: "Toy Car" },
-  { icon: "👗", label: "Girls Doll" },
-  { icon: "🎈", label: "Balloons" },
-  { icon: "🎨", label: "Color Plate" },
-  { icon: "🧩", label: "Puzzles" },
-  { icon: "🧸", label: "Stuffed Toys" },
-  { icon: "🤖", label: "Robots" },
-  { icon: "🏏", label: "Sports" },
-  { icon: "🎵", label: "Music Toys" },
-  { icon: "🔬", label: "Science Kits" },
-  { icon: "🚗", label: "Toy Car" },
-  { icon: "👗", label: "Girls Doll" },
-  { icon: "🎈", label: "Balloons" },
-  { icon: "🎨", label: "Color Plate" },
-  { icon: "🧩", label: "Puzzles" },
-  { icon: "🧸", label: "Stuffed Toys" },
-  { icon: "🤖", label: "Robots" },
-  { icon: "🏏", label: "Sports" },
-  { icon: "🎵", label: "Music Toys" },
-  { icon: "🔬", label: "Science Kits" },
-];
+} 
 
 const promoTags = [
   "Puzzles",
   "Cubes",
   "Toy Car",
-  "Girls Doll",
+  "Dolls",
   "Balloons",
   "Or Plate",
   "Puzzles",
   "Cubes",
   "Toy Car",
-  "Girls Doll",
+  "Dolls",
   "Balloons",
   "Or Plate",
 ];
@@ -266,7 +231,7 @@ export function AboutInfoSection() {
 }
 
 function ExperienceBadge() {
-  const circleText = "8+ Years Experience - 8+ Years Experience - ";
+  const circleText = "8+ Years Experience | 8+ Years Experience | ";
 
   return (
     <div className="absolute top-4 right-4 md:right-10 z-20 flex h-[150px] w-[150px] items-center justify-center rounded-full bg-white shadow-xl shadow-pink-200/70">
@@ -283,7 +248,7 @@ function ExperienceBadge() {
           </defs>
           <text
             fill="#ec4899"
-            fontSize="10"
+            fontSize="8"
             fontWeight="800"
             letterSpacing="2.3"
           >
@@ -610,23 +575,23 @@ export default function AboutSection() {
             {/* Stats box */}
             <div className="border-2 border-dashed border-pink-300 rounded-2xl p-6 flex flex-col md:flex-row justify-between gap-4 text-center bg-white shadow-lg shadow-pink-50">
               <div className="flex-1">
-                <h3 className="text-3xl font-black text-pink-500">25+</h3>
+                <h3 className="text-3xl font-black text-pink-500">20+</h3>
                 <p className="text-gray-500 text-xs mt-1 font-semibold">
-                  Retail Stores in the City
+                  Cities Covered
                 </p>
               </div>
               <div className="hidden md:block w-px bg-pink-100" />
               <div className="flex-1">
-                <h3 className="text-3xl font-black text-pink-500">300+</h3>
+                <h3 className="text-3xl font-black text-pink-500">100+</h3>
                 <p className="text-gray-500 text-xs mt-1 font-semibold">
                   Active Delivery Partners
                 </p>
               </div>
               <div className="hidden md:block w-px bg-pink-100" />
               <div className="flex-1">
-                <h3 className="text-3xl font-black text-pink-500">120+</h3>
+                <h3 className="text-3xl font-black text-pink-500">5000+</h3>
                 <p className="text-gray-500 text-xs mt-1 font-semibold">
-                  Brands and Companies
+                  Happy Customers
                 </p>
               </div>
             </div>

@@ -72,6 +72,7 @@ function ShopPageContent() {
   });
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [isFirstSyncComplete, setIsFirstSyncComplete] = useState(false);
+  const isFirstRender = useRef(true);
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
 
@@ -247,6 +248,11 @@ function ShopPageContent() {
   // Debounced effect for text filters
   useEffect(() => {
     if (!isFirstSyncComplete) return;
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
 
     const timer = setTimeout(() => {
       const currentParams = buildSearchParams(filters);

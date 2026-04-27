@@ -239,18 +239,6 @@ const sections = [
     ),
   },
   {
-    id: "s10",
-    title: "Changes to This Policy",
-    content: (
-      <p>
-        We may update this Privacy Policy from time to time. We will notify you
-        of significant changes by posting the updated policy with a new
-        effective date. Your continued use of Toys For Kids after any changes
-        constitutes acceptance of the updated policy.
-      </p>
-    ),
-  },
-  {
     id: "s11",
     title: "Contact Us",
     content: (

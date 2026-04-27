@@ -259,11 +259,11 @@ function PopularProductCard({ product, onAddToCart }) {
       {/* Image Container with overlay effect */}
       <div className="relative overflow-hidden bg-gray-100">
         <Image
-          width={300}
-          height={300}
+          width={600}
+          height={600}
           src={product.image}
           alt={product.name}
-          className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
         {/* Optional: Category badge on image */}
@@ -389,7 +389,7 @@ export default function Home() {
             name: t.title,
             category: t.category,
             image:
-              t.images?.[0] || "https://placehold.co/200x200?text=No+Image",
+              t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
             price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
             stock: t.stock,
           }));
@@ -416,7 +416,7 @@ export default function Home() {
             id: t._id,
             name: t.title,
             category: t.category,
-            img: t.images?.[0] || "https://placehold.co/200x200?text=No+Image",
+            img: t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
             price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
             old: null,
             stock: t.stock,
@@ -446,7 +446,7 @@ export default function Home() {
               _id: t._id,
               name: t.title,
               image:
-                t.images?.[0] || "https://placehold.co/240x240?text=No+Image",
+                t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
               price: `\u20b9${parseFloat(t.price || 0).toFixed(2)}`,
               stock: t.stock,
             })),
@@ -478,7 +478,7 @@ export default function Home() {
             name: t.title,
             category: t.category,
             image:
-              t.images?.[0] || "https://placehold.co/200x200?text=No+Image",
+              t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
             price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
             stock: t.stock,
           }));
@@ -1550,7 +1550,7 @@ export default function Home() {
               <span className="inline-block bg-white/20 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3">
                 Special Offer
               </span>
-              <h3 className="text-white text-4xl mb-6 font-black leading-tight drop-shadow-sm z-[1000]">
+              <h3 className="text-white text-4xl mb-6 font-black leading-tight drop-shadow-sm z-1000">
                 Buy One
                 <br />
                 Get One

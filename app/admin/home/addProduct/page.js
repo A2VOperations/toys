@@ -62,11 +62,53 @@ export default function AddToyForm() {
     price: 0,
   });
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
 
-    const readers = files.map(
+    const MIN_WIDTH = 600;
+    const MIN_HEIGHT = 600;
+    const MAX_WIDTH = 600;
+    const MAX_HEIGHT = 600;
+
+    const validFiles = [];
+
+    for (const file of files) {
+      const isValid = await new Promise((resolve) => {
+        const img = new window.Image();
+        const objectUrl = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(objectUrl);
+          if (img.width < MIN_WIDTH || img.height < MIN_HEIGHT) {
+            alert(`Image "${file.name}" is too small (${img.width}x${img.height} pixels).\n\nImages must be at least ${MIN_WIDTH}x${MIN_HEIGHT} pixels!`);
+            resolve(false);
+          } else if (img.width > MAX_WIDTH || img.height > MAX_HEIGHT) {
+            alert(`Image "${file.name}" is too large (${img.width}x${img.height} pixels).\n\nImages must be no larger than ${MAX_WIDTH}x${MAX_HEIGHT} pixels!`);
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(objectUrl);
+          alert(`Failed to load image "${file.name}".`);
+          resolve(false);
+        };
+        img.src = objectUrl;
+      });
+
+      if (isValid) {
+        validFiles.push(file);
+      }
+    }
+
+    // If none of the selected files met the requirements, just return
+    if (!validFiles.length) {
+      e.target.value = "";
+      return;
+    }
+
+    const readers = validFiles.map(
       (file) =>
         new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -77,14 +119,20 @@ export default function AddToyForm() {
     );
 
     Promise.all(readers).then((results) => {
-      setPreviews(results);
-      setImageBase64s(results);
+      setPreviews((prev) => [...prev, ...results]);
+      setImageBase64s((prev) => [...prev, ...results]);
+      // Clear the input value so the same file can be selected again
+      e.target.value = "";
     });
   };
 
   const removeImage = (idx) => {
     setPreviews((p) => p.filter((_, i) => i !== idx));
     setImageBase64s((p) => p.filter((_, i) => i !== idx));
+    // Clear the input value so the removed file can be selected again
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleTag = (tag) => {
@@ -396,6 +444,9 @@ export default function AddToyForm() {
               </p>
               <p className="text-xs text-gray-400 mt-1 font-semibold">
                 PNG, JPG, WEBP — multiple allowed
+              </p>
+              <p className="text-xs text-pink-500 mt-1 font-black">
+                * Images must be 600x600 pixels
               </p>
               <input
                 ref={fileInputRef}

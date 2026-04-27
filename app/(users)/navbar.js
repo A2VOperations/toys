@@ -248,7 +248,7 @@ export default function Navbar({ onCartClick }) {
 
       {/* ── Sticky Nav ── */}
       <nav
-        className="nb-font sticky top-0 z-[1000] border-b border-pink-100 bg-white px-4 shadow-sm sm:px-5"
+        className="nb-font sticky top-0 z-1000 border-b border-pink-100 bg-white px-4 shadow-sm sm:px-5"
         style={{ fontFamily: "'Nunito', sans-serif" }}
       >
         <div className="max-w-[1280px] mx-auto flex min-w-0 items-center justify-between gap-3 h-[68px] sm:gap-4">
@@ -273,7 +273,7 @@ export default function Navbar({ onCartClick }) {
                   <button
                     onMouseEnter={openMega}
                     onMouseLeave={closeMega}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[1.05rem] font-extrabold cursor-pointer border-none transition-all duration-200 nb-font
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[0.88rem] font-extrabold cursor-pointer border-none transition-all duration-200 nb-font
                       ${megaOpen || pathname === "/shop" ? "bg-[#fce4ef] text-[#e84393]" : "bg-transparent text-[#555] hover:bg-[#fce4ef] hover:text-[#e84393]"}`}
                     style={{ fontFamily: "'Nunito', sans-serif" }}
                   >
@@ -297,7 +297,7 @@ export default function Navbar({ onCartClick }) {
                 <li key={link.name}>
                   <Link
                     href={link.path}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[1.05rem] font-extrabold no-underline transition-all duration-200 nb-font
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[0.88rem] font-extrabold no-underline transition-all duration-200 nb-font
                       ${pathname === link.path ? "bg-[#fce4ef] text-[#e84393]" : "text-[#555] hover:bg-[#fce4ef] hover:text-[#e84393]"}`}
                     style={{ fontFamily: "'Nunito', sans-serif" }}
                   >
@@ -349,13 +349,13 @@ export default function Navbar({ onCartClick }) {
 
         {/* ── Mega Menu — inside sticky nav, zero scroll gap ── */}
         <div
-          className="hidden md:block absolute left-0 right-0 w-full z-[9999] pointer-events-none"
+          className="hidden md:block absolute left-0 right-0 w-full z-9999 pointer-events-none"
           style={{ top: "100%" }}
           onMouseEnter={openMega}
           onMouseLeave={closeMega}
         >
           <div
-            className={`bg-white border-t-[3px] border-t-[#e84393] border-b-2 border-b-[#fce4ef] shadow-[0_24px_80px_rgba(232,67,147,0.13)] transition-all duration-[280ms]
+            className={`bg-white border-t-[3px] border-t-[#e84393] border-b-2 border-b-[#fce4ef] shadow-[0_24px_80px_rgba(232,67,147,0.13)] transition-all duration-280
             ${megaOpen ? "opacity-100 visible translate-y-0 pointer-events-auto mega-open" : "opacity-0 invisible -translate-y-3"}`}
           >
             <div
@@ -505,13 +505,13 @@ export default function Navbar({ onCartClick }) {
 
       {/* ── Mobile Overlay ── */}
       <div
-        className={`fixed inset-0 bg-black/50 z-[9999] transition-all duration-300 ${mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        className={`fixed inset-0 bg-black/50 z-9999 transition-all duration-300 ${mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
         onClick={closeMobileMenu}
       />
 
       {/* ── Mobile Drawer ── */}
       <div
-        className={`fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-white z-[10000] flex flex-col overflow-y-auto shadow-[-4px_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-white z-10000 flex flex-col overflow-y-auto shadow-[-4px_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
         style={{ fontFamily: "'Nunito', sans-serif" }}
       >
         {/* Header */}

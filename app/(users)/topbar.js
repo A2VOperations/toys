@@ -7,38 +7,40 @@ import "swiper/css";
 const slides = [
   {
     icon: "🚚",
-    text: "Free Shipping on all orders over Rs.2500 — Shop now!",
+    text: "Free Shipping on orders over ₹2500",
     link: null,
   },
   {
-    icon: "✅",
-    text: "100% Trustworthy & Verified Toys — Quality Guaranteed",
-    link: null,
-  },
-  {
-    icon: "⚡",
-    text: "Reliable Same-Day Delivery available in major cities",
-    link: null,
-  },
-  { icon: "💬", text: "Need help? WhatsApp us at ", link: null },
-  {
-    icon: "🔒",
-    text: "Secure Payments — COD, Card & EasyPaisa accepted",
+    icon: "🏷️",
+    text: "Best Wholesale Prices & Bulk Deals Available",
     link: null,
   },
   {
     icon: "🎁",
-    text: "Gift Wrapping available on all orders — Surprise someone today!",
+    text: "Perfect Return Gifts for Birthdays & Events",
+    link: null,
+  },
+  {
+    icon: "🧸",
+    text: "Trending Toys, School Essentials & New Arrivals",
+    link: null,
+  },
+  {
+    icon: "🏊",
+    text: "Summer Specials: Pool Toys & Accessories",
+    link: null,
+  },
+  {
+    icon: "🔒",
+    text: "Safe & Secure Payments (COD Available)",
     link: null,
   },
   {
     icon: "⭐",
-    text: "4.9★ Rated by 10,000+ happy parents across Pakistan",
+    text: "Trusted by Thousands of Happy Customers",
     link: null,
   },
-  { icon: "🔄", text: "Easy 7-day Returns — No questions asked", link: null },
 ];
-
 
 export default function topbar() {
   return (
@@ -58,7 +60,9 @@ export default function topbar() {
         {slides.map((slide, i) => (
           <SwiperSlide key={i} style={{ width: "auto" }}>
             <div className="flex items-center gap-2 text-white font-bold tracking-wide text-[0.72rem] md:text-[20px] h-[36px] px-8 whitespace-nowrap">
-              <span className="text-sm md:text-[1rem] leading-none">{slide.icon}</span>
+              <span className="text-sm md:text-[1rem] leading-none">
+                {slide.icon}
+              </span>
               {slide.link ? (
                 <a
                   href={slide.link}

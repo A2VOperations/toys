@@ -74,10 +74,49 @@ export default function ProductDetailPage() {
     if (id) fetchToy();
   }, [id, router]);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
-    const readers = files.map(
+
+    const MIN_WIDTH = 600;
+    const MIN_HEIGHT = 600;
+    const MAX_WIDTH = 600;
+    const MAX_HEIGHT = 600;
+
+    const validFiles = [];
+
+    for (const file of files) {
+      const isValid = await new Promise((resolve) => {
+        const img = new window.Image();
+        const objectUrl = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(objectUrl);
+          if (img.width < MIN_WIDTH || img.height < MIN_HEIGHT || img.width > MAX_WIDTH || img.height > MAX_HEIGHT) {
+            alert(`Image "${file.name}" is ${img.width}x${img.height} pixels.\n\nImages must be exactly 600x600 pixels!`);
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(objectUrl);
+          alert(`Failed to load image "${file.name}".`);
+          resolve(false);
+        };
+        img.src = objectUrl;
+      });
+
+      if (isValid) {
+        validFiles.push(file);
+      }
+    }
+
+    if (!validFiles.length) {
+      e.target.value = "";
+      return;
+    }
+
+    const readers = validFiles.map(
       (file) =>
         new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -87,9 +126,16 @@ export default function ProductDetailPage() {
         })
     );
     Promise.all(readers).then((results) => {
-      setNewImages(results);
-      setNewPreviews(results);
+      setNewImages((prev) => [...prev, ...results]);
+      setNewPreviews((prev) => [...prev, ...results]);
+      e.target.value = "";
     });
+  };
+
+  const removeNewImage = (idx) => {
+    setNewPreviews((p) => p.filter((_, i) => i !== idx));
+    setNewImages((p) => p.filter((_, i) => i !== idx));
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleTag = (tag) => {
@@ -277,6 +323,16 @@ export default function ProductDetailPage() {
           transition: border-color 0.2s ease, transform 0.2s ease;
         }
         .image-thumb:hover { border-color: #E84393; transform: scale(1.04); }
+        .image-thumb:hover .remove-btn { opacity: 1; }
+        .remove-btn {
+          position: absolute; top: 4px; right: 4px;
+          width: 20px; height: 20px;
+          background: #E84393; color: white;
+          border-radius: 50%; font-size: 12px;
+          display: flex; align-items: center; justify-content: center;
+          opacity: 0; transition: opacity 0.15s ease;
+          cursor: pointer; border: none;
+        }
 
         .upload-zone {
           border: 2.5px dashed #fbb6d4;
@@ -395,9 +451,18 @@ export default function ProductDetailPage() {
                 <div key={i} className="image-thumb">
                   <img src={src} alt="" className="w-full h-full object-cover" />
                   {newPreviews.length > 0 && (
-                    <span className="absolute top-1 left-1 bg-yellow-400 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">
-                      NEW
-                    </span>
+                    <>
+                      <span className="absolute top-1 left-1 bg-yellow-400 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">
+                        NEW
+                      </span>
+                      <button
+                        type="button"
+                        className="remove-btn"
+                        onClick={() => removeNewImage(i)}
+                      >
+                        ×
+                      </button>
+                    </>
                   )}
                 </div>
               ))}
@@ -408,10 +473,13 @@ export default function ProductDetailPage() {
                 <div className="text-3xl mb-2">📸</div>
                 <p className="text-sm font-bold text-gray-400">
                   {newPreviews.length > 0
-                    ? `${newPreviews.length} new image(s) selected — click to change`
-                    : "Click to replace images"}
+                    ? `${newPreviews.length} new image(s) selected — click to add more`
+                    : "Click to add/replace images"}
                 </p>
                 <p className="text-xs text-gray-300 font-semibold mt-1">PNG, JPG, WEBP</p>
+                <p className="text-xs text-pink-500 mt-1 font-black">
+                  * Images must be 600x600 pixels
+                </p>
                 <input
                   ref={fileInputRef}
                   type="file"

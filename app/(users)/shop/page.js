@@ -376,16 +376,17 @@ function ShopPageContent() {
                   >
                     <Link
                       href={`/shop/${product._id}`}
-                      className="block relative aspect-[4/3] bg-gray-100 overflow-hidden shrink-0"
+                      className="block relative aspect-square bg-gray-100 overflow-hidden shrink-0"
                     >
                       <Image
                         src={
                           product.images?.[0] ||
-                          "https://placehold.co/600x400/edf2f7/4a5568?text=No+Preview"
+                          "https://placehold.co/600x600/edf2f7/4a5568?text=No+Preview"
                         }
                         alt={product.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        width={600}
+                        height={600}
+                        sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                       />
                       {product.tags?.[0] && (

@@ -173,22 +173,23 @@ export default function ContactPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Let&apos;s <span className="not-italic text-[#f74872]">Talk</span>
-              <br />
-              Toys &amp; More
+              Let’s <span className="not-italic text-[#f74872]">Talk</span>{" "}
+              <br /> Bulk
+              Orders
             </h1>
 
             <div className="my-5 h-0.5 w-12 bg-[#f74872]" />
 
             <p
-              className="max-w-[340px] leading-[1.7] text-[#2b1a12] font-semibold!"
-              style={{ fontSize: 15, fontWeight: 300 }}
+              className="max-w-[450px] leading-[1.7] text-[#2b1a12] font-semibold!"
+              style={{ fontSize: 16, fontWeight: 400 }}
             >
-              A question about your order, a partnership idea, or just want to
-              say hi — we&apos;re here and happy to help.
+              From return gifts and stationery to toys and school essentials,
+              we’re here to support your bulk and wholesale requirements with
+              ease.
             </p>
           </div>
-              
+
           {/* right stats – hidden on mobile */}
           <div className="hidden flex-col items-end gap-3 md:flex ">
             {[

@@ -63,12 +63,57 @@ export default function BannerManager() {
     fetchBanners();
   }, [fetchBanners]);
 
-  const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    setFormData({ ...formData, files: selectedFiles });
-    const localPreviews = selectedFiles.map((file) =>
-      URL.createObjectURL(file),
-    );
+  const handleFileChange = async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+
+    const MIN_WIDTH = 1500;
+    const MIN_HEIGHT = 600;
+    const MAX_WIDTH = 1500;
+    const MAX_HEIGHT = 600;
+
+    const validFiles = [];
+
+    for (const file of files) {
+      const isValid = await new Promise((resolve) => {
+        const img = new Image();
+        const objectUrl = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(objectUrl);
+          if (
+            img.width < MIN_WIDTH ||
+            img.height < MIN_HEIGHT ||
+            img.width > MAX_WIDTH ||
+            img.height > MAX_HEIGHT
+          ) {
+            alert(
+              `Image "${file.name}" is ${img.width}x${img.height} pixels.\n\nImages must be exactly 1500x600 pixels!`,
+            );
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(objectUrl);
+          alert(`Failed to load image "${file.name}".`);
+          resolve(false);
+        };
+        img.src = objectUrl;
+      });
+
+      if (isValid) {
+        validFiles.push(file);
+      }
+    }
+
+    if (!validFiles.length) {
+      e.target.value = "";
+      return;
+    }
+
+    setFormData({ ...formData, files: validFiles });
+    const localPreviews = validFiles.map((file) => URL.createObjectURL(file));
     setPreviews(localPreviews);
   };
 
@@ -407,11 +452,9 @@ export default function BannerManager() {
                   <div>
                     <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider ml-1">
                       Banner Assets{" "}
-                      {editingId && (
-                        <span className="normal-case text-gray-400 font-normal">
-                          (leave empty to keep existing)
-                        </span>
-                      )}
+                      <span className="normal-case text-pink-500 font-black">
+                        (Exactly 1500x600)
+                      </span>
                     </label>
                     <div className="mt-1 border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-pink-300 transition-colors bg-gray-50/50">
                       <input

@@ -125,7 +125,7 @@ export default function ProductDetailsPage() {
           throw new Error(data?.message || "Failed to fetch product.");
         setProduct(data.toy);
         setSelectedImage(
-          data.toy?.images?.[0] || "https://placehold.co/800x600?text=No+Image",
+          data.toy?.images?.[0] || "https://placehold.co/600x600?text=No+Image",
         );
         setQuantity(data.toy?.stock > 0 ? 1 : 0);
       } catch (fetchError) {
@@ -139,7 +139,7 @@ export default function ProductDetailsPage() {
 
   const imageList = useMemo(() => {
     if (!product?.images?.length)
-      return ["https://placehold.co/800x600?text=No+Image"];
+      return ["https://placehold.co/600x600?text=No+Image"];
     return product.images;
   }, [product]);
 
@@ -234,8 +234,8 @@ export default function ProductDetailsPage() {
             <div className="flex flex-col gap-4">
               <div className="group relative aspect-square w-full overflow-hidden rounded-2xl bg-gray-100">
                 <Image
-                  width={1000}
-                  height={1000}
+                  width={600}
+                  height={600}
                   src={selectedImage || imageList[0]}
                   alt={product.title}
                   className="h-full w-full object-cover object-center"
@@ -255,8 +255,8 @@ export default function ProductDetailsPage() {
                       }`}
                     >
                       <Image
-                        width={1000}
-                        height={1000}
+                        width={600}
+                        height={600}
                         src={imageUrl}
                         alt={`${product.title} view`}
                         className="h-full w-full object-cover object-center bg-gray-100"
@@ -357,7 +357,7 @@ export default function ProductDetailsPage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                  <div className="flex items-center rounded-xl border border-gray-300 bg-white flex-shrink-0 h-14 w-full sm:w-auto mt-1 sm:mt-0">
+                  <div className="flex items-center rounded-xl border border-gray-300 bg-white shrink-0 h-14 w-full sm:w-auto mt-1 sm:mt-0">
                     <button
                       type="button"
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}

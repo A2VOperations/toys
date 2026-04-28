@@ -1,17 +1,17 @@
 import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "da9diyhbq",
-  api_key: process.env.CLOUDINARY_API_KEY || "516911493483432",
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "da9diyhbq",
+  api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || "516911493483432",
   api_secret:
-    process.env.CLOUDINARY_API_SECRET || "ud8EKvuCmaaBOM8PfZnhTYocl3w",
+    process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET || "ud8EKvuCmaaBOM8PfZnhTYocl3w",
 });
 
 function validateCloudinaryConfig() {
   const missing = [
-    ["CLOUDINARY_CLOUD_NAME", process.env.CLOUDINARY_CLOUD_NAME],
-    ["CLOUDINARY_API_KEY", process.env.CLOUDINARY_API_KEY],
-    ["CLOUDINARY_API_SECRET", process.env.CLOUDINARY_API_SECRET],
+    ["CLOUDINARY_CLOUD_NAME", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME],
+    ["CLOUDINARY_API_KEY", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY],
+    ["CLOUDINARY_API_SECRET", process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET],
   ]
     .filter(([, value]) => !value)
     .map(([name]) => name);

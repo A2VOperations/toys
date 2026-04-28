@@ -6,7 +6,25 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+function validateCloudinaryConfig() {
+  const missing = [
+    ["CLOUDINARY_CLOUD_NAME", process.env.CLOUDINARY_CLOUD_NAME],
+    ["CLOUDINARY_API_KEY", process.env.CLOUDINARY_API_KEY],
+    ["CLOUDINARY_API_SECRET", process.env.CLOUDINARY_API_SECRET],
+  ]
+    .filter(([, value]) => !value)
+    .map(([name]) => name);
+
+  if (missing.length) {
+    throw new Error(
+      `Cloudinary configuration is missing: ${missing.join(", ")}. Add these environment variables in Vercel and redeploy.`
+    );
+  }
+}
+
 export async function uploadImageToCloudinary(base64String, folder = "toy-store") {
+  validateCloudinaryConfig();
+
   const result = await cloudinary.uploader.upload(base64String, {
     folder,
     transformation: [
@@ -79,6 +97,8 @@ export function extractPublicId(cloudinaryUrl) {
 }
 
 export async function deleteImageFromCloudinary(cloudinaryUrl) {
+  validateCloudinaryConfig();
+
   console.log("--- Cloudinary Deletion Debug ---");
   console.log("Full URL:", cloudinaryUrl);
   

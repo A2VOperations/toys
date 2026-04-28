@@ -1,17 +1,21 @@
 import { v2 as cloudinary } from "cloudinary";
 
-cloudinary.config({
+const cloudinaryConfig = {
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "da9diyhbq",
   api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || "516911493483432",
   api_secret:
-    process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET || "ud8EKvuCmaaBOM8PfZnhTYocl3w",
-});
+    process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET ||
+    "ud8EKvuCmaaBOM8PfZnhTYocl3w",
+  secure: true,
+};
+
+cloudinary.config(cloudinaryConfig);
 
 function validateCloudinaryConfig() {
   const missing = [
-    ["CLOUDINARY_CLOUD_NAME", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME],
-    ["CLOUDINARY_API_KEY", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY],
-    ["CLOUDINARY_API_SECRET", process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET],
+    ["CLOUDINARY_CLOUD_NAME", cloudinary.config().cloud_name],
+    ["CLOUDINARY_API_KEY", cloudinary.config().api_key],
+    ["CLOUDINARY_API_SECRET", cloudinary.config().api_secret],
   ]
     .filter(([, value]) => !value)
     .map(([name]) => name);

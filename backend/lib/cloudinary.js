@@ -1,9 +1,10 @@
 import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "da9diyhbq",
+  api_key: process.env.CLOUDINARY_API_KEY || "516911493483432",
+  api_secret:
+    process.env.CLOUDINARY_API_SECRET || "ud8EKvuCmaaBOM8PfZnhTYocl3w",
 });
 
 function validateCloudinaryConfig() {
@@ -17,12 +18,15 @@ function validateCloudinaryConfig() {
 
   if (missing.length) {
     throw new Error(
-      `Cloudinary configuration is missing: ${missing.join(", ")}. Add these environment variables in Vercel and redeploy.`
+      `Cloudinary configuration is missing: ${missing.join(", ")}. Add these environment variables in Vercel and redeploy.`,
     );
   }
 }
 
-export async function uploadImageToCloudinary(base64String, folder = "toy-store") {
+export async function uploadImageToCloudinary(
+  base64String,
+  folder = "toy-store",
+) {
   validateCloudinaryConfig();
 
   const result = await cloudinary.uploader.upload(base64String, {
@@ -37,11 +41,11 @@ export async function uploadImageToCloudinary(base64String, folder = "toy-store"
 }
 
 export function extractPublicId(cloudinaryUrl) {
-  if (!cloudinaryUrl || typeof cloudinaryUrl !== 'string') return null;
-  
+  if (!cloudinaryUrl || typeof cloudinaryUrl !== "string") return null;
+
   // Clean URL in case of spaces
   const url = cloudinaryUrl.trim();
-  
+
   // Split by /upload/ to get the path part
   const parts = url.split("/upload/");
   if (parts.length < 2) return null;
@@ -66,8 +70,42 @@ export function extractPublicId(cloudinaryUrl) {
   } else {
     // If no version found, skip segments that look like transformations
     // Common Cloudinary transformation prefixes
-    const transformPrefixes = new Set(['c','w','h','q','f','r','e','b','o','l','u','p','x','y','d','g','ac','af','ar','bo','co','dl','dn','du','eo','fl','fn','if','ki','so','sp','vc','vs']);
-    
+    const transformPrefixes = new Set([
+      "c",
+      "w",
+      "h",
+      "q",
+      "f",
+      "r",
+      "e",
+      "b",
+      "o",
+      "l",
+      "u",
+      "p",
+      "x",
+      "y",
+      "d",
+      "g",
+      "ac",
+      "af",
+      "ar",
+      "bo",
+      "co",
+      "dl",
+      "dn",
+      "du",
+      "eo",
+      "fl",
+      "fn",
+      "if",
+      "ki",
+      "so",
+      "sp",
+      "vc",
+      "vs",
+    ]);
+
     let firstNonTransformIndex = 0;
     while (firstNonTransformIndex < segments.length - 1) {
       const seg = segments[firstNonTransformIndex];
@@ -76,8 +114,11 @@ export function extractPublicId(cloudinaryUrl) {
         firstNonTransformIndex++;
         continue;
       }
-      const underscoreParts = seg.split('_');
-      if (underscoreParts.length >= 2 && transformPrefixes.has(underscoreParts[0])) {
+      const underscoreParts = seg.split("_");
+      if (
+        underscoreParts.length >= 2 &&
+        transformPrefixes.has(underscoreParts[0])
+      ) {
         firstNonTransformIndex++;
         continue;
       }
@@ -92,7 +133,7 @@ export function extractPublicId(cloudinaryUrl) {
   const publicIdWithExt = publicIdSegments.join("/");
   // Remove extension (everything after the last dot in the last segment)
   const publicId = publicIdWithExt.replace(/\.[^/.]+$/, "");
-  
+
   return decodeURIComponent(publicId);
 }
 
@@ -101,17 +142,19 @@ export async function deleteImageFromCloudinary(cloudinaryUrl) {
 
   console.log("--- Cloudinary Deletion Debug ---");
   console.log("Full URL:", cloudinaryUrl);
-  
+
   const publicId = extractPublicId(cloudinaryUrl);
   if (!publicId) {
-    console.error("FAILED to extract public ID. URL format might be unsupported.");
+    console.error(
+      "FAILED to extract public ID. URL format might be unsupported.",
+    );
     return;
   }
 
   console.log("Extracted Public ID:", publicId);
-  console.log("Cloud Config (partial):", { 
+  console.log("Cloud Config (partial):", {
     cloud_name: cloudinary.config().cloud_name,
-    api_key: cloudinary.config().api_key ? "PRESENT" : "MISSING" 
+    api_key: cloudinary.config().api_key ? "PRESENT" : "MISSING",
   });
 
   try {
@@ -120,26 +163,32 @@ export async function deleteImageFromCloudinary(cloudinaryUrl) {
     console.log("Primary Deletion Response:", result);
 
     // If result is 'not found', try with resource_type: 'raw' or 'video' just in case
-    if (result?.result === 'not found') {
+    if (result?.result === "not found") {
       console.log("Not found as 'image', trying as 'raw'...");
-      result = await cloudinary.uploader.destroy(publicId, { resource_type: 'raw' });
+      result = await cloudinary.uploader.destroy(publicId, {
+        resource_type: "raw",
+      });
       console.log("Raw Deletion Response:", result);
     }
-    
-    if (result?.result === 'not found') {
+
+    if (result?.result === "not found") {
       console.log("Not found as 'raw', trying as 'video'...");
-      result = await cloudinary.uploader.destroy(publicId, { resource_type: 'video' });
+      result = await cloudinary.uploader.destroy(publicId, {
+        resource_type: "video",
+      });
       console.log("Video Deletion Response:", result);
     }
 
-    if (result?.result !== 'ok' && result?.result !== 'not found') {
+    if (result?.result !== "ok" && result?.result !== "not found") {
       throw new Error(`Cloudinary error: ${result?.result}`);
     }
-    
-    if (result?.result === 'ok') {
+
+    if (result?.result === "ok") {
       console.log("SUCCESS: Image deleted from Cloudinary.");
     } else {
-      console.warn("WARNING: Cloudinary returned 'not found'. Image might already be deleted or ID is wrong.");
+      console.warn(
+        "WARNING: Cloudinary returned 'not found'. Image might already be deleted or ID is wrong.",
+      );
     }
   } catch (err) {
     console.error("Cloudinary Destroy EXCEPTION:", err.message);
@@ -147,7 +196,6 @@ export async function deleteImageFromCloudinary(cloudinaryUrl) {
   }
   console.log("---------------------------------");
 }
-
 
 export async function deleteWithRetry(url, retries = 2) {
   for (let i = 1; i <= retries; i++) {
@@ -157,9 +205,15 @@ export async function deleteWithRetry(url, retries = 2) {
       return;
     } catch (err) {
       if (i === retries) {
-        console.error(`Cloudinary delete failed after ${retries} attempts:`, url, err.message);
+        console.error(
+          `Cloudinary delete failed after ${retries} attempts:`,
+          url,
+          err.message,
+        );
       } else {
-        console.warn(`Cloudinary delete attempt ${i} failed, retrying in 1s...`);
+        console.warn(
+          `Cloudinary delete attempt ${i} failed, retrying in 1s...`,
+        );
         await new Promise((res) => setTimeout(res, 1000));
       }
     }

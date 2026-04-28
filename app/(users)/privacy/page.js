@@ -1,7 +1,7 @@
 "use client";
 
 const SUPPORT_EMAIL =
-  process.env.NEXT_PUBLIC_EMAIL_FROM || "toysforkidsdelhi@gmail.com";
+  process.env.NEXT_PUBLIC_EMAIL_ || "toysforkidsdelhi@gmail.com";
 const SUPPORT_NUMBER =
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919999999999";
 const SUPPORT_ADDRESS =

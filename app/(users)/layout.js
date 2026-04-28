@@ -4,6 +4,7 @@ import Topbar from "./topbar";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import ScrollToTop from "./ScrollToTop";
+import WhatsAppButton from "./components/WhatsAppButton";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/grid";
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
       {children}
       <Footer />
       <ScrollToTop />
+      <WhatsAppButton />
     </>
   );
 }

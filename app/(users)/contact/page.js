@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 // ── Inline SVG icons (replaces react-icons to avoid extra deps) ──────────────
@@ -61,7 +61,7 @@ const CARDS = [
   {
     icon: <MailIcon />,
     label: "Email Address",
-    value: process.env.NEXT_PUBLIC_EMAIL_FROM || "toysforkidsdelhi@gmail.com",
+    value: process.env.NEXT_PUBLIC_EMAIL_TO || "toysforkidsdelhi@gmail.com",
     iconBg: "bg-violet-50",
     iconColor: "text-violet-600",
   },
@@ -125,7 +125,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white text-[#0f0a0c]">
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#ffcf7d] px-12 pb-20 pt-[100px] max-sm:px-6 max-sm:pt-20 max-sm:pb-16">
+      <section className="relative overflow-hidden bg-[#ffcf7d] px-12 pb-10 pt-[100px] max-sm:px-6 max-sm:pt-20 max-sm:pb-16">
         {/* noise overlay */}
         <div
           className="pointer-events-none absolute inset-0"
@@ -180,8 +180,8 @@ export default function ContactPage() {
             <div className="my-5 h-0.5 w-12 bg-[#f74872]" />
 
             <p
-              className="max-w-[450px] leading-[1.7] text-[#2b1a12] font-semibold!"
-              style={{ fontSize: 16, fontWeight: 400 }}
+              className="max-w-[550px] leading-[1.7] text-[#2b1a12] font-semibold!"
+              style={{ fontSize: 18, fontWeight: 600 }}
             >
               From return gifts and stationery to toys and school essentials,
               we’re here to support your bulk and wholesale requirements with
@@ -189,35 +189,44 @@ export default function ContactPage() {
             </p>
           </div>
 
-          {/* right stats – hidden on mobile */}
-          <div className="hidden flex-col items-end gap-3 md:flex ">
-            {[
-              { num: "2min", suffix: ".", label: "avg. reply time" },
-              { num: "98", suffix: "%", label: "satisfaction rate" },
-              { num: "24", suffix: "/7", label: "WhatsApp support" },
-            ].map(({ num, suffix, label }, i) => (
-              <Fragment key={label}>
-                {i > 0 && (
-                  <div
-                    className="self-center "
-                    style={{ width: 1, height: 40 }}
-                  />
-                )}
-                <div className="text-right">
-                  <div
-                    className=" font-bold leading-none text-white"
-                    style={{ fontSize: "3.8rem" }}
-                  >
-                    {num}
-                    <span className="text-[#f74872]">{suffix}</span>
-                  </div>
-                  <div className="mt-1 text-[11px] uppercase tracking-widest text-[#2b1a12] font-semibold">
-                    {label}
-                  </div>
-                </div>
-              </Fragment>
-            ))}
+          <div
+            className={`relative z-10 mx-auto flex h-[260px] w-[260px] items-center justify-center rounded-full text-[120px] transition-all duration-1000 delay-200 animate-bounce-slow transform sm:h-[320px] sm:w-[320px] sm:text-[150px] md:mx-4 md:h-[320px] md:w-[320px] lg:mx-12 lg:h-[350px] lg:w-[400px] lg:text-[180px]`}
+          >
+            <Image
+              src="/contact/toys for kids.png"
+              alt="toys for kids"
+              width={400}
+              height={400}
+              priority
+              className="object-contain"
+            />
           </div>
+
+        </div>
+
+        {/* bottom stats – hidden on mobile */}
+        <div className="relative z-10 mx-auto mt-10 hidden max-w-[560px] grid-cols-3 gap-3 md:grid">
+          {[
+            { num: "2min", suffix: ".", label: "avg. reply time" },
+            { num: "98", suffix: "%", label: "satisfaction rate" },
+            { num: "24", suffix: "/7", label: "WhatsApp support" },
+          ].map(({ num, suffix, label }) => (
+            <div
+              key={label}
+              className="rounded-2xl border border-white/65 bg-white/30 p-4 text-center shadow-[0_14px_34px_rgba(43,26,18,0.1)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/45"
+            >
+              <div
+                className="font-black leading-none text-white drop-shadow-[0_3px_0_rgba(43,26,18,0.08)]"
+                style={{ fontSize: "clamp(2rem,3.1vw,3.2rem)" }}
+              >
+                {num}
+                <span className="text-[#f74872]">{suffix}</span>
+              </div>
+              <div className="mt-3 text-[10px] font-black uppercase leading-snug tracking-[0.18em] text-[#2b1a12]">
+                {label}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
       <Image

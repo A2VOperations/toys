@@ -154,7 +154,7 @@ export const getHomePageToys = async ({ limit = 20 } = {}) => {
   const [toys, totalItems] = await Promise.all([
     Toy.find(
       {},
-      { title: 1, category: 1, brand: 1, age: 1, price: 1, images: 1, createdAt: 1 }
+      { title: 1, category: 1, brand: 1, age: 1, tags: 1, price: 1, images: 1, createdAt: 1 }
     )
       .sort({ createdAt: -1 })
       .limit(safeLimit)

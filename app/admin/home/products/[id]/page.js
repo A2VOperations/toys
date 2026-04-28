@@ -3,13 +3,9 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
+import { PRODUCT_CATEGORIES } from "@/constants/productCategories";
 
-const CATEGORIES = [
-  "Action Figures", "Board Games", "Educational Toys", "Dolls",
-  "Vehicles", "Puzzles", "Outdoor & Sports", "Arts & Crafts",
-  "Battery Operated Toys", "Building Sets" , "Return Gifts Toys" , "Lunch Box And Bottles",
-  "School Bags", "Return Gifts Stationary","Non Battery Toys","Soft Toys"
-];
+const CATEGORIES = PRODUCT_CATEGORIES;
 
 const TAGS = ["Bestseller", "New", "Sale", "Limited Edition", "Award Winning", "Eco Friendly"];
 

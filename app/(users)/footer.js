@@ -101,67 +101,23 @@ export default function Footer() {
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
               <Image
-                width={150}
-                height={150}
-                src="/Kids For Toy logo.png"
+                width={200}
+                height={200}
+                src="/Kids For Toy footer.png"
                 alt="logo"
               />
             </Link>
             <div className={styles.infoText}>
-              <p>Kh no 793/1 Budh bazar </p>
-              <p> road kamalpur </p>
-              <p> Burari Delhi 110084</p>
+              <p>Kh no 793/1 Budh bazar road  </p>
+              <p> kamalpurBurari Delhi 110084</p>
               <p>
                 {" "}
                 {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567"}{" "}
               </p>
               <p>
-                {process.env.NEXT_PUBLIC_EMAIL_FROM ||
+                {process.env.NEXT_PUBLIC_EMAIL_TO ||
                   "toysforkidsdelhi@gmail.com"}
               </p>
-            </div>
-            <div className={styles.socials}>
-              <a
-                href={`https://wa.me/${waNumber}`}
-                target="_blank"
-                rel="noreferrer"
-                className={`${styles.socialIcon} ${styles.iconWa}`}
-              >
-                <WaIcon />
-              </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noreferrer"
-                className={`${styles.socialIcon} ${styles.iconFb}`}
-              >
-                <FbIcon />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                className={`${styles.socialIcon} ${styles.iconIg}`}
-              >
-                <IgIcon />
-              </a>
-            </div>
-            <div>
-              {/* ── Support ── */}
-              <div className="mt-4">
-                <ul className="flex flex-row gap-5">
-                  <li>
-                    <Link href="/privacy" className={styles.link}>
-                      Privacy Policy
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/terms" className={styles.link}>
-                      Terms of Service
-                    </Link>
-                  </li>
-                </ul>
-              </div>
             </div>
           </div>
 
@@ -219,6 +175,48 @@ export default function Footer() {
             <p className={styles.waNote}>
               ⚡ We reply within minutes · 9 AM – 10 PM
             </p>
+          </div>
+        </div>
+        <div className={styles.footerCenterLinks}>
+          <div className={styles.socials}>
+            <a
+              href={`https://wa.me/${waNumber}`}
+              target="_blank"
+              rel="noreferrer"
+              className={`${styles.socialIcon} ${styles.iconWa}`}
+            >
+              <WaIcon />
+            </a>
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noreferrer"
+              className={`${styles.socialIcon} ${styles.iconFb}`}
+            >
+              <FbIcon />
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noreferrer"
+              className={`${styles.socialIcon} ${styles.iconIg}`}
+            >
+              <IgIcon />
+            </a>
+          </div>
+          <div className={styles.supportWrap}>
+            <ul className={styles.supportLinks}>
+              <li>
+                <Link href="/privacy" className={styles.link}>
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className={styles.link}>
+                  Terms of Service
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

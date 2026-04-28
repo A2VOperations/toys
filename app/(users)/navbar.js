@@ -11,28 +11,6 @@ import { getCartCount } from "./cartStorage";
 const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567";
 const waLink = `https://wa.me/${waNumber.replace(/\D/g, "")}`;
 
-/* ── Announcement slides ── */
-const ANNOUNCEMENTS = [
-  { icon: "🚚", text: "Free Shipping on all orders over Rs.2500 — Shop now!" },
-  { icon: "✅", text: "100% Trustworthy & Verified Toys — Quality Guaranteed" },
-  { icon: "⚡", text: "Reliable Same-Day Delivery available in major cities" },
-  { icon: "💬", text: `Need help? WhatsApp us at +${waNumber}`, link: waLink },
-  { icon: "🔒", text: "Secure Payments — COD, Card & EasyPaisa accepted" },
-  {
-    icon: "🎁",
-    text: "Gift Wrapping available on all orders — Surprise someone today!",
-  },
-  { icon: "⭐", text: "4.9★ Rated by 10,000+ happy parents across Pakistan" },
-  { icon: "🔄", text: "Easy 7-day Returns — No questions asked" },
-];
-
-const navLinks = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Shop", path: "/shop" },
-  { name: "Contact", path: "/contact" },
-];
-
 const MEGA = {
   categories: [
     { label: "Action Figures", emoji: "🦸" },
@@ -58,9 +36,14 @@ const MEGA = {
   ],
 };
 
-/* ════════════════════════════════════════
-   Announcement Carousel — pure React/CSS
-   ════════════════════════════════════════ */
+const navLinks = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Shop", path: "/shop" },
+  { name: "Contact", path: "/contact" },
+];
+
+/* ── Icons ── */
 const WaIcon = () => (
   <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -77,13 +60,13 @@ const IgIcon = () => (
   </svg>
 );
 
+/* ── Announcement Bar ── */
 function AnnouncementBar() {
   return (
     <div
       className="relative w-full min-h-9 overflow-hidden flex items-center px-3 md:px-6"
       style={{
-        background:
-          "linear-gradient(90deg, #b5105a 0%, #e84393 45%, #ff6b9d 75%, #e84393 100%)",
+        background: "linear-gradient(90deg, #b5105a 0%, #e84393 45%, #ff6b9d 75%, #e84393 100%)",
         backgroundSize: "200% 100%",
         animation: "ann-bg 8s linear infinite",
         fontFamily: "'Nunito', sans-serif",
@@ -96,85 +79,37 @@ function AnnouncementBar() {
           100% { background-position: 200% 0; }
         }
         .ann-divider {
-          width: 1px;
-          height: 14px;
+          width: 1px; height: 14px;
           background: rgba(255,255,255,0.4);
-          margin: 0 10px;
-          flex-shrink: 0;
+          margin: 0 10px; flex-shrink: 0;
         }
-        .ann-dropdown {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          cursor: pointer;
-          padding: 2px 4px;
-          border-radius: 4px;
-          transition: background 0.15s;
-          white-space: nowrap;
-        }
-        .ann-dropdown:hover { background: rgba(255,255,255,0.15); }
-        .ann-dropdown svg { opacity: 0.85; flex-shrink: 0; }
       `}</style>
 
-      {/* LEFT — Open Hours + Live Chat (md+ only) */}
       <div className="hidden md:flex items-center gap-1 text-white text-[0.78rem] font-semibold whitespace-nowrap flex-1">
-        <svg
-          width="13"
-          height="13"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <polyline points="12 6 12 12 16 14" />
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
         </svg>
         <span className="ml-1">Open Hours: 9am – 10pm</span>
-
         <div className="ann-divider" />
       </div>
 
-      {/* CENTER — Promo text */}
-      <Link
-        href="/#dealOf"
-        className="flex-1 md:flex-none text-white text-[0.75rem] sm:text-[0.78rem] md:text-[0.82rem] whitespace-nowrap text-center"
-      >
-        Today’s Deals –{" "}
-        <strong className="font-extrabold">Click to Save More</strong>
+      <Link href="/#dealOf" className="flex-1 md:flex-none text-white text-[0.75rem] sm:text-[0.78rem] md:text-[0.82rem] whitespace-nowrap text-center">
+        Today's Deals – <strong className="font-extrabold">Click to Save More</strong>
       </Link>
 
-      {/* RIGHT — Language + Currency (sm+ only) */}
       <div className="hidden sm:flex items-center gap-1 text-white text-[0.78rem] font-semibold whitespace-nowrap flex-1 justify-end">
         <div className="flex items-center gap-2">
-          <a
-            href={`https://wa.me/${waNumber}`}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25"
-            aria-label="WhatsApp"
-          >
-            <WaIcon />
-          </a>
-          <a
-            href="https://facebook.com"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25"
-            aria-label="Facebook"
-          >
-            <FbIcon />
-          </a>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25"
-            aria-label="Instagram"
-          >
-            <IgIcon />
-          </a>
+          {[
+            { href: `https://wa.me/${waNumber}`, Icon: WaIcon, label: "WhatsApp" },
+            { href: "https://facebook.com", Icon: FbIcon, label: "Facebook" },
+            { href: "https://instagram.com", Icon: IgIcon, label: "Instagram" },
+          ].map(({ href, Icon, label }) => (
+            <a key={label} href={href} target="_blank" rel="noreferrer"
+              className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25"
+              aria-label={label}>
+              <Icon />
+            </a>
+          ))}
         </div>
       </div>
     </div>
@@ -189,220 +124,180 @@ export default function Navbar({ onCartClick }) {
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileShopSubmenu, setMobileShopSubmenu] = useState(false);
+  const megaRef = useRef(null);
   const timerRef = useRef(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    // Initial count
     setLocalCartCount(getCartCount());
-
-    const updateCount = () => {
-      setLocalCartCount(getCartCount());
-    };
-
-    window.addEventListener("cartUpdated", updateCount);
-    window.addEventListener("storage", updateCount); // Handle changes from other tabs
-
-    return () => {
-      window.removeEventListener("cartUpdated", updateCount);
-      window.removeEventListener("storage", updateCount);
-    };
+    const update = () => setLocalCartCount(getCartCount());
+    window.addEventListener("cartUpdated", update);
+    window.addEventListener("storage", update);
+    return () => { window.removeEventListener("cartUpdated", update); window.removeEventListener("storage", update); };
   }, []);
 
-  useEffect(() => {
-    setMegaOpen(false);
-    setMobileMenuOpen(false);
-    setMobileShopSubmenu(false);
-  }, [pathname]);
+  useEffect(() => { setMegaOpen(false); setMobileMenuOpen(false); setMobileShopSubmenu(false); }, [pathname]);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) setMobileMenuOpen(false);
-    };
+    const handleResize = () => { if (window.innerWidth >= 1280) setMobileMenuOpen(false); };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [mobileMenuOpen]);
 
-  const openMega = () => {
-    if (window.innerWidth >= 768) {
-      clearTimeout(timerRef.current);
-      setMegaOpen(true);
-    }
+  /* ── Stable hover: open on button enter, close only when leaving BOTH button + panel ── */
+  const handleMouseEnter = () => {
+    clearTimeout(timerRef.current);
+    setMegaOpen(true);
   };
-  const closeMega = () => {
-    if (window.innerWidth >= 768) {
-      timerRef.current = setTimeout(() => setMegaOpen(false), 150);
-    }
+  const handleMouseLeave = () => {
+    timerRef.current = setTimeout(() => setMegaOpen(false), 200);
   };
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-    setMobileShopSubmenu(false);
-  };
+
+  const closeMobileMenu = () => { setMobileMenuOpen(false); setMobileShopSubmenu(false); };
 
   return (
     <>
+      <style>{`
+        /* Pink glow on mega hover links */
+        .mega-cat-link:hover { color: #e84393 !important; padding-left: 10px; }
+        .mega-cat-link { transition: color 0.2s, padding-left 0.2s; }
+        .mega-collection-item:hover { background: linear-gradient(90deg,#fff0f6,#fce4ef) !important; color: #e84393 !important; }
+        .mega-tag:hover { background: #e84393 !important; color: #fff !important; border-color: #e84393 !important; }
+        .mega-gender-card:hover { border-color: #e84393 !important; color: #e84393 !important; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(232,67,147,0.18) !important; }
+        /* Bridge: invisible gap-filler between button and panel so mouse can travel */
+        .mega-bridge {
+          position: absolute;
+          left: 0; right: 0;
+          height: 12px;
+          bottom: -12px;
+          background: transparent;
+          z-index: 998;
+        }
+      `}</style>
+
       <AnnouncementBar />
 
-      {/* ── Sticky Nav ── */}
       <nav
-        className="nb-font sticky top-0 z-1000 bg-white px-5 sm:px-5 "
+        className="nb-font sticky top-0 z-[1000] bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 px-4 md:px-8"
         style={{ fontFamily: "'Nunito', sans-serif" }}
       >
-        <div className="max-w-[1280px] mx-auto flex min-w-0 items-center justify-between gap-3 h-[68px] sm:gap-4">
+        <div className="max-w-[1400px] mx-auto flex items-center justify-between h-[80px] gap-4">
+
           {/* Logo */}
-          <Link
-            href="/"
-            className="relative shrink-0 flex items-center w-[120px] md:w-[160px] h-full transition-transform duration-200 z-99999"
-          >
-            {/* Drop-down white background for logo with scalloped/wavy bottom */}
-            <div
-              className="absolute top-0 left-0 w-full bg-white pt-6 pb-5 px-4 flex justify-center flex-col"
-              style={{
-                WebkitMaskImage:
-                  "radial-gradient(circle at 10px calc(100% - 10px), black 10px, transparent 10.5px), linear-gradient(black calc(100% - 10px), transparent 0)",
-                WebkitMaskSize: "20px 100%, 100% 100%",
-                WebkitMaskRepeat: "repeat-x, no-repeat",
-                maskImage:
-                  "radial-gradient(circle at 10px calc(100% - 10px), black 10px, transparent 10.5px), linear-gradient(black calc(100% - 10px), transparent 0)",
-                maskSize: "20px 100%, 100% 100%",
-                maskRepeat: "repeat-x, no-repeat",
-              }}
-            >
-              <Image
-                src="/Kids For Toy logo.png"
-                alt="Logo"
-                width={200}
-                height={200}
-                className="w-full h-auto object-contain max-w-[200px] md:max-w-[200px]"
-                priority
-              />
-              {/* <div className="text-white bg-red-600 text-center font-extrabold text-[0.6rem] mt-2">
-                WHOLESALER OF TRENDING ITEMS
-              </div> */}
+          <Link href="/" className="relative shrink-0 flex items-center group">
+            <div className="transition-transform duration-300 group-hover:scale-105">
+              <Image src="/Kids For Toy logo.png" alt="Logo" width={160} height={50}
+                className="w-auto h-[48px] md:h-[54px] object-contain" priority />
             </div>
           </Link>
 
           {/* Desktop Links */}
-          <ul className="hidden lg:flex list-none p-0 m-0 items-center gap-1">
+          <ul className="hidden xl:flex items-center gap-2 list-none p-0 m-0">
             {navLinks.map((link) =>
               link.name === "Shop" ? (
-                <li key="Shop">
-                  <button
-                    onMouseEnter={openMega}
-                    onMouseLeave={closeMega}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[0.88rem] font-extrabold cursor-pointer border-none transition-all duration-200 nb-font
-                      ${megaOpen || pathname === "/shop" ? "bg-[#fce4ef] text-[#e84393]" : "bg-transparent text-[#555] hover:bg-[#fce4ef] hover:text-[#e84393]"}`}
-                    style={{ fontFamily: "'Nunito', sans-serif" }}
-                  >
-                    Shop
-                    <svg
-                      className={`w-[14px] h-[14px] transition-transform duration-300 ${megaOpen ? "rotate-180" : ""}`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+                <li key="Shop" className="relative">
+                  {/* Button + invisible bridge to panel */}
+                  <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="relative">
+                    <button
+                      className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-[0.95rem] font-bold transition-all duration-200 cursor-pointer border-none
+                        ${megaOpen || pathname === "/shop"
+                          ? "bg-[#e84393] text-white shadow-lg shadow-[#e84393]/30"
+                          : "bg-transparent text-gray-600 hover:bg-[#fff0f6] hover:text-[#e84393]"}`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2.5}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </button>
+                      Shop
+                      <svg className={`w-4 h-4 transition-transform duration-200 ${megaOpen ? "rotate-180" : ""}`}
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {/* Invisible bridge so cursor can travel to mega panel without it closing */}
+                    {megaOpen && <div className="mega-bridge" />}
+                  </div>
                 </li>
               ) : (
                 <li key={link.name}>
-                  <Link
-                    href={link.path}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-[0.88rem] font-extrabold no-underline transition-all duration-200 nb-font
-                      ${pathname === link.path ? "bg-[#fce4ef] text-[#e84393]" : "text-[#555] hover:bg-[#fce4ef] hover:text-[#e84393]"}`}
-                    style={{ fontFamily: "'Nunito', sans-serif" }}
-                  >
+                  <Link href={link.path}
+                    className={`px-5 py-2.5 rounded-full text-[0.95rem] font-bold transition-all duration-200 no-underline inline-block
+                      ${pathname === link.path
+                        ? "bg-[#e84393] text-white shadow-lg shadow-[#e84393]/30"
+                        : "text-gray-600 hover:bg-[#fff0f6] hover:text-[#e84393]"}`}>
                     {link.name}
                   </Link>
                 </li>
-              ),
+              )
             )}
           </ul>
 
           {/* Actions */}
-          <div className="flex items-center gap-2">
-            <Link
-              href="/cart"
-              onClick={onCartClick}
-              className="relative flex items-center gap-2 whitespace-nowrap rounded-full border-2 border-[#fce4ef] bg-white px-3 py-1.5 text-sm font-extrabold text-[#555] no-underline transition-all duration-200 hover:border-[#e84393] hover:bg-[#fce4ef] hover:text-[#e84393] sm:px-4 sm:py-2 sm:text-[0.95rem]"
-              style={{ fontFamily: "'Nunito', sans-serif" }}
-            >
-              <span>🛒 Cart</span>
+          <div className="flex items-center gap-3">
+            <Link href="/cart" onClick={onCartClick}
+              className="relative flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white border-2 border-[#e84393]/20 text-[#e84393] font-bold no-underline transition-all duration-200 hover:bg-[#e84393] hover:text-white hover:border-[#e84393] hover:shadow-lg hover:shadow-[#e84393]/30">
+              <span className="text-lg">🛒</span>
+              <span className="hidden sm:inline">Cart</span>
               {localCartCount > 0 && (
-                <span className="absolute -top-2 -right-2 w-5 h-5 bg-[#e84393] text-white rounded-full text-[0.6rem] font-black flex items-center justify-center border-2 border-white">
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-[#e84393] text-white rounded-full text-[0.65rem] font-black flex items-center justify-center border-2 border-white">
                   {localCartCount}
                 </span>
               )}
             </Link>
 
-            <button
-              className="lg:hidden flex items-center justify-center bg-transparent border-none cursor-pointer p-2 rounded-lg text-[#555] transition-all duration-200 hover:bg-[#fce4ef] hover:text-[#e84393]"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Menu"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
+            <button className="xl:hidden p-2 rounded-xl text-gray-600 hover:bg-[#fff0f6] hover:text-[#e84393] transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menu">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
               </svg>
             </button>
           </div>
         </div>
 
-        {/* ── Mega Menu — inside sticky nav, zero scroll gap ── */}
+        {/* ════════ MEGA MENU ════════ */}
+        {/*
+          Key fix: the mega panel itself ALSO gets onMouseEnter/Leave with the same handlers,
+          so hovering inside the panel keeps it open.
+        */}
         <div
-          className="hidden md:block absolute left-0 right-0 w-full z-9999 pointer-events-none"
+          ref={megaRef}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className={`absolute left-0 right-0 w-full z-[999] transition-all duration-300 ease-in-out
+            ${megaOpen ? "opacity-100 visible translate-y-0 pointer-events-auto" : "opacity-0 invisible -translate-y-3 pointer-events-none"}`}
           style={{ top: "100%" }}
-          onMouseEnter={openMega}
-          onMouseLeave={closeMega}
         >
-          <div
-            className={`pb-5 transition-all duration-280 bg-[linear-gradient(78.33deg,#FFCF78_5.9%,#FEE2B1_97.88%)] 
-            ${megaOpen ? "opacity-100 visible translate-y-0 pointer-events-auto mega-open" : "opacity-0 invisible -translate-y-3"}`}
-          >
-            <div className="flex justify-center pt-15">
+          {/* Pink-tinted backdrop */}
+          <div className="absolute inset-0 -z-10" style={{
+            background: "linear-gradient(180deg, rgba(252,228,239,0.6) 0%, rgba(255,255,255,0) 100%)",
+            backdropFilter: "blur(6px)",
+          }} />
 
-            </div>
-            <div
-              className="max-w-[100vw] mx-auto grid bg-white min-h-[520px]"
-              style={{ gridTemplateColumns: "2.2fr 1.2fr 1fr 280px" }}
-            >
-              {/* Col 1 */}
-              <div className="p-8 border-r border-[#fce4ef]">
-                <h4 className="text-[1rem] font-black tracking-[0.18em] uppercase mb-3 pb-2 border-b-2 border-[#fce4ef] flex items-center gap-2 text-[#e84393]">
-                  🗂️ Categories
-                </h4>
-                <ul className="list-none p-0 m-0 grid grid-cols-2 gap-x-4 gap-y-3">
+          <div style={{
+            background: "linear-gradient(180deg, #fff5f9 0%, #ffffff 60%)",
+            boxShadow: "0 24px 60px rgba(232,67,147,0.12), 0 4px 16px rgba(0,0,0,0.06)",
+            borderTop: "2px solid #fce4ef",
+          }}>
+            <div className="max-w-[1400px] mx-auto grid grid-cols-5" style={{ minHeight: 480 }}>
+
+              {/* ── Col 1: Categories ── */}
+              <div className="p-5 pl-5 col-span-2" style={{ borderRight: "1px solid #fce4ef" }}>
+                <div className="mb-7">
+                  <span className="inline-block text-[0.65rem] font-black tracking-[0.22em] uppercase px-3 py-1 rounded-full mb-3"
+                    style={{ background: "#fce4ef", color: "#e84393" }}>
+                    ✦ Browse
+                  </span>
+                  <h3 className="text-xl font-black text-gray-900 leading-tight">All Categories</h3>
+                </div>
+                <ul className="grid grid-cols-2 gap-x-6 gap-y-0 list-none p-0 m-0">
                   {CATEGORIES.map((label) => (
                     <li key={label}>
-                      <Link
-                        href={`/shop?category=${encodeURIComponent(label)}`}
-                        className="text-[1rem] font-bold text-[#555] no-underline flex items-center gap-2 px-2 py-1.5 rounded-xl transition-all duration-200 hover:bg-[#fff0f6] hover:text-[#e84393] hover:pl-3 group"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#fce4ef] transition-all duration-200 group-hover:bg-[#e84393] group-hover:scale-125 shrink-0" />
-                        <span className="shrink-0">{CATEGORY_EMOJIS[label] || "🧸"}</span> 
+                      <Link href={`/shop?category=${encodeURIComponent(label)}`}
+                        className="mega-cat-link flex items-center gap-1 py-1.5 text-gray-500 font-bold text-[0.85rem] no-underline group">
+                        <span className="text-base opacity-60 group-hover:opacity-100 transition-all group-hover:scale-110 inline-block">
+                          {CATEGORY_EMOJIS[label] || "🧸"}
+                        </span>
                         <span className="truncate">{label}</span>
                       </Link>
                     </li>
@@ -410,353 +305,260 @@ export default function Navbar({ onCartClick }) {
                 </ul>
               </div>
 
-              {/* Col 2 */}
-              <div className="p-8 border-r border-[#fce4ef]">
-                <h4 className="text-[1rem] font-black tracking-[0.18em] uppercase mb-3 pb-2 border-b-2 border-[#ffe0d4] flex items-center gap-2 text-[#ff6b35]">
-                  🏷️ Trending Tags
-                </h4>
-                <div className="flex flex-wrap gap-3 mb-8">
-                  {MEGA.tags.map((t) => {
-                    const tagValue = t.replace(/[^a-zA-Z\s]/g, "").trim();
-                    return (
-                      <Link
-                        key={t}
-                        href={`/shop?tags=${encodeURIComponent(tagValue)}`}
-                        className="inline-flex items-center gap-1 bg-[#fff0f6] border-[1.5px] border-[#fce4ef] rounded-full px-3 py-1 text-[1rem] font-bold text-[#e84393] no-underline transition-all duration-200 hover:bg-[#e84393] hover:text-white hover:-translate-y-0.5"
-                      >
-                        {t}
-                      </Link>
-                    );
-                  })}
-                </div>
-                <h4 className="text-[1rem] font-black tracking-[0.18em] uppercase mb-3 pb-2 border-b-2 border-[#f3e5f5] flex items-center gap-2 text-[#9c27b0]">
-                  👶 Shop by Gender
-                </h4>
-                <div className="grid grid-cols-2 gap-3">
-                  {MEGA.genders.map((g) => (
-                    <Link
-                      key={g.label}
-                      href={`/shop?gender=${encodeURIComponent(g.path)}`}
-                      className="flex flex-col items-center justify-center rounded-2xl py-2 px-2 border-2 border-[#fce4ef] no-underline text-[1rem] font-extrabold text-[#555] bg-white transition-all duration-200 hover:bg-[#fce4ef] hover:border-[#e84393] hover:text-[#e84393] hover:-translate-y-0.5"
-                    >
-                      <span className="text-xl mb-1">{g.emoji}</span>
-                      {g.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Col 3 */}
-              <div className="p-8 border-r border-[#fce4ef]">
-                <h4 className="text-[1rem] font-black tracking-[0.18em] uppercase mb-3 pb-2 border-b-2 border-[#fce4ef] flex items-center gap-2 text-[#e84393]">
-                  ⚡ Quick Access
-                </h4>
-                <ul className="list-none p-0 m-0 flex flex-col gap-3">
-                  {[
-                    "New Arrivals",
-                    "Best Sellers",
-                    "Flash Sale",
-                    "Under Rs.1000",
-                  ].map((l) => {
-                    let href = "/shop";
-                    if (l === "New Arrivals") href = "/shop?sortBy=latest";
-                    else if (l === "Best Sellers")
-                      href = "/shop?tags=Bestseller";
-                    else if (l === "Flash Sale") href = "/shop?tags=Sale";
-                    else if (l === "Under Rs.1000")
-                      href = "/shop?maxPrice=1000";
-                    return (
-                      <li key={l}>
-                        <Link
-                          href={href}
-                          className="text-[1rem] font-bold text-[#555] no-underline flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-200 hover:bg-[#fff0f6] hover:text-[#e84393] hover:pl-4 group"
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#fce4ef] transition-all duration-200 group-hover:bg-[#e84393] group-hover:scale-125" />
-                          {l}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-
-              {/* Col 4 */}
-              <div
-                className="p-8 flex flex-col justify-between"
-                style={{
-                  background:
-                    "linear-gradient(160deg, #fff0f6 0%, #fce4ef 60%, #ffd6eb 100%)",
-                }}
-              >
-                <div>
-                  <span className=" text-[0.88rem] font-black text-[#e84393] bg-white px-2.5 py-0.5  border-[1.5px] border-[#fce4ef] self-start inline-block mb-3">
-                    ✨ The Toy Stack
+              {/* ── Col 2: Tags + Gender ── */}
+              <div className="p-10" style={{ borderRight: "1px solid #fce4ef", background: "linear-gradient(160deg,#fff8fb,#ffffff)" }}>
+                <div className="mb-8">
+                  <span className="inline-block text-[0.65rem] font-black tracking-[0.22em] uppercase px-3 py-1 rounded-full mb-4"
+                    style={{ background: "#fff0eb", color: "#ff6b35" }}>
+                    🔥 Trending
                   </span>
-                  <h3 className="text-[1.5rem] font-black leading-tight text-[#222] mb-2">
-                    DISCOVER <span style={{ color: "#e84393" }}>PLAYTIME</span>{" "}
-                    MAGIC
-                  </h3>
-                  <p className="text-[1rem] text-[#888] leading-relaxed font-semibold mb-5">
-                    Curated premium toys for every child. Spark imagination and
-                    create memories.
-                  </p>
-                  <div className="flex gap-4 mb-4">
-                    <div>
-                      <div className="text-[1.1rem] font-black text-[#e84393]">
-                        500+
-                      </div>
-                      <div className="text-[0.6rem] text-[#aaa] font-bold uppercase">
-                        Toys
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-[1.1rem] font-black text-[#e84393]">
-                        4.9★
-                      </div>
-                      <div className="text-[0.6rem] text-[#aaa] font-bold uppercase">
-                        Rating
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <Link
-                  href="/shop"
-                  className="inline-flex self-start bg-[#e84393] text-white px-5 py-2.5 rounded-full text-[0.8rem] font-black no-underline shadow-[0_8px_24px_rgba(232,67,147,0.25)] hover:brightness-110 transition-all"
-                >
-                  SHOP ALL →
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* ── Mobile Overlay ── */}
-      <div
-        className={`fixed inset-0 bg-black/50 z-9999 transition-all duration-300 ${mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
-        onClick={closeMobileMenu}
-      />
-
-      {/* ── Mobile Drawer ── */}
-      <div
-        className={`fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-white z-10000 flex flex-col overflow-y-auto shadow-[-4px_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
-        style={{ fontFamily: "'Nunito', sans-serif" }}
-      >
-        {/* Header */}
-        <div className="p-5 border-b-2 border-[#fce4ef] flex justify-between items-center">
-          <span className="text-2xl font-black tracking-[-1px] flex items-center">
-            <Image
-              src="/Kids For Toy logo.png"
-              alt="Kiddey's Logo"
-              width={120}
-              height={40}
-              className="object-contain mr-2"
-            />
-          </span>
-
-          <button
-            onClick={closeMobileMenu}
-            className="bg-none border-none text-2xl cursor-pointer text-[#e84393] font-black px-3 py-1 rounded-lg hover:bg-[#fce4ef] transition-all"
-          >
-            ✕
-          </button>
-        </div>
-
-        {/* Nav links */}
-        <div className="flex-1 p-5">
-          {[
-            { name: "Home", path: "/" },
-            { name: "About", path: "/about" },
-          ].map((link) => (
-            <Link
-              key={link.name}
-              href={link.path}
-              onClick={closeMobileMenu}
-              className={`flex items-center justify-between py-3.5 no-underline font-extrabold text-lg border-b border-[#fce4ef] ${pathname === link.path ? "text-[#e84393]" : "text-[#444]"}`}
-            >
-              {link.name}
-            </Link>
-          ))}
-
-          {/* Shop submenu */}
-          <div>
-            <button
-              onClick={() => setMobileShopSubmenu(!mobileShopSubmenu)}
-              className="w-full flex items-center justify-between py-3.5 font-extrabold text-lg border-b border-[#fce4ef] bg-transparent border-none cursor-pointer text-[#444]"
-            >
-              Shop
-              <svg
-                style={{
-                  transform: mobileShopSubmenu ? "rotate(180deg)" : "none",
-                  transition: "transform 0.2s",
-                }}
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </button>
-
-            {mobileShopSubmenu && (
-              <div className="ml-4 mt-2 mb-2">
-                <div className="mb-6">
-                  <div className="text-[1rem] font-black tracking-widest uppercase text-[#e84393] mb-3">
-                    🗂️ Categories
-                  </div>
-                  {CATEGORIES.map((label) => (
-                    <Link
-                      key={label}
-                      href={`/shop?category=${encodeURIComponent(label)}`}
-                      onClick={closeMobileMenu}
-                      className="block py-2.5 pl-4 text-[#666] font-semibold text-[1rem] no-underline border-b border-[#fce4ef] hover:text-[#e84393]"
-                    >
-                      {CATEGORY_EMOJIS[label] || "🧸"} {label}
-                    </Link>
-                  ))}
-                </div>
-                <div className="mb-6">
-                  <div className="text-[1rem] font-black tracking-widest uppercase text-[#e84393] mb-3">
-                    🏷️ Trending Tags
-                  </div>
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2">
                     {MEGA.tags.map((t) => {
                       const tagValue = t.replace(/[^a-zA-Z\s]/g, "").trim();
                       return (
-                        <Link
-                          key={t}
-                          href={`/shop?tags=${encodeURIComponent(tagValue)}`}
-                          onClick={closeMobileMenu}
-                          className="bg-[#fff0f6] border border-[#fce4ef] rounded-full px-3 py-1.5 text-[0.8rem] font-bold text-[#e84393] no-underline"
-                        >
+                        <Link key={t} href={`/shop?tags=${encodeURIComponent(tagValue)}`}
+                          className="mega-tag px-4 py-1.5 rounded-full text-[0.78rem] font-bold no-underline transition-all duration-200"
+                          style={{ background: "#fff0f6", border: "1.5px solid #fce4ef", color: "#e84393" }}>
                           {t}
                         </Link>
                       );
                     })}
                   </div>
                 </div>
-                <div className="mb-6">
-                  <div className="text-[0.7rem] font-black tracking-widest uppercase text-[#e84393] mb-3">
-                    👶 Shop by Gender
-                  </div>
-                  <div className="grid grid-cols-2 gap-2.5 mb-4">
+
+                <div>
+                  <span className="inline-block text-[0.65rem] font-black tracking-[0.22em] uppercase px-3 py-1 rounded-full mb-5"
+                    style={{ background: "#f3e8ff", color: "#9c27b0" }}>
+                    👶 For Every Child
+                  </span>
+                  <div className="grid grid-cols-3 gap-3">
                     {MEGA.genders.map((g) => (
-                      <Link
-                        key={g.label}
-                        href={`/shop?gender=${encodeURIComponent(g.path)}`}
-                        onClick={closeMobileMenu}
-                        className="flex flex-col items-center p-3 rounded-xl border-2 border-[#fce4ef] no-underline text-[0.8rem] font-extrabold text-[#555] bg-white"
-                      >
-                        <span className="text-2xl">{g.emoji}</span>
-                        {g.label}
+                      <Link key={g.label} href={`/shop?gender=${encodeURIComponent(g.path)}`}
+                        className="mega-gender-card flex flex-col items-center justify-center p-3 rounded-2xl no-underline transition-all duration-200"
+                        style={{ background: "#fff", border: "1.5px solid #fce4ef", color: "#555" }}>
+                        <span className="text-2xl mb-1">{g.emoji}</span>
+                        <span className="text-[0.65rem] font-black uppercase tracking-wider">{g.label}</span>
                       </Link>
                     ))}
                   </div>
                 </div>
-                <div className="mb-6">
-                  <div className="text-[0.7rem] font-black tracking-widest uppercase text-[#e84393] mb-3">
+              </div>
+
+              {/* ── Col 3: Quick Collections ── */}
+              <div className="p-10" style={{ borderRight: "1px solid #fce4ef" }}>
+                <div className="mb-7">
+                  <span className="inline-block text-[0.65rem] font-black tracking-[0.22em] uppercase px-3 py-1 rounded-full mb-3"
+                    style={{ background: "#fce4ef", color: "#e84393" }}>
                     ⚡ Quick Access
-                  </div>
+                  </span>
+                  <h3 className="text-xl font-black text-gray-900">Collections</h3>
+                </div>
+                <ul className="flex flex-col gap-1 list-none p-0 m-0">
                   {[
-                    "New Arrivals",
-                    "Best Sellers",
-                    "Flash Sale",
-                    "Under Rs.1000",
-                  ].map((l) => {
-                    let href = "/shop";
-                    if (l === "New Arrivals") href = "/shop?sortBy=latest";
-                    else if (l === "Best Sellers")
-                      href = "/shop?tags=Bestseller";
-                    else if (l === "Flash Sale") href = "/shop?tags=Sale";
-                    else if (l === "Under Rs.1000")
-                      href = "/shop?maxPrice=1000";
-                    return (
-                      <Link
-                        key={l}
-                        href={href}
-                        onClick={closeMobileMenu}
-                        className="block py-2.5 pl-4 text-[#666] font-semibold text-[1rem] no-underline border-b border-[#fce4ef] hover:text-[#e84393]"
-                      >
-                        {l}
+                    { label: "New Arrivals", href: "/shop?sortBy=latest", icon: "✨", desc: "Fresh drops this week" },
+                    { label: "Best Sellers", href: "/shop?tags=Bestseller", icon: "🔥", desc: "Top picks by parents" },
+                    { label: "Flash Sale", href: "/shop?tags=Sale", icon: "💥", desc: "Limited-time deals" },
+                    { label: "Under Rs.1000", href: "/shop?maxPrice=1000", icon: "💰", desc: "Budget-friendly fun" },
+                  ].map((item) => (
+                    <li key={item.label}>
+                      <Link href={item.href}
+                        className="mega-collection-item flex items-center gap-3 py-3 px-4 rounded-xl no-underline transition-all duration-200 group"
+                        style={{ color: "#555" }}>
+                        <span className="w-9 h-9 rounded-full flex items-center justify-center text-base flex-shrink-0 transition-all"
+                          style={{ background: "#fce4ef" }}>
+                          {item.icon}
+                        </span>
+                        <div>
+                          <div className="font-bold text-[0.9rem] leading-tight">{item.label}</div>
+                          <div className="text-[0.72rem] text-gray-400 font-semibold">{item.desc}</div>
+                        </div>
                       </Link>
-                    );
-                  })}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* ── Col 4: Featured Promo ── */}
+              <div className="p-10 flex flex-col justify-between relative overflow-hidden"
+                style={{ background: "linear-gradient(145deg,#fff0f6 0%,#fce4ef 60%,#fff5f9 100%)" }}>
+                {/* Decorative blobs */}
+                <div className="absolute -top-8 -right-8 w-36 h-36 rounded-full pointer-events-none"
+                  style={{ background: "radial-gradient(circle,rgba(232,67,147,0.18),transparent 70%)" }} />
+                <div className="absolute bottom-10 -left-6 w-28 h-28 rounded-full pointer-events-none"
+                  style={{ background: "radial-gradient(circle,rgba(255,107,157,0.15),transparent 70%)" }} />
+
+                <div className="relative z-10">
+                  <span className="inline-block px-3 py-1 text-[0.6rem] font-black uppercase tracking-widest rounded-lg mb-5"
+                    style={{ background: "#fff", border: "1px solid #fce4ef", color: "#e84393", boxShadow: "0 2px 8px rgba(232,67,147,0.1)" }}>
+                    ✨ Featured Selection
+                  </span>
+                  <h3 className="text-3xl font-black text-gray-900 leading-tight mb-4">
+                    The <br />
+                    <span style={{ color: "#e84393" }}>Toy Stack</span>
+                  </h3>
+                  <p className="text-sm text-gray-500 font-semibold leading-relaxed mb-7">
+                    Hand-picked toys that spark creativity and bring endless joy to every child.
+                  </p>
+                  <div className="flex gap-6 mb-8">
+                    {[ { val: "4.9★", label: "Rating" }, { val: "10k+", label: "Happy Kids" }].map(({ val, label }) => (
+                      <div key={label}>
+                        <div className="text-xl font-black" style={{ color: "#e84393" }}>{val}</div>
+                        <div className="text-[0.6rem] font-bold uppercase tracking-widest text-gray-400">{label}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <Link href="/shop"
+                  className="relative z-10 inline-flex items-center justify-center px-10 py-4 rounded-full text-sm font-black text-white no-underline transition-all duration-200 hover:-translate-y-1"
+                  style={{
+                    background: "linear-gradient(135deg,#e84393,#c4176e)",
+                    boxShadow: "0 8px 24px rgba(232,67,147,0.35)",
+                  }}>
+                  SHOP MORE
+                </Link>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* ── Mobile Overlay ── */}
+      <div className={`fixed inset-0 bg-black/50 z-[9999] transition-all duration-300 ${mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        onClick={closeMobileMenu} />
+
+      {/* ── Mobile Drawer ── */}
+      <div className={`fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-white z-[10000] flex flex-col overflow-y-auto shadow-[-4px_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+        style={{ fontFamily: "'Nunito', sans-serif" }}>
+        <div className="p-5 flex justify-between items-center" style={{ borderBottom: "2px solid #fce4ef" }}>
+          <Image src="/Kids For Toy logo.png" alt="Logo" width={120} height={40} className="object-contain" />
+          <button onClick={closeMobileMenu}
+            className="text-2xl cursor-pointer font-black px-3 py-1 rounded-lg transition-all"
+            style={{ color: "#e84393", background: "none", border: "none" }}
+            onMouseEnter={e => e.currentTarget.style.background = "#fce4ef"}
+            onMouseLeave={e => e.currentTarget.style.background = "none"}>
+            ✕
+          </button>
+        </div>
+
+        <div className="flex-1 p-5">
+          {[{ name: "Home", path: "/" }, { name: "About", path: "/about" }].map((link) => (
+            <Link key={link.name} href={link.path} onClick={closeMobileMenu}
+              className="flex items-center justify-between py-3.5 no-underline font-extrabold text-lg"
+              style={{ borderBottom: "1px solid #fce4ef", color: pathname === link.path ? "#e84393" : "#444" }}>
+              {link.name}
+            </Link>
+          ))}
+
+          <div>
+            <button onClick={() => setMobileShopSubmenu(!mobileShopSubmenu)}
+              className="w-full flex items-center justify-between py-3.5 font-extrabold text-lg cursor-pointer"
+              style={{ background: "none", border: "none", borderBottom: "1px solid #fce4ef", color: "#444" }}>
+              Shop
+              <svg style={{ transform: mobileShopSubmenu ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}
+                width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+
+            {mobileShopSubmenu && (
+              <div className="ml-4 mt-2 mb-2">
+                <div className="mb-5">
+                  <div className="text-[0.75rem] font-black tracking-widest uppercase mb-3" style={{ color: "#e84393" }}>🗂️ Categories</div>
+                  {CATEGORIES.map((label) => (
+                    <Link key={label} href={`/shop?category=${encodeURIComponent(label)}`} onClick={closeMobileMenu}
+                      className="block py-2.5 pl-4 font-semibold text-[1rem] no-underline"
+                      style={{ color: "#666", borderBottom: "1px solid #fce4ef" }}>
+                      {CATEGORY_EMOJIS[label] || "🧸"} {label}
+                    </Link>
+                  ))}
+                </div>
+                <div className="mb-5">
+                  <div className="text-[0.75rem] font-black tracking-widest uppercase mb-3" style={{ color: "#e84393" }}>🏷️ Trending Tags</div>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {MEGA.tags.map((t) => {
+                      const tagValue = t.replace(/[^a-zA-Z\s]/g, "").trim();
+                      return (
+                        <Link key={t} href={`/shop?tags=${encodeURIComponent(tagValue)}`} onClick={closeMobileMenu}
+                          className="rounded-full px-3 py-1.5 text-[0.8rem] font-bold no-underline"
+                          style={{ background: "#fff0f6", border: "1px solid #fce4ef", color: "#e84393" }}>
+                          {t}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="mb-5">
+                  <div className="text-[0.75rem] font-black tracking-widest uppercase mb-3" style={{ color: "#e84393" }}>👶 Shop by Gender</div>
+                  <div className="grid grid-cols-3 gap-2 mb-4">
+                    {MEGA.genders.map((g) => (
+                      <Link key={g.label} href={`/shop?gender=${encodeURIComponent(g.path)}`} onClick={closeMobileMenu}
+                        className="flex flex-col items-center p-3 rounded-xl no-underline font-extrabold text-[0.8rem]"
+                        style={{ border: "2px solid #fce4ef", color: "#555", background: "#fff" }}>
+                        <span className="text-2xl">{g.emoji}</span>{g.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+                <div className="mb-5">
+                  <div className="text-[0.75rem] font-black tracking-widest uppercase mb-3" style={{ color: "#e84393" }}>⚡ Quick Access</div>
+                  {[
+                    { l: "New Arrivals", href: "/shop?sortBy=latest" },
+                    { l: "Best Sellers", href: "/shop?tags=Bestseller" },
+                    { l: "Flash Sale", href: "/shop?tags=Sale" },
+                    { l: "Under Rs.1000", href: "/shop?maxPrice=1000" },
+                  ].map(({ l, href }) => (
+                    <Link key={l} href={href} onClick={closeMobileMenu}
+                      className="block py-2.5 pl-4 font-semibold text-[1rem] no-underline"
+                      style={{ color: "#666", borderBottom: "1px solid #fce4ef" }}>
+                      {l}
+                    </Link>
+                  ))}
                 </div>
               </div>
             )}
           </div>
 
-          <Link
-            href="/contact"
-            onClick={closeMobileMenu}
-            className={`flex items-center justify-between py-3.5 no-underline font-extrabold text-lg border-b border-[#fce4ef] ${pathname === "/contact" ? "text-[#e84393]" : "text-[#444]"}`}
-          >
+          <Link href="/contact" onClick={closeMobileMenu}
+            className="flex items-center justify-between py-3.5 no-underline font-extrabold text-lg"
+            style={{ borderBottom: "1px solid #fce4ef", color: pathname === "/contact" ? "#e84393" : "#444" }}>
             Contact
           </Link>
         </div>
 
-        {/* WhatsApp CTA */}
-        <a
-          href={waLink}
-          target="_blank"
-          rel="noopener noreferrer"
+        <a href={waLink} target="_blank" rel="noopener noreferrer"
           className="mx-5 mb-3 py-3 flex items-center justify-center gap-2 rounded-full font-extrabold text-white no-underline text-base"
-          style={{ background: "#25D366" }}
-        >
+          style={{ background: "#25D366" }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
           </svg>
           WhatsApp Us
         </a>
 
-        {/* Feature promo */}
-        <div
-          className="mx-5 my-2 p-5 "
-          style={{
-            background: "linear-gradient(160deg, #fff0f6 0%, #fce4ef 100%)",
-          }}
-        >
-          <span className="text-[10px] font-black uppercase text-[#e84393]">
-            ✨ The Toy Stack
-          </span>
-          <h3 className="text-[1.2rem] font-black mt-1 mb-3 text-[#222]">
-            DISCOVER PLAYTIME MAGIC
-          </h3>
+        <div className="mx-5 my-2 p-5 rounded-2xl"
+          style={{ background: "linear-gradient(160deg,#fff0f6 0%,#fce4ef 100%)" }}>
+          <span className="text-[10px] font-black uppercase" style={{ color: "#e84393" }}>✨ The Toy Stack</span>
+          <h3 className="text-[1.2rem] font-black mt-1 mb-3 text-gray-900">DISCOVER PLAYTIME MAGIC</h3>
           <div className="flex gap-4 mb-3">
-            <div>
-              <span className="text-[1.1rem] font-black text-[#e84393]">
-                500+
-              </span>
-              <div className="text-[10px] text-[#aaa]">Toys</div>
-            </div>
-            <div>
-              <span className="text-[1.1rem] font-black text-[#e84393]">
-                4.9★
-              </span>
-              <div className="text-[10px] text-[#aaa]">Rating</div>
-            </div>
+            {[ { val: "4.9★", l: "Rating" }].map(({ val, l }) => (
+              <div key={l}>
+                <span className="text-[1.1rem] font-black" style={{ color: "#e84393" }}>{val}</span>
+                <div className="text-[10px] text-gray-400">{l}</div>
+              </div>
+            ))}
           </div>
-          <Link
-            href="/shop"
-            onClick={closeMobileMenu}
-            className="inline-block bg-[#e84393] text-white px-5 py-2.5 rounded-full text-xs font-black no-underline"
-          >
+          <Link href="/shop" onClick={closeMobileMenu}
+            className="inline-block text-white px-5 py-2.5 rounded-full text-xs font-black no-underline"
+            style={{ background: "#e84393" }}>
             SHOP ALL →
           </Link>
         </div>
 
-        {/* Cart */}
-        <Link
-          href="/cart"
-          onClick={(e) => {
-            if (onCartClick) onCartClick(e);
-            closeMobileMenu();
-          }}
-          className="mx-5 mb-5 py-3 bg-[#e84393] text-white no-underline text-center rounded-full font-extrabold text-lg flex items-center justify-center gap-2"
-        >
+        <Link href="/cart"
+          onClick={(e) => { if (onCartClick) onCartClick(e); closeMobileMenu(); }}
+          className="mx-5 mb-5 py-3 text-white no-underline text-center rounded-full font-extrabold text-lg flex items-center justify-center gap-2"
+          style={{ background: "#e84393" }}>
           🛒 View Cart {localCartCount > 0 && `(${localCartCount})`}
         </Link>
       </div>

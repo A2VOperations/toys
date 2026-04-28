@@ -1,25 +1,9 @@
 "use client";
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { PRODUCT_CATEGORIES } from "@/constants/productCategories";
 
-const CATEGORIES = [
-  "Action Figures",
-  "Board Games",
-  "Educational Toys",
-  "Dolls",
-  "Vehicles",
-  "Puzzles",
-  "Outdoor & Sports",
-  "Arts & Crafts",
-  "Battery Operated Toys",
-  "Building Sets",
-  "Return Gifts Toys",
-  "Lunch Box And Bottles",
-  "School Bags",
-  "Return Gifts Stationary",
-  "Non Battery Toys",
-  "Soft Toys",
-];
+const CATEGORIES = PRODUCT_CATEGORIES;
 
 const TAGS = [
   "Bestseller",

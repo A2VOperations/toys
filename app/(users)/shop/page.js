@@ -9,15 +9,6 @@ import { CATEGORIES } from "../categories";
 
 const PAGE_SIZE = 9;
 
-const TAGS = [
-  "Bestseller",
-  "New",
-  "Sale",
-  "Limited Edition",
-  "Award Winning",
-  "Eco Friendly",
-];
-
 const TAG_EMOJIS = {
   Bestseller: "🏆",
   New: "✨",
@@ -28,6 +19,23 @@ const TAG_EMOJIS = {
 };
 
 const GENDERS = ["Boy", "Girl", "Unisex"];
+
+const TAG_BADGE_COLORS = {
+  Bestseller: "bg-[#ff5d73]",
+  Sale: "bg-[#ff5d73]",
+  New: "bg-[#72c33a]",
+  "Limited Edition": "bg-[#72c33a]",
+  "Award Winning": "bg-[#72c33a]",
+  "Eco Friendly": "bg-[#72c33a]",
+};
+
+const TAG_LABELS = {
+  Bestseller: "Best Seller",
+  New: "New Launch",
+};
+
+const formatTagLabel = (tag) =>
+  TAG_LABELS[tag] || tag.replace(TAG_EMOJIS[tag] || "", "").trim();
 
 const SORT_OPTIONS = [
   { value: "latest", label: "Latest Uploaded" },
@@ -396,8 +404,13 @@ function ShopPageContent() {
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                       />
                       {product.tags?.[0] && (
-                        <div className="absolute top-4 left-4 bg-white px-3 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider text-gray-900 shadow-sm flex items-center gap-1.5 backdrop-blur-md bg-white/90">
-                          {TAG_EMOJIS[product.tags[0]]} {product.tags[0]}
+                        <div
+                          className={`absolute left-0 top-0 z-10 max-w-[85%] truncate px-2.5 py-1.5 text-[11px] font-extrabold uppercase leading-none tracking-[0.01em] text-white shadow-sm rounded-br-[2px] ${
+                            TAG_BADGE_COLORS[product.tags[0]] || "bg-[#ff5d73]"
+                          }`}
+                          title={formatTagLabel(product.tags[0])}
+                        >
+                          {formatTagLabel(product.tags[0])}
                         </div>
                       )}
                     </Link>

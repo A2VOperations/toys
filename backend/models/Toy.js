@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
+import { PRODUCT_CATEGORIES } from '../../constants/productCategories';
 
 const ToySchema = new mongoose.Schema({
   title: { type: String, required: true },
-  category: { type: String, required: true }, // Dropdown: Toys, Brand, etc.
+  category: { type: String, required: true, enum: PRODUCT_CATEGORIES },
   brand: { type: String },
   images: {
     type: [String],

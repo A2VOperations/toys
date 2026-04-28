@@ -135,6 +135,49 @@ const promoTags = [
 
 // ─── COMPONENTS ──────────────────────────────────────────────────────────────
 
+const TAG_BADGE_COLORS = {
+  Bestseller: "bg-[#ff5d73]",
+  Sale: "bg-[#ff5d73]",
+  New: "bg-[#72c33a]",
+  "Limited Edition": "bg-[#72c33a]",
+  "Award Winning": "bg-[#72c33a]",
+  "Eco Friendly": "bg-[#72c33a]",
+};
+
+const TAG_LABELS = {
+  Bestseller: "Best Seller",
+  New: "New Launch",
+};
+
+const normalizeTag = (tag) =>
+  tag
+    ? tag
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    : "";
+
+const formatTagLabel = (tag) => TAG_LABELS[normalizeTag(tag)] || tag;
+
+function ProductTagBadge({ tag }) {
+  if (!tag) return null;
+
+  const normalizedTag = normalizeTag(tag);
+  const label = formatTagLabel(normalizedTag);
+
+  return (
+    <div
+      className={`absolute left-0 top-0 z-10 max-w-[85%] truncate px-2.5 py-1.5 text-[11px] font-extrabold uppercase leading-none tracking-[0.01em] text-white shadow-sm rounded-br-[2px] ${
+        TAG_BADGE_COLORS[normalizedTag] || "bg-[#ff5d73]"
+      }`}
+      title={label}
+    >
+      {label}
+    </div>
+  );
+}
+
 const heroStars = [
   { size: "text-xl", top: "top-10", left: "left-[8%]", delay: "0s" },
   { size: "text-3xl", top: "top-20", left: "left-[42%]", delay: "1.2s" },
@@ -266,12 +309,7 @@ function PopularProductCard({ product, onAddToCart }) {
           className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
-        {/* Optional: Category badge on image */}
-        {product.category && (
-          <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
-            {product.category}
-          </span>
-        )}
+        <ProductTagBadge tag={product.tags?.[0]} />
       </div>
 
       {/* Content Section */}
@@ -392,6 +430,7 @@ export default function Home() {
               t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
             price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
             stock: t.stock,
+            tags: t.tags || [],
           }));
           setPopularProductsList(mapped);
         }
@@ -420,6 +459,7 @@ export default function Home() {
             price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
             old: null,
             stock: t.stock,
+            tags: t.tags || [],
           }));
           setBestsellingProducts(mapped);
         }
@@ -449,6 +489,7 @@ export default function Home() {
                 t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
               price: `\u20b9${parseFloat(t.price || 0).toFixed(2)}`,
               stock: t.stock,
+              tags: t.tags || [],
             })),
           );
         } else {
@@ -481,6 +522,7 @@ export default function Home() {
               t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
             price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
             stock: t.stock,
+            tags: t.tags || [],
           }));
           setGenderProducts(mapped);
         } else {
@@ -617,83 +659,77 @@ export default function Home() {
               ✦
             </span>
           ))}
-          <div className="absolute bottom-10 left-0 hidden sm:block md:bottom-20 md:left-2">
+          <div className="absolute bottom-10 left-5 hidden md:block md:top-60 md:left-5">
             <Image
               src="/home page/shape-4.png"
               alt="toys for kids"
-              width={300}
-              height={300}
+              width={180}
+              height={180}
               priority
-              style={{ width: "auto", height: "auto" }}
-              className="object-contain opacity-50"
+              className=" object-contain opacity-50"
             />
             <Image
               src="/home page/shape-3.png"
               alt="toys for kids"
-              width={400}
-              height={400}
+              width={150}
+              height={150}
               priority
-              style={{ width: "auto", height: "auto" }}
               className="object-contain animate-floatUpDown"
             />
           </div>
-          <div className="absolute top-12 right-[50%] hidden md:block">
+          <div className="absolute top-12 right-[58%] hidden md:block">
             <Image
               src="/home page/shape-6.png"
               alt="toys for kids"
-              width={400}
-              height={400}
+              width={130}
+              height={130}
               priority
-              style={{ width: "auto", height: "auto" }}
-              className="object-contain animate-floatLeftRight"
+              className="h-[130px] w-[130px] object-contain animate-floatLeftRight"
             />
           </div>
 
-          <div className="absolute right-4 top-10 hidden sm:block md:right-10 md:top-20">
+          <div className="absolute right-4 top-10 hidden md:block md:right-10 md:top-20">
             <Image
               src="/home page/shape-7.png"
               alt="toys for kids"
-              width={400}
-              height={400}
+              width={180}
+              height={180}
               priority
-              style={{ width: "auto", height: "auto" }}
-              className="object-contain"
+              className="h-[180px] w-[180px] object-contain"
             />
           </div>
-          <div className="absolute right-4 top-24 hidden sm:block md:right-10 md:top-40">
+          <div className="absolute right-4 top-24 hidden md:block md:right-10 md:top-45">
             <Image
               src="/home page/shape-8.png"
               alt="toys for kids"
-              width={400}
-              height={400}
+              width={90}
+              height={90}
               priority
-              style={{ width: "auto", height: "auto" }}
-              className="object-contain animate-floatUpDown"
+              className="h-[90px] w-[90px] object-contain animate-floatUpDown"
             />
           </div>
-          <div className="absolute bottom-12 right-[20%] hidden lg:block">
+          <div className="absolute bottom-12 right-[20%] hidden md:block">
             <Image
               src="/home page/shape-9.png"
               alt="toys for kids"
-              width={400}
-              height={400}
+              width={80}
+              height={80}
               priority
-              style={{ width: "auto", height: "auto" }}
-              className="object-contain animate-floatUpDown"
+              className="h-[80px] w-[80px] object-contain animate-floatUpDown"
             />
           </div>
-          <div className="absolute bottom-0 right-0 hidden sm:block">
+          <div className="absolute bottom-0 right-0 hidden md:block">
             <Image
               src="/home page/shape-10.png"
               alt="toys for kids"
               width={200}
               height={200}
               priority
-              className="object-contain opacity-50"
+              className="h-[200px] w-[200px] object-contain opacity-50"
             />
           </div>
         </div>
-        <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-8 md:flex-row md:gap-8 lg:gap-12">
+        <div className="mx-auto flex max-w-[1300px] flex-col items-center justify-between gap-8 md:flex-row md:gap-8 lg:gap-12">
           <div
             className={`relative z-10 mx-auto flex h-[260px] w-[260px] items-center justify-center rounded-full text-[120px] transition-all duration-1000 delay-200 animate-bounce-slow transform sm:h-[320px] sm:w-[320px] sm:text-[150px] md:mx-4 md:h-[320px] md:w-[320px] lg:mx-12 lg:h-[350px] lg:w-[400px] lg:text-[180px] ${heroVisible ? "scale-100 opacity-100" : "scale-50 opacity-0"}`}
           >
@@ -709,23 +745,23 @@ export default function Home() {
           <div
             className={`relative z-10 flex-1 px-5 text-center md:text-left transition-all duration-1000 transform ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
           >
-            <p className="text-xs mt-2 sm:text-lg lg:text-lg text-orange-600 mb-3 font-extrabold w-fit mx-auto md:mx-0 uppercase">
+            <p className="text-xs mt-2 sm:text-lg lg:text-xl text-orange-600 mb-3 font-extrabold w-fit mx-auto md:mx-0 uppercase">
               Welcome to the World of Joy
             </p>
-            <h1 className="mb-4 text-2xl sm:text-4xl md:text-4xl lg:text-5xl font-extrabold leading-[1.1] text-slate-900">
-              From Playtime <br />
-              to School Time,
+            <h1 className="mb-4 text-2xl sm:text-4xl md:text-4xl lg:text-6xl font-extrabold leading-[1.1] text-slate-900">
+              From Playtime to <br />
+              School Time,
               <br />
               <span className="text-[#f52c6c]">We Bring You the Best</span>
             </h1>
-            <p className="text-gray-600 dark:text-gray-500 mb-8 leading-relaxed md:text-sm lg:text-base">
+            <p className="text-gray-600 dark:text-gray-500 mb-8 leading-relaxed md:text-sm lg:text-lg">
               Discover the ultimate collection of toys, educational stationery,
               and unique return gifts. High-quality kids&apos; essentials delivered
               at prices both shops and parents love.
             </p>
             <Link
               href="/shop"
-              className="bg-white text-[#f52c6c] hover:text-white hover:bg-[#f52c6c] hover:border hover:border-white hover:border-dashed border border-dashed border-pink-500 px-5 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg shadow-pink-200 hover:scale-105 active:scale-95 transition-all"
+              className="bg-white text-[#f52c6c] hover:text-white hover:bg-[#f52c6c] hover:border hover:border-white hover:border-dashed border border-dashed border-pink-500 px-6 py-4 rounded-full font-bold text-md uppercase tracking-widest shadow-lg shadow-pink-200 hover:scale-105 active:scale-95 transition-all"
             >
               View Shop
             </Link>
@@ -745,15 +781,14 @@ export default function Home() {
 
       {/* ── CATEGORIES ── */}
       <section className="relative overflow-hidden rounded-2xl px-4 py-10">
-        <div className="absolute right-5 top-40 hidden lg:block">
+        <div className="absolute right-5 top-25 hidden md:block">
           <Image
             src="/home page/shape-6.png"
             alt="toys for kids"
-            width={400}
-            height={400}
+            width={150}
+            height={150}
             priority
-            style={{ width: "auto", height: "auto" }}
-            className="object-contain animate-floatLeftRight"
+            className="h-[150px] w-[150px] object-contain animate-floatLeftRight"
           />
         </div>
         {/* Decorative elements */}
@@ -835,7 +870,7 @@ export default function Home() {
               <Link
                 href={b.link}
                 onClick={(e) => e.stopPropagation()}
-                className="text-center bg-white/50 text-gray-700 border border-dashed px-5 py-2 rounded-full text-sm font-black shadow-lg w-fit mt-5 sm:mt-10"
+                className="text-center bg-white/50 text-white border border-dashed px-5 py-2 rounded-full text-md font-black shadow-lg w-fit mt-5 sm:mt-10"
               >
                 Shop Now
               </Link>
@@ -968,22 +1003,21 @@ export default function Home() {
         </section>
       )}
 
-      {/* ── POPULAR PICKS ── */}
+      {/* ── New Arrivals ── */}
       <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
-        <div className="absolute top-20 hidden lg:block">
+        <div className="absolute top-20 hidden md:block">
           <Image
             src="/home page/shape-20.png"
             alt="Toy for kids"
-            width={400}
-            height={400}
+            width={180}
+            height={180}
             priority
-            style={{ width: "auto", height: "auto" }}
-            className="object-contain animate-floatLeftRight"
+            className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
           />
         </div>
         <div className="mb-10 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-            Today&apos;s <span className="text-[#f75781]">popular picks</span>
+            New <span className="text-[#f75781]">Arrivals</span>
           </h2>
         </div>
 
@@ -1008,7 +1042,7 @@ export default function Home() {
                       className="shrink-0 px-2"
                       style={{ width: `${100 / popularVisible}%` }}
                     >
-                      <div className="bg-white/60 animate-pulse rounded-2xl h-[360px] w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
+                      <div className="bg-white/60 animate-pulse rounded-2xl h-90 w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
                         <div className="h-48 bg-gray-200/60 rounded-xl w-full mb-4"></div>
                         <div className="h-5 bg-gray-200/60 rounded w-3/4 mb-2"></div>
                         <div className="h-4 bg-gray-200/60 rounded w-1/2 mt-auto mb-3"></div>
@@ -1019,13 +1053,15 @@ export default function Home() {
                 : popularProductsList.map((product) => (
                     <div
                       key={product.name}
-                      className="shrink-0 border-l-2  border-t-2  border-b-2 border-dotted border-gray-300  "
+                      className="shrink-0 px-2 py-2"
                       style={{ width: `${100 / popularVisible}%` }}
                     >
-                      <PopularProductCard
-                        product={product}
-                        onAddToCart={addToCart}
-                      />
+                      <div className="h-full shadow-xl shadow-gray-200 rounded-xl overflow-hidden">
+                        <PopularProductCard
+                          product={product}
+                          onAddToCart={addToCart}
+                        />
+                      </div>
                     </div>
                   ))}
             </div>
@@ -1052,38 +1088,36 @@ export default function Home() {
           className="block h-auto scale-y-[-1] scale-x-[-1] w-full bg-[#FFE8EE]"
         />
       </section>
-      <section className="relative isolate overflow-hidden bg-[#FFE8EE] px-4 py-5 sm:px-5">
-        <div className="pointer-events-none absolute left-10 top-550 hidden lg:block -z-10">
+
+      <section className="relative isolate overflow-hidden bg-[#FFE8EE] px-4 py-5 sm:px-5 ">
+        <div className="pointer-events-none absolute left-10 top-80 hidden md:block">
           <Image
             src="/home page/shape-24.png"
             alt="Toy for kids"
-            width={400}
-            height={400}
+            width={180}
+            height={180}
             priority
-            style={{ width: "auto", height: "auto" }}
-            className="object-contain animate-floatUpDown"
+            className="h-[180px] w-[180px] object-contain animate-floatUpDown"
           />
         </div>
-        <div className="pointer-events-none absolute top-448 right-[45%] hidden lg:block -z-10">
+        <div className="pointer-events-none absolute top-0 right-[70%] hidden md:block">
           <Image
             src="/home page/shape-17.png"
             alt="Toy for kids"
-            width={400}
-            height={400}
+            width={180}
+            height={180}
             priority
-            style={{ width: "auto", height: "auto" }}
-            className="object-contain"
+            className="h-[180px] w-[180px] object-contain"
           />
         </div>
-        <div className="pointer-events-none absolute top-460 right-130 hidden lg:block -z-10">
+        <div className="pointer-events-none absolute top-0 right-80 hidden md:block">
           <Image
             src="/home page/shape-25.png"
             alt="Toy for kids"
-            width={400}
-            height={400}
+            width={180}
+            height={180}
             priority
-            style={{ width: "auto", height: "auto" }}
-            className="object-contain animate-floatLeftRight"
+            className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
           />
         </div>
         <div className="relative z-10 max-w-[1400px] mx-auto">
@@ -1190,12 +1224,13 @@ export default function Home() {
                 {dealProducts.map((d) => (
                   <SwiperSlide key={d._id} className="pb-8 px-2">
                     <div
-                      className="bg-white p-6 sm:p-8 rounded-[30px] sm:rounded-[40px] flex flex-col sm:flex-row items-center gap-6 sm:gap-8 border-4 border-[#FFE0EE] shadow-xl hover:shadow-2xl transition-all h-full cursor-pointer"
+                      className="bg-white rounded-[30px] sm:rounded-[40px] flex flex-col sm:flex-row items-center gap-6 sm:gap-8 border-4 border-[#FFE0EE] shadow-xl hover:shadow-2xl transition-all h-full cursor-pointer"
                       onClick={() => router.push(`/shop/${d._id}`)}
                     >
-                      <div className="w-full sm:w-[45%] max-w-[240px] sm:max-w-none aspect-square relative shrink-0">
+                      <div className="w-full sm:w-[45%] max-w-[240px] sm:max-w-none aspect-square relative shrink-0 rounded-l-[20px] md:rounded-l-[20px] overflow-hidden">
+                        <ProductTagBadge tag={d.tags?.[0]} />
                         <Image
-                          className="object-cover hover:scale-105 transition-transform duration-500 drop-shadow-md"
+                          className="object-cover hover:scale-105 transition-transform duration-500 drop-shadow-md rounded-l-[20px] md:rounded-l-[20px]"
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           src={d.image}
@@ -1203,23 +1238,6 @@ export default function Home() {
                         />
                       </div>
                       <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left gap-4 w-full">
-                        <span
-                          className="inline-block text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full"
-                          style={{
-                            background:
-                              dealTag === "limited edition"
-                                ? "#ede9fe"
-                                : "#fee2e2",
-                            color:
-                              dealTag === "limited edition"
-                                ? "#7c3aed"
-                                : "#ef4444",
-                          }}
-                        >
-                          {dealTag === "limited edition"
-                            ? "👑 Limited Edition"
-                            : "🔥 On Sale"}
-                        </span>
                         <h3 className="text-lg font-black leading-tight">
                           {d.name}
                         </h3>
@@ -1290,15 +1308,164 @@ export default function Home() {
         />
       </section>
 
+
+      {/* ── Return gifts ── */}
+      <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
+        <div className="absolute top-20 hidden md:block">
+          <Image
+            src="/home page/shape-20.png"
+            alt="Toy for kids"
+            width={180}
+            height={180}
+            priority
+            className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
+          />
+        </div>
+        <div className="mb-10 text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+            Return <span className="text-[#f75781]">Gifts</span>
+          </h2>
+        </div>
+
+        <div className="relative mx-auto max-w-[1400px] px-0 sm:px-6">
+          <PopularPicksArrowButton
+            direction="left"
+            onClick={() => setPopularCurrent((c) => Math.max(0, c - 1))}
+            disabled={popularCurrent === 0}
+          />
+
+          <div className="overflow-hidden">
+            <div
+              className={`flex transition-transform duration-500 ease-in-out ${popularLoading ? "py-2" : ""}`}
+              style={{
+                transform: `translateX(-${popularCurrent * (100 / popularVisible)}%)`,
+              }}
+            >
+              {popularLoading
+                ? Array.from({ length: popularVisible }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="shrink-0 px-2"
+                      style={{ width: `${100 / popularVisible}%` }}
+                    >
+                      <div className="bg-white/60 animate-pulse rounded-2xl h-90 w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
+                        <div className="h-48 bg-gray-200/60 rounded-xl w-full mb-4"></div>
+                        <div className="h-5 bg-gray-200/60 rounded w-3/4 mb-2"></div>
+                        <div className="h-4 bg-gray-200/60 rounded w-1/2 mt-auto mb-3"></div>
+                        <div className="h-10 bg-gray-200/60 rounded-full w-full"></div>
+                      </div>
+                    </div>
+                  ))
+                : popularProductsList.map((product) => (
+                    <div
+                      key={product.name}
+                      className="shrink-0 px-2 py-2"
+                      style={{ width: `${100 / popularVisible}%` }}
+                    >
+                      <div className="h-full shadow-xl shadow-gray-200 rounded-xl overflow-hidden">
+                        <PopularProductCard
+                          product={product}
+                          onAddToCart={addToCart}
+                        />
+                      </div>
+                    </div>
+                  ))}
+            </div>
+          </div>
+
+          <PopularPicksArrowButton
+            direction="right"
+            onClick={() =>
+              setPopularCurrent((c) => Math.min(popularMaxIndex, c + 1))
+            }
+            disabled={popularCurrent === popularMaxIndex}
+          />
+        </div>
+      </section>    
+
+{/* ── Stationary Items── */}
+      <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
+        <div className="absolute top-20 hidden md:block">
+          <Image
+            src="/home page/shape-20.png"
+            alt="Toy for kids"
+            width={180}
+            height={180}
+            priority
+            className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
+          />
+        </div>
+        <div className="mb-10 text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+            Stationary <span className="text-[#f75781]">Items</span>
+          </h2>
+        </div>
+
+        <div className="relative mx-auto max-w-[1400px] px-0 sm:px-6">
+          <PopularPicksArrowButton
+            direction="left"
+            onClick={() => setPopularCurrent((c) => Math.max(0, c - 1))}
+            disabled={popularCurrent === 0}
+          />
+
+          <div className="overflow-hidden">
+            <div
+              className={`flex transition-transform duration-500 ease-in-out ${popularLoading ? "py-2" : ""}`}
+              style={{
+                transform: `translateX(-${popularCurrent * (100 / popularVisible)}%)`,
+              }}
+            >
+              {popularLoading
+                ? Array.from({ length: popularVisible }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="shrink-0 px-2"
+                      style={{ width: `${100 / popularVisible}%` }}
+                    >
+                      <div className="bg-white/60 animate-pulse rounded-2xl h-90 w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
+                        <div className="h-48 bg-gray-200/60 rounded-xl w-full mb-4"></div>
+                        <div className="h-5 bg-gray-200/60 rounded w-3/4 mb-2"></div>
+                        <div className="h-4 bg-gray-200/60 rounded w-1/2 mt-auto mb-3"></div>
+                        <div className="h-10 bg-gray-200/60 rounded-full w-full"></div>
+                      </div>
+                    </div>
+                  ))
+                : popularProductsList.map((product) => (
+                    <div
+                      key={product.name}
+                      className="shrink-0 px-2 py-2"
+                      style={{ width: `${100 / popularVisible}%` }}
+                    >
+                      <div className="h-full shadow-xl shadow-gray-200 rounded-xl overflow-hidden">
+                        <PopularProductCard
+                          product={product}
+                          onAddToCart={addToCart}
+                        />
+                      </div>
+                    </div>
+                  ))}
+            </div>
+          </div>
+
+          <PopularPicksArrowButton
+            direction="right"
+            onClick={() =>
+              setPopularCurrent((c) => Math.min(popularMaxIndex, c + 1))
+            }
+            disabled={popularCurrent === popularMaxIndex}
+          />
+        </div>
+      </section>    
+
       <section className="relative isolate overflow-hidden bg-white py-14 md:py-16">
-        <div className="pointer-events-none absolute right-8 top-152 hidden lg:block -z-10 xl:right-20">
+        <div className="pointer-events-none absolute right-8 top-0 hidden md:block -z-10 xl:right-20">
           <Image
             src="/home page/shape-26.png"
             alt="toys for kids"
-            width={220}
-            height={220}
+            width={150}
+            height={150}
             priority
-            className="h-[120px] w-[120px] object-contain animate-floatLeftRight xl:h-[220px] xl:w-[220px]"
+            className="h-[150px] w-[150px] object-contain animate-floatLeftRight"
           />
         </div>
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -1403,27 +1570,25 @@ export default function Home() {
       </section>
 
       {/* ── PROMO TICKER ── */}
-      <section className="relative isolate my-12 overflow-hidden -rotate-2 md:my-20 md:-rotate-5">
-        <div className="pointer-events-none absolute -top-62 left-10 hidden lg:block -z-10">
+      <section className="relative isolate my-12 overflow-visible -rotate-2 md:my-20 md:-rotate-5">
+        <div className="pointer-events-none absolute -top-[180px] left-10 z-10 hidden md:block">
           <Image
             src="/home page/shape-33.png"
             alt="Toy for kids"
-            width={400}
-            height={400}
+            width={200}
+            height={200}
             priority
-            style={{ width: "auto", height: "auto" }}
-            className="object-contain animate-floatUpDown"
+            className="h-[200px] w-[200px] object-contain animate-floatUpDown"
           />
         </div>
-        <div className="pointer-events-none absolute -top-62 right-10 hidden lg:block -z-10">
+        <div className="pointer-events-none absolute -top-[170px] right-10 z-10 hidden md:block">
           <Image
             src="/home page/shape-29.png"
             alt="Toy for kids"
-            width={400}
-            height={400}
+            width={180}
+            height={180}
             priority
-            style={{ width: "auto", height: "auto" }}
-            className="object-contain animate-floatUpDown"
+            className="h-[180px] w-[180px] object-contain animate-floatUpDown"
           />
         </div>
         <div className="m-0 p-0 leading-none">
@@ -1437,7 +1602,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="overflow-hidden bg-white py-3 sm:py-4">
+        <div className="overflow-hidden  py-3 sm:py-4">
           <style>{`
           .ticker-swiper .swiper-wrapper {
             transition-timing-function: linear !important;
@@ -1485,18 +1650,18 @@ export default function Home() {
       </section>
 
       {/* ── PROMO BANNERS ── */}
-      <section className="relative isolate mx-auto max-w-[1400px] overflow-hidden px-4 py-12 sm:px-5">
-        <div className="pointer-events-none absolute -right-10 hidden lg:block -z-10">
+      <section className="relative isolate mx-auto  overflow-hidden px-4 py-12 sm:px-5">
+        <div className="pointer-events-none absolute right-0 top-0 hidden md:block">
           <Image
             src="/home page/shape-27.png"
             alt="Toy for kids"
-            width={400}
-            height={400}
+            width={180}
+            height={180}
             priority
-            className=" object-contain animate-floatUpDown w-60 h-60"
+            className=" object-contain animate-floatUpDown"
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr_1fr] gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr_1fr] gap-5 max-w-[1400px] mx-auto">
           {/* Left Card – Red */}
           <div
             className="relative rounded-3xl overflow-hidden flex flex-col justify-between p-7 min-h-[220px] group cursor-pointer"
@@ -1626,24 +1791,24 @@ export default function Home() {
 
       {/* ── SELECT FROM COLLECTION ── */}
       <section className="relative isolate overflow-hidden bg-white px-4 py-14 sm:px-5 md:py-16">
-        <div className="pointer-events-none absolute hidden -z-10 lg:block">
+        <div className="pointer-events-none absolute hidden -z-10 md:block">
           <Image
             src="/home page/shape-28.png"
             alt="Toy for kids"
             width={400}
             height={400}
             priority
-            className=" object-contain animate-floatUpDown w-50 h-50"
+            className="h-[200px] w-[200px] object-contain animate-floatUpDown"
           />
         </div>
-        <div className="pointer-events-none absolute top-2 right-[35%] hidden -z-10 lg:block">
+        <div className="pointer-events-none absolute top-2 right-[35%] hidden -z-10 md:block">
           <Image
             src="/home page/shape-30.png"
             alt="Toy for kids"
             width={400}
             height={400}
             priority
-            className=" object-contain animate-floatUpDown w-50 h-50"
+            className="h-[200px] w-[200px] object-contain animate-floatUpDown"
           />
         </div>
         <div className="relative z-10 max-w-[1300px] mx-auto">
@@ -1759,6 +1924,7 @@ export default function Home() {
                     >
                       {/* Image */}
                       <div className="relative bg-gray-50 h-44 overflow-hidden">
+                        <ProductTagBadge tag={product.tags?.[0]} />
                         <Image
                           fill
                           src={product.image}

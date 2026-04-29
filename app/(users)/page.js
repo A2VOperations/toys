@@ -10,6 +10,10 @@ import { useRouter } from "next/navigation";
 import { PiStarFourFill } from "react-icons/pi";
 import { addItemToCart } from "./cartStorage";
 import FacebookVideos from "./components/facebookGallery";
+import ProductCarouselSection, {
+  PopularProductCard,
+  ProductTagBadge,
+} from "./components/ProductCarouselSection";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -136,49 +140,6 @@ const promoTags = [
 
 // ─── COMPONENTS ──────────────────────────────────────────────────────────────
 
-const TAG_BADGE_COLORS = {
-  Bestseller: "bg-[#ff5d73]",
-  Sale: "bg-[#ff5d73]",
-  New: "bg-[#72c33a]",
-  "Limited Edition": "bg-[#72c33a]",
-  "Award Winning": "bg-[#72c33a]",
-  "Eco Friendly": "bg-[#72c33a]",
-};
-
-const TAG_LABELS = {
-  Bestseller: "Best Seller",
-  New: "New Launch",
-};
-
-const normalizeTag = (tag) =>
-  tag
-    ? tag
-        .toLowerCase()
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")
-    : "";
-
-const formatTagLabel = (tag) => TAG_LABELS[normalizeTag(tag)] || tag;
-
-function ProductTagBadge({ tag }) {
-  if (!tag) return null;
-
-  const normalizedTag = normalizeTag(tag);
-  const label = formatTagLabel(normalizedTag);
-
-  return (
-    <div
-      className={`absolute left-0 top-0 z-10 max-w-[85%] truncate px-2.5 py-1.5 text-[11px] font-extrabold uppercase leading-none tracking-[0.01em] text-white shadow-sm rounded-br-[2px] ${
-        TAG_BADGE_COLORS[normalizedTag] || "bg-[#ff5d73]"
-      }`}
-      title={label}
-    >
-      {label}
-    </div>
-  );
-}
-
 const heroStars = [
   { size: "text-xl", top: "top-10", left: "left-[8%]", delay: "0s" },
   { size: "text-3xl", top: "top-20", left: "left-[42%]", delay: "1.2s" },
@@ -253,110 +214,6 @@ function KiteSVG() {
   );
 }
 
-function PopularPicksArrowButton({ direction, onClick, disabled }) {
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`absolute top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-lg transition-all duration-200 md:h-11 md:w-11 ${
-        direction === "left" ? "left-2 md:-left-5" : "right-2 md:-right-5"
-      } ${
-        disabled
-          ? "cursor-not-allowed opacity-30"
-          : "cursor-pointer hover:scale-110 hover:border-[#E84393] hover:bg-[#E84393] hover:text-white"
-      }`}
-      aria-label={direction === "left" ? "Previous products" : "Next products"}
-    >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        className="h-4 w-4"
-      >
-        {direction === "left" ? (
-          <path
-            d="M15 18l-6-6 6-6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        ) : (
-          <path
-            d="M9 18l6-6-6-6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        )}
-      </svg>
-    </button>
-  );
-}
-
-function PopularProductCard({ product, onAddToCart }) {
-  const router = useRouter();
-
-  return (
-    <div
-      onClick={() => router.push(`/shop/${product._id}`)}
-      className="group bg-white overflow-hidden transition-all duration-300 h-full flex flex-col cursor-pointer"
-    >
-      {/* Image Container with overlay effect */}
-      <div className="relative overflow-hidden bg-gray-100">
-        <Image
-          width={600}
-          height={600}
-          src={product.image}
-          alt={product.name}
-          className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-
-        <ProductTagBadge tag={product.tags?.[0]} />
-      </div>
-
-      {/* Content Section */}
-      <div className="p-4 flex flex-col justify-center items-center">
-        {/* Product Name */}
-        <h3 className="text-center font-semibold text-gray-800 line-clamp-2 mb-2 group-hover:text-[#f74872] transition-colors">
-          {product.name}
-        </h3>
-
-        {/* Description (optional - if you have product description) */}
-        {product.description && (
-          <p className="text-sm text-gray-500 line-clamp-2 mb-3">
-            {product.description}
-          </p>
-        )}
-
-        {/* Price and CTA Section */}
-        <div className="mt-auto">
-          {product.price !== undefined && (
-            <div className="text-center gap-1 mb-3">
-              <span className="text-2xl font-bold text-[#E84393]">
-                {product.price}
-              </span>
-              {product.originalPrice && (
-                <span className="text-sm text-gray-400 line-through">
-                  {product.originalPrice}
-                </span>
-              )}
-            </div>
-          )}
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onAddToCart(product);
-            }}
-            className="w-full rounded-full border border-dashed border-[#E84393] py-2.5 px-4 text-xs font-bold uppercase tracking-wider text-[#E84393] transition-all duration-300 hover:shadow-lg hover:shadow-[#f74872]/30 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#f74872] focus:ring-offset-2"
-          >
-            Add to Cart
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Home() {
   const router = useRouter();
 
@@ -372,21 +229,10 @@ export default function Home() {
   const [dealTag, setDealTag] = useState("limited edition");
   const [dealProducts, setDealProducts] = useState([]);
   const [dealLoading, setDealLoading] = useState(true);
-  const [popularCurrent, setPopularCurrent] = useState(0);
-  const [popularVisible, setPopularVisible] = useState(5);
   const [toastMessage, setToastMessage] = useState("");
   const [bannerData, setBannerData] = useState(null);
   const [bannerLoading, setBannerLoading] = useState(true);
   const [bannerTimer, setBannerTimer] = useState({ h: 0, m: 0, s: 0 });
-  const [returnGifts, setReturnGifts] = useState([]);
-  const [returnGiftsLoading, setReturnGiftsLoading] = useState(true);
-  const [returnGiftsCurrent, setReturnGiftsCurrent] = useState(0);
-  const [stationary, setStationary] = useState([]);
-  const [stationaryLoading, setStationaryLoading] = useState(true);
-  const [stationaryCurrent, setStationaryCurrent] = useState(0);
-  const [batteryItems, setBatteryItems] = useState([]);
-  const [batteryLoading, setBatteryLoading] = useState(true);
-  const [batteryCurrent, setBatteryCurrent] = useState(0);
 
   const showToast = (message) => {
     setToastMessage(message);
@@ -394,113 +240,6 @@ export default function Home() {
       setToastMessage("");
     }, 3000);
   };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setPopularVisible(1);
-      } else if (window.innerWidth < 1024) {
-        setPopularVisible(2);
-      } else {
-        setPopularVisible(5);
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const popularMaxIndex = Math.max(
-    0,
-    popularProductsList.length - popularVisible,
-  );
-
-  useEffect(() => {
-    if (popularCurrent > popularMaxIndex && popularMaxIndex >= 0) {
-      setPopularCurrent(popularMaxIndex);
-    }
-  }, [popularMaxIndex, popularCurrent]);
-
-  useEffect(() => {
-    async function fetchPopular() {
-      try {
-        setPopularLoading(true);
-        const res = await fetch("/api/toys?sortBy=latest&limit=12");
-        const data = await res.json();
-        if (data && data.toys) {
-          const mapped = data.toys.map((t) => ({
-            _id: t._id,
-            name: t.title,
-            category: t.category,
-            image:
-              t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
-            price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
-            stock: t.stock,
-            tags: t.tags || [],
-          }));
-          setPopularProductsList(mapped);
-        }
-      } catch (err) {
-        console.error("Failed to fetch popular products", err);
-      } finally {
-        setPopularLoading(false);
-      }
-    }
-    fetchPopular();
-  }, []);
-
-  useEffect(() => {
-    async function fetchSpecificSections() {
-      try {
-        setReturnGiftsLoading(true);
-        setStationaryLoading(true);
-        setBatteryLoading(true);
-
-        const [resReturn, resStat, resBatt] = await Promise.all([
-          fetch(
-            `/api/toys?category=${encodeURIComponent("Return Gifts Ideas")}&limit=12`,
-          ),
-          fetch(
-            `/api/toys?category=${encodeURIComponent("Stationary (Return Gifts + Regular)")}&limit=12`,
-          ),
-          fetch(
-            `/api/toys?tags=${encodeURIComponent("Battery Operated")}&limit=12`,
-          ),
-        ]);
-
-        const mapData = async (res) => {
-          const data = await res.json();
-          return (data?.toys || []).map((t) => ({
-            _id: t._id,
-            name: t.title,
-            category: t.category,
-            image:
-              t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
-            price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
-            stock: t.stock,
-            tags: t.tags || [],
-          }));
-        };
-
-        const [returnGiftsData, statData, battData] = await Promise.all([
-          mapData(resReturn),
-          mapData(resStat),
-          mapData(resBatt),
-        ]);
-
-        setReturnGifts(returnGiftsData);
-        setStationary(statData);
-        setBatteryItems(battData);
-      } catch (err) {
-        console.error("Failed to fetch specific sections", err);
-      } finally {
-        setReturnGiftsLoading(false);
-        setStationaryLoading(false);
-        setBatteryLoading(false);
-      }
-    }
-    fetchSpecificSections();
-  }, []);
 
   useEffect(() => {
     async function fetchBestselling() {
@@ -1049,78 +788,12 @@ export default function Home() {
       )}
 
       {/* ── New Arrivals ── */}
-      <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
-        <div className="absolute top-20 hidden md:block">
-          <Image
-            src="/home page/shape-20.png"
-            alt="Toy for kids"
-            width={180}
-            height={180}
-            priority
-            className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
-          />
-        </div>
-        <div className="mb-10 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-            New <span className="text-[#f75781]">Arrivals</span>
-          </h2>
-        </div>
-
-        <div className="relative mx-auto max-w-[1400px] px-0 sm:px-6">
-          <PopularPicksArrowButton
-            direction="left"
-            onClick={() => setPopularCurrent((c) => Math.max(0, c - 1))}
-            disabled={popularCurrent === 0}
-          />
-
-          <div className="overflow-hidden">
-            <div
-              className={`flex transition-transform duration-500 ease-in-out ${popularLoading ? "py-2" : ""}`}
-              style={{
-                transform: `translateX(-${popularCurrent * (100 / popularVisible)}%)`,
-              }}
-            >
-              {popularLoading
-                ? Array.from({ length: popularVisible }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="shrink-0 px-2"
-                      style={{ width: `${100 / popularVisible}%` }}
-                    >
-                      <div className="bg-white/60 animate-pulse rounded-2xl h-90 w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
-                        <div className="h-48 bg-gray-200/60 rounded-xl w-full mb-4"></div>
-                        <div className="h-5 bg-gray-200/60 rounded w-3/4 mb-2"></div>
-                        <div className="h-4 bg-gray-200/60 rounded w-1/2 mt-auto mb-3"></div>
-                        <div className="h-10 bg-gray-200/60 rounded-full w-full"></div>
-                      </div>
-                    </div>
-                  ))
-                : popularProductsList.map((product) => (
-                    <div
-                      key={product.name}
-                      className="shrink-0 px-2 py-2"
-                      style={{ width: `${100 / popularVisible}%` }}
-                    >
-                      <div className="h-full shadow-xl shadow-gray-200 rounded-xl overflow-hidden">
-                        <PopularProductCard
-                          product={product}
-                          onAddToCart={addToCart}
-                        />
-                      </div>
-                    </div>
-                  ))}
-            </div>
-          </div>
-
-          <PopularPicksArrowButton
-            direction="right"
-            onClick={() =>
-              setPopularCurrent((c) => Math.min(popularMaxIndex, c + 1))
-            }
-            disabled={popularCurrent === popularMaxIndex}
-          />
-        </div>
-      </section>
+      <ProductCarouselSection
+        titlePrefix="New"
+        titleHighlight="Arrivals"
+        apiFilter="sortBy=latest"
+        onAddToCart={addToCart}
+      />
 
       {/* ── DEAL OF THE DAY ── */}
       <section id="dealOf" className="leading-none">
@@ -1134,85 +807,85 @@ export default function Home() {
         />
       </section>
 
-      <section className="relative isolate overflow-hidden bg-[#FFE8EE] px-4 py-5 sm:px-5 ">
-        <div className="pointer-events-none absolute left-10 top-80 hidden md:block">
-          <Image
-            src="/home page/shape-24.png"
-            alt="Toy for kids"
-            width={180}
-            height={180}
-            priority
-            className="h-[180px] w-[180px] object-contain animate-floatUpDown"
-          />
-        </div>
-        <div className="pointer-events-none absolute top-0 right-[70%] hidden md:block">
-          <Image
-            src="/home page/shape-17.png"
-            alt="Toy for kids"
-            width={180}
-            height={180}
-            priority
-            className="h-[180px] w-[180px] object-contain"
-          />
-        </div>
-        <div className="pointer-events-none absolute top-0 right-80 hidden md:block">
-          <Image
-            src="/home page/shape-25.png"
-            alt="Toy for kids"
-            width={180}
-            height={180}
-            priority
-            className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
-          />
-        </div>
-        <div className="relative z-10 max-w-[1400px] mx-auto">
-          <div className="flex flex-col md:flex-row justify-center items-center mb-6 md:mb-8 gap-6">
-            <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-left md:text-5xl">
-              Deal of <span className="text-[#E84393]">the Day</span>
-            </h2>
+        <section className="relative isolate overflow-hidden bg-[#FFE8EE] px-4 py-5 sm:px-5 ">
+          <div className="pointer-events-none absolute left-10 top-80 hidden md:block">
+            <Image
+              src="/home page/shape-24.png"
+              alt="Toy for kids"
+              width={180}
+              height={180}
+              priority
+              className="h-[180px] w-[180px] object-contain animate-floatUpDown"
+            />
           </div>
-
-          <div className="flex justify-center gap-3 mb-8 flex-wrap">
-            {[
-              {
-                tag: "limited edition",
-                label: "👑 Limited Edition",
-                activeColor: "#7c3aed",
-              },
-              { tag: "sales", label: "🔥 On Sale", activeColor: "#ef4444" },
-            ].map((pill) => (
-              <button
-                key={pill.tag}
-                onClick={() => setDealTag(pill.tag)}
-                style={
-                  dealTag === pill.tag
-                    ? {
-                        background: pill.activeColor,
-                        color: "#fff",
-                        borderColor: pill.activeColor,
-                      }
-                    : {}
-                }
-                className={`px-5 py-2 rounded-full text-sm font-black border-2 transition-all duration-200 ${
-                  dealTag === pill.tag
-                    ? "shadow-lg scale-105"
-                    : "border-pink-200 text-slate-600 bg-white hover:border-[#E84393] hover:text-[#E84393]"
-                }`}
-              >
-                {pill.label}
-              </button>
-            ))}
+          <div className="pointer-events-none absolute top-0 right-[70%] hidden md:block">
+            <Image
+              src="/home page/shape-17.png"
+              alt="Toy for kids"
+              width={180}
+              height={180}
+              priority
+              className="h-[180px] w-[180px] object-contain"
+            />
           </div>
+          <div className="pointer-events-none absolute top-0 right-80 hidden md:block">
+            <Image
+              src="/home page/shape-25.png"
+              alt="Toy for kids"
+              width={180}
+              height={180}
+              priority
+              className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
+            />
+          </div>
+          <div className="relative z-10 max-w-[1400px] mx-auto">
+            <div className="flex flex-col md:flex-row justify-center items-center mb-6 md:mb-8 gap-6">
+              <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-left md:text-5xl">
+                Deal of <span className="text-[#E84393]">the Day</span>
+              </h2>
+            </div>
 
-          {dealLoading ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-              {Array.from({ length: 2 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="bg-white animate-pulse rounded-[30px] sm:rounded-[40px] h-48 border-4 border-[#FFE0EE]"
-                />
+            <div className="flex justify-center gap-3 mb-8 flex-wrap">
+              {[
+                {
+                  tag: "limited edition",
+                  label: "👑 Limited Edition",
+                  activeColor: "#7c3aed",
+                },
+                { tag: "sales", label: "🔥 On Sale", activeColor: "#ef4444" },
+              ].map((pill) => (
+                <button
+                  key={pill.tag}
+                  onClick={() => setDealTag(pill.tag)}
+                  style={
+                    dealTag === pill.tag
+                      ? {
+                          background: pill.activeColor,
+                          color: "#fff",
+                          borderColor: pill.activeColor,
+                        }
+                      : {}
+                  }
+                  className={`px-5 py-2 rounded-full text-sm font-black border-2 transition-all duration-200 ${
+                    dealTag === pill.tag
+                      ? "shadow-lg scale-105"
+                      : "border-pink-200 text-slate-600 bg-white hover:border-[#E84393] hover:text-[#E84393]"
+                  }`}
+                >
+                  {pill.label}
+                </button>
               ))}
             </div>
+
+            {dealLoading ? (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                {Array.from({ length: 2 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-white animate-pulse rounded-[30px] sm:rounded-[40px] h-48 border-4 border-[#FFE0EE]"
+                  />
+                ))}
+              </div>
           ) : dealProducts.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-48 text-gray-400">
               <span className="text-5xl mb-4">🔍</span>
@@ -1228,115 +901,115 @@ export default function Home() {
                 Tag products with &ldquo;{dealTag}&rdquo; in the admin panel.
               </p>
             </div>
-          ) : (
-            <div className="relative px-0 sm:px-12">
-              <button className="deal-prev absolute left-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  className="h-5 w-5"
-                >
-                  <path
-                    d="M15 18l-6-6 6-6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
+            ) : (
+              <div className="relative px-0 sm:px-12">
+                <button className="deal-prev absolute left-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    className="h-5 w-5"
+                  >
+                    <path
+                      d="M15 18l-6-6 6-6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
 
-              <Swiper
-                modules={[Navigation, Autoplay]}
-                spaceBetween={20}
-                slidesPerView={1}
-                loop={true}
-                navigation={{
-                  prevEl: ".deal-prev",
-                  nextEl: ".deal-next",
-                }}
-                autoplay={{ delay: 3500, disableOnInteraction: false }}
-                breakpoints={{
-                  640: { slidesPerView: 1, spaceBetween: 20 },
-                  1024: { slidesPerView: 2, spaceBetween: 30 },
-                }}
-                className="deal-swiper"
-              >
-                {dealProducts.map((d) => (
-                  <SwiperSlide key={d._id} className="pb-8 px-2">
-                    <div
-                      className="bg-white rounded-[30px] sm:rounded-[40px] flex flex-col sm:flex-row items-center gap-6 sm:gap-8 border-4 border-[#FFE0EE] shadow-xl hover:shadow-2xl transition-all h-full cursor-pointer"
-                      onClick={() => router.push(`/shop/${d._id}`)}
-                    >
-                      <div className="w-full sm:w-[45%] aspect-square relative shrink-0 rounded-t-[20px] sm:rounded-l-[20px] sm:rounded-tr-none overflow-hidden">
-                        <ProductTagBadge tag={d.tags?.[0]} />
-                        <Image
-                          className="object-cover hover:scale-105 transition-transform duration-500 drop-shadow-md rounded-t-[20px] sm:rounded-l-[20px] sm:rounded-tr-none"
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          src={d.image}
-                          alt={d.name}
-                        />
-                      </div>
-                      <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left gap-4 w-full">
-                        <h3 className="text-lg font-black leading-tight">
-                          {d.name}
-                        </h3>
-                        <p className="text-2xl font-black text-[#E84393]">
-                          {d.price}
-                        </p>
-                        <div className="flex gap-3 mt-auto flex-wrap pb-4">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              addToCart(d);
-                            }}
-                            className="rounded-full border border-dashed bg-white px-6 py-2.5 text-xs font-black uppercase tracking-widest text-[#e8569a] shadow-sm transition-colors hover:border-white hover:bg-[#d83a82] hover:text-white"
-                          >
-                            Add to Cart
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              const waNumber =
-                                process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
-                              if (!waNumber) return;
-                              const msg = `Hi, I want to buy: ${d.name}`;
-                              window.open(
-                                `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`,
-                                "_blank",
-                              );
-                            }}
-                            className="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest transition-colors shadow-sm"
-                          >
-                            WhatsApp
-                          </button>
+                <Swiper
+                  modules={[Navigation, Autoplay]}
+                  spaceBetween={20}
+                  slidesPerView={1}
+                  loop={true}
+                  navigation={{
+                    prevEl: ".deal-prev",
+                    nextEl: ".deal-next",
+                  }}
+                  autoplay={{ delay: 3500, disableOnInteraction: false }}
+                  breakpoints={{
+                    640: { slidesPerView: 1, spaceBetween: 20 },
+                    1024: { slidesPerView: 2, spaceBetween: 30 },
+                  }}
+                  className="deal-swiper"
+                >
+                  {dealProducts.map((d) => (
+                    <SwiperSlide key={d._id} className="pb-8 px-2">
+                      <div
+                        className="bg-white rounded-[30px] sm:rounded-[40px] flex flex-col sm:flex-row items-center gap-6 sm:gap-8 border-4 border-[#FFE0EE] shadow-xl hover:shadow-2xl transition-all h-full cursor-pointer"
+                        onClick={() => router.push(`/shop/${d._id}`)}
+                      >
+                        <div className="w-full sm:w-[45%] aspect-square relative shrink-0 rounded-t-[20px] sm:rounded-l-[20px] sm:rounded-tr-none overflow-hidden">
+                          <ProductTagBadge tag={d.tags?.[0]} />
+                          <Image
+                            className="object-cover hover:scale-105 transition-transform duration-500 drop-shadow-md rounded-t-[20px] sm:rounded-l-[20px] sm:rounded-tr-none"
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            src={d.image}
+                            alt={d.name}
+                          />
+                        </div>
+                        <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left gap-4 w-full">
+                          <h3 className="text-lg font-black leading-tight">
+                            {d.name}
+                          </h3>
+                          <p className="text-2xl font-black text-[#E84393]">
+                            {d.price}
+                          </p>
+                          <div className="flex gap-3 mt-auto flex-wrap pb-4">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                addToCart(d);
+                              }}
+                              className="rounded-full border border-dashed bg-white px-6 py-2.5 text-xs font-black uppercase tracking-widest text-[#e8569a] shadow-sm transition-colors hover:border-white hover:bg-[#d83a82] hover:text-white"
+                            >
+                              Add to Cart
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const waNumber =
+                                  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
+                                if (!waNumber) return;
+                                const msg = `Hi, I want to buy: ${d.name}`;
+                                window.open(
+                                  `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`,
+                                  "_blank",
+                                );
+                              }}
+                              className="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest transition-colors shadow-sm"
+                            >
+                              WhatsApp
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
 
-              <button className="deal-next absolute right-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  className="h-5 w-5"
-                >
-                  <path
-                    d="M9 18l6-6-6-6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
+                <button className="deal-next absolute right-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    className="h-5 w-5"
+                  >
+                    <path
+                      d="M9 18l6-6-6-6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
       <section className="m-0 p-0 leading-none">
         <Image
           src="/home page/hero-border-2.png"
@@ -1349,334 +1022,112 @@ export default function Home() {
       </section>
 
       {/* ── Return gifts ── */}
-      <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
-        <div className="absolute top-20 hidden md:block">
-          <Image
-            src="/home page/shape-20.png"
-            alt="Toy for kids"
-            width={180}
-            height={180}
-            priority
-            className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
-          />
-        </div>
-        <div className="mb-10 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-            Return <span className="text-[#f75781]">Gifts</span>
-          </h2>
-        </div>
-
-        <div className="relative mx-auto max-w-[1400px] px-0 sm:px-6">
-          <PopularPicksArrowButton
-            direction="left"
-            onClick={() => setReturnGiftsCurrent((c) => Math.max(0, c - 1))}
-            disabled={returnGiftsCurrent === 0}
-          />
-
-          <div className="overflow-hidden">
-            <div
-              className={`flex transition-transform duration-500 ease-in-out ${returnGiftsLoading ? "py-2" : ""}`}
-              style={{
-                transform: `translateX(-${returnGiftsCurrent * (100 / popularVisible)}%)`,
-              }}
-            >
-              {returnGiftsLoading
-                ? Array.from({ length: popularVisible }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="shrink-0 px-2"
-                      style={{ width: `${100 / popularVisible}%` }}
-                    >
-                      <div className="bg-white/60 animate-pulse rounded-2xl h-90 w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
-                        <div className="h-48 bg-gray-200/60 rounded-xl w-full mb-4"></div>
-                        <div className="h-5 bg-gray-200/60 rounded w-3/4 mb-2"></div>
-                        <div className="h-4 bg-gray-200/60 rounded w-1/2 mt-auto mb-3"></div>
-                        <div className="h-10 bg-gray-200/60 rounded-full w-full"></div>
-                      </div>
-                    </div>
-                  ))
-                : returnGifts.map((product) => (
-                    <div
-                      key={product.name}
-                      className="shrink-0 px-2 py-2"
-                      style={{ width: `${100 / popularVisible}%` }}
-                    >
-                      <div className="h-full shadow-xl shadow-gray-200 rounded-xl overflow-hidden">
-                        <PopularProductCard
-                          product={product}
-                          onAddToCart={addToCart}
-                        />
-                      </div>
-                    </div>
-                  ))}
-            </div>
-          </div>
-
-          <PopularPicksArrowButton
-            direction="right"
-            onClick={() =>
-              setReturnGiftsCurrent((c) =>
-                Math.min(
-                  Math.max(0, returnGifts.length - popularVisible),
-                  c + 1,
-                ),
-              )
-            }
-            disabled={
-              returnGiftsCurrent ===
-              Math.max(0, returnGifts.length - popularVisible)
-            }
-          />
-        </div>
-      </section>
+      <ProductCarouselSection
+        titlePrefix="Return"
+        titleHighlight="Gifts"
+        apiFilter={`category=${encodeURIComponent("Return Gifts Ideas")}`}
+        onAddToCart={addToCart}
+      />
 
       {/* ── Stationary Items── */}
-      <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
-        <div className="absolute top-20 hidden md:block">
-          <Image
-            src="/home page/shape-20.png"
-            alt="Toy for kids"
-            width={180}
-            height={180}
-            priority
-            className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
-          />
-        </div>
-        <div className="mb-10 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-            Stationary <span className="text-[#f75781]">Items</span>
-          </h2>
-        </div>
-
-        <div className="relative mx-auto max-w-[1400px] px-0 sm:px-6">
-          <PopularPicksArrowButton
-            direction="left"
-            onClick={() => setStationaryCurrent((c) => Math.max(0, c - 1))}
-            disabled={stationaryCurrent === 0}
-          />
-
-          <div className="overflow-hidden">
-            <div
-              className={`flex transition-transform duration-500 ease-in-out ${stationaryLoading ? "py-2" : ""}`}
-              style={{
-                transform: `translateX(-${stationaryCurrent * (100 / popularVisible)}%)`,
-              }}
-            >
-              {stationaryLoading
-                ? Array.from({ length: popularVisible }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="shrink-0 px-2"
-                      style={{ width: `${100 / popularVisible}%` }}
-                    >
-                      <div className="bg-white/60 animate-pulse rounded-2xl h-90 w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
-                        <div className="h-48 bg-gray-200/60 rounded-xl w-full mb-4"></div>
-                        <div className="h-5 bg-gray-200/60 rounded w-3/4 mb-2"></div>
-                        <div className="h-4 bg-gray-200/60 rounded w-1/2 mt-auto mb-3"></div>
-                        <div className="h-10 bg-gray-200/60 rounded-full w-full"></div>
-                      </div>
-                    </div>
-                  ))
-                : stationary.map((product) => (
-                    <div
-                      key={product.name}
-                      className="shrink-0 px-2 py-2"
-                      style={{ width: `${100 / popularVisible}%` }}
-                    >
-                      <div className="h-full shadow-xl shadow-gray-200 rounded-xl overflow-hidden">
-                        <PopularProductCard
-                          product={product}
-                          onAddToCart={addToCart}
-                        />
-                      </div>
-                    </div>
-                  ))}
-            </div>
-          </div>
-
-          <PopularPicksArrowButton
-            direction="right"
-            onClick={() =>
-              setStationaryCurrent((c) =>
-                Math.min(
-                  Math.max(0, stationary.length - popularVisible),
-                  c + 1,
-                ),
-              )
-            }
-            disabled={
-              stationaryCurrent ===
-              Math.max(0, stationary.length - popularVisible)
-            }
-          />
-        </div>
-      </section>
+      <ProductCarouselSection
+        titlePrefix="Stationary"
+        titleHighlight="Items"
+        apiFilter={`category=${encodeURIComponent("Stationary (Return Gifts + Regular)")}`}
+        onAddToCart={addToCart}
+      />
 
       {/* ── Classic & Battery Items── */}
-      <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
-        <div className="absolute top-20 hidden md:block">
-          <Image
-            src="/home page/shape-20.png"
-            alt="Toy for kids"
-            width={180}
-            height={180}
-            priority
-            className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
-          />
-        </div>
-        <div className="mb-10 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-            Classic & <span className="text-[#f75781]">Battery Powered</span>
-          </h2>
-        </div>
+      <ProductCarouselSection
+        titlePrefix="Classic &"
+        titleHighlight="Battery Powered"
+        apiFilter={`tags=${encodeURIComponent("Battery Operated")}`}
+        onAddToCart={addToCart}
+      />
 
-        <div className="relative mx-auto max-w-[1400px] px-0 sm:px-6">
-          <PopularPicksArrowButton
-            direction="left"
-            onClick={() => setBatteryCurrent((c) => Math.max(0, c - 1))}
-            disabled={batteryCurrent === 0}
-          />
+        <section className="relative isolate overflow-hidden bg-white py-14 md:py-16">
+          <div className="pointer-events-none absolute right-8 top-0 hidden md:block -z-10 xl:right-20">
+            <Image
+              src="/home page/shape-26.png"
+              alt="toys for kids"
+              width={150}
+              height={150}
+              priority
+              className="h-[150px] w-[150px] object-contain animate-floatLeftRight"
+            />
+          </div>
+          <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
+            {/* LEFT BANNER */}
+            <div className="relative min-h-[260px] overflow-hidden rounded-3xl shadow-xl md:col-span-1 md:min-h-auto">
+              <Image
+                src="/home page/ads-1.jpg"
+                alt="toy for kids"
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/20 opacity-80 backdrop-blur-[2px]"></div>
+              <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 text-white md:justify-between md:p-8">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.2em] mb-2 drop-shadow-md">
+                    Featured
+                  </p>
+                  <h2 className="mt-2 mb-4 text-2xl font-black leading-tight drop-shadow-lg xl:text-3xl">
+                    Kid Toy Collection <br /> for Summer
+                  </h2>
+                  <Link
+                    href="/shop"
+                    className="mt-6 inline-block bg-white text-orange-500 text-center px-5 py-2 md:px-6 md:py-2.5 rounded-full text-xs md:text-sm font-black hover:scale-105 transition-transform shadow-lg"
+                  >
+                    View Shop
+                  </Link>
+                </div>
+              </div>
+            </div>
+            {/* RIGHT CONTENT */}
+            <div className="md:col-span-3 min-w-0">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+                  Best Selling <span className="text-pink-500">products</span>
+                </h2>
+              </div>
 
-          <div className="overflow-hidden">
-            <div
-              className={`flex transition-transform duration-500 ease-in-out ${batteryLoading ? "py-2" : ""}`}
-              style={{
-                transform: `translateX(-${batteryCurrent * (100 / popularVisible)}%)`,
-              }}
-            >
-              {batteryLoading
-                ? Array.from({ length: popularVisible }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="shrink-0 px-2"
-                      style={{ width: `${100 / popularVisible}%` }}
-                    >
-                      <div className="bg-white/60 animate-pulse rounded-2xl h-90 w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
+              <Swiper
+                modules={[Navigation, Autoplay, Grid]}
+                spaceBetween={20}
+                slidesPerView={4}
+                navigation
+                autoplay={{ delay: 3000 }}
+                grid={{
+                  rows: 2,
+                  fill: "row",
+                }}
+                breakpoints={{
+                  320: { slidesPerView: 1, grid: { rows: 1 }, spaceBetween: 10 },
+                  640: { slidesPerView: 3, grid: { rows: 1 }, spaceBetween: 15 },
+                  1024: { slidesPerView: 4, grid: { rows: 2 }, spaceBetween: 20 },
+                }}
+              >
+                {bestsellingLoading ? (
+                  Array.from({ length: 8 }).map((_, i) => (
+                    <SwiperSlide key={`skeleton-${i}`} className="h-auto">
+                      <div className="bg-white/60 animate-pulse rounded-2xl h-[360px] w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
                         <div className="h-48 bg-gray-200/60 rounded-xl w-full mb-4"></div>
                         <div className="h-5 bg-gray-200/60 rounded w-3/4 mb-2"></div>
                         <div className="h-4 bg-gray-200/60 rounded w-1/2 mt-auto mb-3"></div>
                         <div className="h-10 bg-gray-200/60 rounded-full w-full"></div>
                       </div>
-                    </div>
+                    </SwiperSlide>
                   ))
-                : batteryItems.map((product) => (
-                    <div
-                      key={product.name}
-                      className="shrink-0 px-2 py-2"
-                      style={{ width: `${100 / popularVisible}%` }}
-                    >
-                      <div className="h-full shadow-xl shadow-gray-200 rounded-xl overflow-hidden">
-                        <PopularProductCard
-                          product={product}
-                          onAddToCart={addToCart}
-                        />
-                      </div>
-                    </div>
-                  ))}
-            </div>
-          </div>
-
-          <PopularPicksArrowButton
-            direction="right"
-            onClick={() =>
-              setBatteryCurrent((c) =>
-                Math.min(
-                  Math.max(0, batteryItems.length - popularVisible),
-                  c + 1,
-                ),
-              )
-            }
-            disabled={
-              batteryCurrent ===
-              Math.max(0, batteryItems.length - popularVisible)
-            }
-          />
-        </div>
-      </section>
-
-      <section className="relative isolate overflow-hidden bg-white py-14 md:py-16">
-        <div className="pointer-events-none absolute right-8 top-0 hidden md:block -z-10 xl:right-20">
-          <Image
-            src="/home page/shape-26.png"
-            alt="toys for kids"
-            width={150}
-            height={150}
-            priority
-            className="h-[150px] w-[150px] object-contain animate-floatLeftRight"
-          />
-        </div>
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* LEFT BANNER */}
-          <div className="relative min-h-[260px] overflow-hidden rounded-3xl shadow-xl md:col-span-1 md:min-h-auto">
-            <Image
-              src="/home page/ads-1.jpg"
-              alt="toy for kids"
-              fill
-              sizes="(max-width: 768px) 100vw, 33vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-black/20 opacity-80 backdrop-blur-[2px]"></div>
-            <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 text-white md:justify-between md:p-8">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.2em] mb-2 drop-shadow-md">
-                  Featured
-                </p>
-                <h2 className="mt-2 mb-4 text-2xl font-black leading-tight drop-shadow-lg xl:text-3xl">
-                  Kid Toy Collection <br /> for Summer
-                </h2>
-                <Link
-                  href="/shop"
-                  className="mt-6 inline-block bg-white text-orange-500 text-center px-5 py-2 md:px-6 md:py-2.5 rounded-full text-xs md:text-sm font-black hover:scale-105 transition-transform shadow-lg"
-                >
-                  View Shop
-                </Link>
-              </div>
-            </div>
-          </div>
-          {/* RIGHT CONTENT */}
-          <div className="md:col-span-3 min-w-0">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
-                Best Selling <span className="text-pink-500">products</span>
-              </h2>
-            </div>
-
-            <Swiper
-              modules={[Navigation, Autoplay, Grid]}
-              spaceBetween={20}
-              slidesPerView={4}
-              navigation
-              autoplay={{ delay: 3000 }}
-              grid={{
-                rows: 2,
-                fill: "row",
-              }}
-              breakpoints={{
-                320: { slidesPerView: 1, grid: { rows: 1 }, spaceBetween: 10 },
-                640: { slidesPerView: 3, grid: { rows: 1 }, spaceBetween: 15 },
-                1024: { slidesPerView: 4, grid: { rows: 2 }, spaceBetween: 20 },
-              }}
-            >
-              {bestsellingLoading ? (
-                Array.from({ length: 8 }).map((_, i) => (
-                  <SwiperSlide key={`skeleton-${i}`} className="h-auto">
-                    <div className="bg-white/60 animate-pulse rounded-2xl h-[360px] w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
-                      <div className="h-48 bg-gray-200/60 rounded-xl w-full mb-4"></div>
-                      <div className="h-5 bg-gray-200/60 rounded w-3/4 mb-2"></div>
-                      <div className="h-4 bg-gray-200/60 rounded w-1/2 mt-auto mb-3"></div>
-                      <div className="h-10 bg-gray-200/60 rounded-full w-full"></div>
-                    </div>
-                  </SwiperSlide>
-                ))
               ) : bestsellingProducts.length > 0 ? (
-                bestsellingProducts.map((item) => (
-                  <SwiperSlide key={item.id} className="h-auto pb-4">
-                    <PopularProductCard
-                      product={{ ...item, image: item.img }}
-                      onAddToCart={addToCart}
-                    />
-                  </SwiperSlide>
-                ))
+                  bestsellingProducts.map((item) => (
+                    <SwiperSlide key={item.id} className="h-auto pb-4">
+                      <PopularProductCard
+                        product={{ ...item, image: item.img }}
+                        onAddToCart={addToCart}
+                      />
+                    </SwiperSlide>
+                  ))
               ) : (
                 <SwiperSlide>
                   <div className="col-span-4 text-center py-12 text-gray-400">
@@ -1692,11 +1143,30 @@ export default function Home() {
                     </p>
                   </div>
                 </SwiperSlide>
-              )}
-            </Swiper>
+                )}
+              </Swiper>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+      {/* School Essentials */}
+      <ProductCarouselSection
+        titlePrefix="School"
+        titleHighlight="Essentials"
+        apiFilter={`category=${encodeURIComponent("School Essentials")}`}
+        onAddToCart={addToCart}
+      />
+
+      {/* Stationary (Return Gifts + Regular) */}
+      <ProductCarouselSection
+        titlePrefix="Stationary"
+        titleHighlight="(Return Gifts + Regular)"
+        apiFilter={`category=${encodeURIComponent("Stationary (Return Gifts + Regular)")}`}
+        onAddToCart={addToCart}
+      />
+
+
+  
 
       {/* ── PROMO TICKER ── */}
       <section className="relative isolate my-12 overflow-visible -rotate-2 md:my-20 md:-rotate-5">
@@ -1777,6 +1247,8 @@ export default function Home() {
           />
         </div>
       </section>
+
+
 
       {/* ── PROMO BANNERS ── */}
       <section className="relative isolate mx-auto  overflow-hidden px-4 py-12 sm:px-5">
@@ -1900,6 +1372,23 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+
+          {/* Puzzles and Brain Teasers */}
+      <ProductCarouselSection
+        titlePrefix="Puzzles &"
+        titleHighlight="Brain Teasers"
+        apiFilter={`category=${encodeURIComponent("Puzzles and Brain Teasers")}`}
+        onAddToCart={addToCart}
+      />
+
+      {/* Outdoor and Sports Toys */}
+      <ProductCarouselSection
+        titlePrefix="Outdoor &"
+        titleHighlight="Sports Toys"
+        apiFilter={`category=${encodeURIComponent("Outdoor & Sports")}`}
+        onAddToCart={addToCart}
+      />
 
       {/* ── SELECT FROM COLLECTION ── */}
       <section className="relative isolate overflow-hidden bg-white px-4 py-14 sm:px-5 md:py-16">
@@ -2085,6 +1574,15 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Soft and Plush Toys */}
+      <ProductCarouselSection
+        titlePrefix="Soft &"
+        titleHighlight="Plush Toys"
+        apiFilter={`category=${encodeURIComponent("Soft and Plush Toys")}`}
+        onAddToCart={addToCart}
+      />
+
 
       <FacebookVideos />
 

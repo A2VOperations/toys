@@ -24,19 +24,19 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-999 bg-white border-b border-[#f0f0f0] shadow-[0_2px_12px_rgba(0,0,0,0.07)]">
       {/* Desktop row */}
-      <div className="flex items-center justify-between h-[90px] px-5 max-w-7xl mx-auto">
+      <div className="flex items-center justify-between h-[70px] px-5 max-w-7xl mx-auto">
         {/* Logo */}
         <div className="text-[26px] font-black tracking-[-0.06em] shrink-0">
           <Link
             href="/"
-            className="relative shrink-0 flex items-center w-[100px] md:w-[100px] h-full transition-transform duration-200 z-99999"
+            className="relative shrink-0 flex items-center  transition-transform duration-200 z-99999"
           >
               <Image
-                src="/Kids For Toy logo.png"
+                src="/Toy for kids logo.png"
                 alt="Logo"
-                width={100}
-                height={100}
-                className="w-full h-auto object-contain max-w-[150px] md:max-w-[150px]"
+                width={200}
+                height={200}
+                className="object-contain"
                 priority
               />
           </Link>

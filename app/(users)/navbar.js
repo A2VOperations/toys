@@ -16,49 +16,49 @@ const GRID_CATEGORIES = [
   {
     label: "Bestseller",
     href: "/shop?tags=Bestseller",
-    img: "/navbar/img1.jpg",
+    img: "/navbar/imgs1.jpg",
     emoji: "🔥",
   },
   {
     label: "New Arrivals",
     href: "/shop?tags=New",
-    img: "/navbar/img2.jpg",
+    img: "/navbar/imgs2.jpg",
     emoji: "🆕",
   },
   {
     label: "Sale",
     href: "/shop?tags=Sale",
-    img: "/navbar/img3.jpg",
+    img: "/navbar/imgs3.jpg",
     emoji: "🚗",
   },
   {
     label: "Limited Edition",
     href: "/shop?tags=Limited Edition",
-    img: "/navbar/img4.jpeg",
+    img: "/navbar/imgs4.png",
     emoji: "🧩",
   },
   {
     label: "Award Winning",
     href: "/shop?tags=Award Winning",
-    img: "/navbar/img5.jpg",
+    img: "/navbar/imgs5.png",
     emoji: "🏆",
   },
   {
     label: "Eco Friendly",
     href: "/shop?tags=Eco Friendly",
-    img: "/navbar/img6.jpg",
+    img: "/navbar/imgs6.png",
     emoji: "🌱",
   },
   {
     label: "Battery Operated",
     href: "/shop?category=Battery Operated Toys",
-    img: "/navbar/img7.jpg",
+    img: "/navbar/imgs8.png",
     emoji: "👶",
   },
   {
     label: "Non Battery Operated",
     href: "/shop?category=Non Battery Toys",
-    img: "/navbar/img8.jpg",
+    img: "/navbar/imgs7 (2).png",
     emoji: "📚",
   },
 ];
@@ -391,7 +391,7 @@ export default function Navbar({ onCartClick }) {
           <Link href="/" className="relative shrink-0 flex items-center group">
             <div className="transition-transform duration-300 group-hover:scale-105 flex items-center">
               <Image
-                src="/Toy for kids logo.png"
+                src="/Toy for kids log.png"
                 alt="Logo"
                 width={220}
                 height={150}
@@ -498,7 +498,7 @@ export default function Navbar({ onCartClick }) {
           ref={megaRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className={`absolute left-0 right-0 w-full z-999 transition-all duration-300 ease-in-out bg-white shadow-2xl
+          className={`absolute left-0 right-0 w-full z-999 transition-all duration-300 ease-in-out bg-[#fcfaf8] shadow-2xl
             ${megaOpen ? "opacity-100 visible translate-y-0 pointer-events-auto" : "opacity-0 invisible -translate-y-3 pointer-events-none"}`}
           style={{
             top: "100%",

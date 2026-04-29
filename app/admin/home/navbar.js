@@ -32,7 +32,7 @@ export default function Navbar() {
             className="relative shrink-0 flex items-center  transition-transform duration-200 z-99999"
           >
               <Image
-                src="/Toy for kids logo.png"
+                src="/Toy for kids log.png"
                 alt="Logo"
                 width={200}
                 height={200}

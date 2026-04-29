@@ -101,8 +101,8 @@ export default function Footer() {
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
               <Image
-                width={200}
-                height={200}
+                width={180}
+                height={180}
                 src="/Kids For Toy footer.png"
                 alt="logo"
               />
@@ -110,7 +110,7 @@ export default function Footer() {
             <div className={styles.infoText}>
               <p>Kh no 793/1 Budh bazar road  </p>
               <p> kamalpurBurari Delhi 110084</p>
-              <p>
+              <p className="py-2 ">
                 {" "}
                 {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567"}{" "}
               </p>
@@ -188,7 +188,7 @@ export default function Footer() {
               <WaIcon />
             </a>
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/people/Toys-for-kids/61560423274946/?rdid=FVWBSZ0jg6g1tcUF&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1DuTiFczCU%2F"
               target="_blank"
               rel="noreferrer"
               className={`${styles.socialIcon} ${styles.iconFb}`}

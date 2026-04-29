@@ -1,107 +1,63 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import Testimonials from "../testimonials";
 
-// ─── ADD YOUR LOCAL VIDEO FILES HERE ────────────────────────────────
-// Place your video files in: /public/videos/
-// Then just add the filename below
-const LOCAL_VIDEOS = [
-  "/facebook video/facebookVideo1.mp4",
-  "/facebook video/facebookVideo2.mp4",
-  "/facebook video/facebookVideo3.mp4",
-  "/facebook video/facebookVideo4.mp4",
-  "/facebook video/facebookVideo5.mp4",
-  "/facebook video/facebookVideo6.mp4",
-  "/facebook video/facebookVideo7.mp4",
-  "/facebook video/facebookVideo8.mp4",
-  "/facebook video/facebookVideo9.mp4",
-];
-// ────────────────────────────────────────────────────────────────────
+const FALLBACK_IDS = ["O9FpMgNowYw"];
 
 // ── Butterfly & Star data helpers ───────────────────────
-const generateButterflies = () =>
-  Array.from({ length: 6 }, (_, i) => ({
-    id: i,
-    size: 28 + Math.random() * 22,
-    startX: Math.random() * 100,
-    startY: Math.random() * 100,
-    duration: 12 + Math.random() * 10,
-    delay: Math.random() * 8,
-    flapDuration: 0.6 + Math.random() * 0.4,
-    color: ["#ff6eb4", "#ffb347", "#a78bfa", "#34d399", "#60a5fa", "#f472b6"][
-      i % 6
-    ],
-    wingColor: [
-      "#ffd6ec",
-      "#ffe4b5",
-      "#ddd6fe",
-      "#a7f3d0",
-      "#bfdbfe",
-      "#fbcfe8",
-    ][i % 6],
-  }));
+const generateButterflies = () => Array.from({ length: 6 }, (_, i) => ({
+  id: i,
+  size: 28 + Math.random() * 22,
+  startX: Math.random() * 100,
+  startY: Math.random() * 100,
+  duration: 12 + Math.random() * 10,
+  delay: Math.random() * 8,
+  flapDuration: 0.6 + Math.random() * 0.4,
+  color: ["#ff6eb4","#ffb347","#a78bfa","#34d399","#60a5fa","#f472b6"][i % 6],
+  wingColor: ["#ffd6ec","#ffe4b5","#ddd6fe","#a7f3d0","#bfdbfe","#fbcfe8"][i % 6],
+}));
 
-const generateStars = () =>
-  Array.from({ length: 28 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: 3 + Math.random() * 5,
-    duration: 2 + Math.random() * 3,
-    delay: Math.random() * 4,
-    color: ["#fff", "#ffe066", "#f9a8d4", "#a5f3fc", "#c4b5fd"][i % 5],
-  }));
+const generateStars = () => Array.from({ length: 28 }, (_, i) => ({
+  id: i,
+  x: Math.random() * 100,
+  y: Math.random() * 100,
+  size: 3 + Math.random() * 5,
+  duration: 2 + Math.random() * 3,
+  delay: Math.random() * 4,
+  color: ["#fff","#ffe066","#f9a8d4","#a5f3fc","#c4b5fd"][i % 5],
+}));
 
+// ── Butterfly SVG component ──────────────────────────────────────
 function Butterfly({ size, color, wingColor }) {
   return (
     <svg width={size * 2} height={size * 1.4} viewBox="0 0 60 42" fill="none">
-      <ellipse
-        cx="18"
-        cy="14"
-        rx="16"
-        ry="11"
-        fill={wingColor}
-        opacity="0.85"
-      />
+      {/* Left wings */}
+      <ellipse cx="18" cy="14" rx="16" ry="11" fill={wingColor} opacity="0.85" />
       <ellipse cx="14" cy="28" rx="12" ry="8" fill={color} opacity="0.7" />
-      <ellipse
-        cx="42"
-        cy="14"
-        rx="16"
-        ry="11"
-        fill={wingColor}
-        opacity="0.85"
-      />
+      {/* Right wings */}
+      <ellipse cx="42" cy="14" rx="16" ry="11" fill={wingColor} opacity="0.85" />
       <ellipse cx="46" cy="28" rx="12" ry="8" fill={color} opacity="0.7" />
+      {/* Wing details */}
       <ellipse cx="18" cy="14" rx="7" ry="5" fill={color} opacity="0.4" />
       <ellipse cx="42" cy="14" rx="7" ry="5" fill={color} opacity="0.4" />
+      {/* Body */}
       <ellipse cx="30" cy="21" rx="3" ry="12" fill="#5b3a1a" opacity="0.85" />
-      <path
-        d="M28 10 Q24 2 20 1"
-        stroke="#5b3a1a"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        fill="none"
-      />
+      {/* Antennae */}
+      <path d="M28 10 Q24 2 20 1" stroke="#5b3a1a" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
       <circle cx="20" cy="1" r="1.5" fill={color} />
-      <path
-        d="M32 10 Q36 2 40 1"
-        stroke="#5b3a1a"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        fill="none"
-      />
+      <path d="M32 10 Q36 2 40 1" stroke="#5b3a1a" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
       <circle cx="40" cy="1" r="1.5" fill={color} />
     </svg>
   );
 }
 
-export default function LocalVideoCarousel() {
+export default function VideoCarousel() {
   const trackRef = useRef(null);
   const cardRefs = useRef([]);
-  const videoRefs = useRef([]);
+  const playerRefs = useRef([]);
+  const [reelIds, setReelIds] = useState(FALLBACK_IDS);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
   const activeIndexRef = useRef(0);
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
@@ -116,50 +72,93 @@ export default function LocalVideoCarousel() {
     setButterflies(generateButterflies());
   }, []);
 
-  useEffect(() => {
-    activeIndexRef.current = activeIndex;
-  }, [activeIndex]);
+  useEffect(() => { activeIndexRef.current = activeIndex; }, [activeIndex]);
 
-  // ── Play active, pause others ────────────────────────────────────
+  useEffect(() => {
+    fetch("/api/youtube-shorts")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.ids?.length) setReelIds(data.ids);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (loading) return;
+    if (window.YT && window.YT.Player) { initPlayers(); return; }
+    if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+    }
+    window.onYouTubeIframeAPIReady = () => { initPlayers(); };
+  }, [loading, reelIds]);
+
+  const initPlayers = useCallback(() => {
+    reelIds.forEach((id, i) => {
+      if (playerRefs.current[i]) return;
+      playerRefs.current[i] = new window.YT.Player(`yt-player-${i}`, {
+        videoId: id,
+        playerVars: {
+          autoplay: i === 0 ? 1 : 0,
+          mute: 1,
+          controls: 0,
+          modestbranding: 1,
+          rel: 0,
+          playsinline: 1,
+          disablekb: 1,
+          fs: 0,
+          iv_load_policy: 3,
+        },
+        events: {
+          onStateChange: (e) => {
+            if (e.data === 0 && i === activeIndexRef.current) {
+              setActiveIndex((prev) =>
+                prev < reelIds.length - 1 ? prev + 1 : 0
+              );
+            }
+          },
+        },
+      });
+    });
+  }, [reelIds]);
+
   useEffect(() => {
     scrollToIndex(activeIndex);
-    videoRefs.current.forEach((video, i) => {
-      if (!video) return;
+    playerRefs.current.forEach((player, i) => {
+      if (!player?.pauseVideo) return;
       if (i === activeIndex) {
-        video.currentTime = 0;
-        video.play().catch(() => {});
+        player.seekTo(0);
+        player.playVideo();
       } else {
-        video.pause();
-        video.currentTime = 0;
+        player.pauseVideo();
+        player.seekTo(0);
       }
     });
   }, [activeIndex]);
 
   useEffect(() => {
-    const mid = Math.floor(LOCAL_VIDEOS.length / 2);
-    const t = setTimeout(() => scrollToIndex(mid), 150);
+    const t = setTimeout(() => scrollToIndex(0), 150);
     return () => clearTimeout(t);
-  }, []);
+  }, [reelIds]);
 
   const scrollToIndex = useCallback((index) => {
     const track = trackRef.current;
     const card = cardRefs.current[index];
     if (!track || !card) return;
     const offset =
-      card.offsetLeft -
-      track.scrollLeft -
-      track.clientWidth / 2 +
-      card.offsetWidth / 2;
+      card.offsetLeft - track.scrollLeft - track.clientWidth / 2 + card.offsetWidth / 2;
     track.scrollBy({ left: offset, behavior: "smooth" });
   }, []);
 
   const goPrev = useCallback(() => {
-    setActiveIndex((i) => (i > 0 ? i - 1 : LOCAL_VIDEOS.length - 1));
-  }, []);
+    setActiveIndex((i) => (i > 0 ? i - 1 : reelIds.length - 1));
+  }, [reelIds.length]);
 
   const goNext = useCallback(() => {
-    setActiveIndex((i) => (i < LOCAL_VIDEOS.length - 1 ? i + 1 : 0));
-  }, []);
+    setActiveIndex((i) => (i < reelIds.length - 1 ? i + 1 : 0));
+  }, [reelIds.length]);
 
   const handleScroll = useCallback(() => {
     clearTimeout(scrollTimeout.current);
@@ -167,15 +166,11 @@ export default function LocalVideoCarousel() {
       const track = trackRef.current;
       if (!track) return;
       const center = track.scrollLeft + track.clientWidth / 2;
-      let closest = 0,
-        minDist = Infinity;
+      let closest = 0, minDist = Infinity;
       cardRefs.current.forEach((card, i) => {
         if (!card) return;
         const d = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-        if (d < minDist) {
-          minDist = d;
-          closest = i;
-        }
+        if (d < minDist) { minDist = d; closest = i; }
       });
       setActiveIndex(closest);
     }, 150);
@@ -185,15 +180,11 @@ export default function LocalVideoCarousel() {
     const track = trackRef.current;
     if (!track) return;
     const center = track.scrollLeft + track.clientWidth / 2;
-    let closest = 0,
-      minDist = Infinity;
+    let closest = 0, minDist = Infinity;
     cardRefs.current.forEach((card, i) => {
       if (!card) return;
       const d = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-      if (d < minDist) {
-        minDist = d;
-        closest = i;
-      }
+      if (d < minDist) { minDist = d; closest = i; }
     });
     setActiveIndex(closest);
   }, []);
@@ -206,8 +197,7 @@ export default function LocalVideoCarousel() {
   };
   const onMouseMove = (e) => {
     if (!isDragging.current) return;
-    trackRef.current.scrollLeft =
-      scrollStart.current - (e.clientX - dragStartX.current);
+    trackRef.current.scrollLeft = scrollStart.current - (e.clientX - dragStartX.current);
   };
   const onMouseUp = () => {
     if (!isDragging.current) return;
@@ -216,17 +206,28 @@ export default function LocalVideoCarousel() {
     snapToNearest();
   };
 
-  // ── Card sizes (your values — untouched) ────────────────────────
+  if (loading) {
+    return (
+      <div className="w-full py-10 flex items-center justify-center"
+        style={{ background: "linear-gradient(135deg, #fce4ec 0%, #e8f5e9 50%, #e3f2fd 100%)" }}>
+        <div style={{ color: "#aaa", fontSize: 14 }}>Loading videos...</div>
+      </div>
+    );
+  }
+
+  // ── Card sizes (your values — untouched) ─────────────────────────
   const ACTIVE_W = 220;
   const ACTIVE_H = 400;
-  const SIDE_W = 200;
-  const SIDE_H = 380;
+  const SIDE_W   = 200;
+  const SIDE_H   = 380;
 
   return (
     <div
       className="w-full py-10 select-none overflow-hidden"
       style={{ position: "relative" }}
     >
+
+      {/* ── CSS animations ── */}
       <style>{`
         @keyframes floatButterfly {
           0%   { transform: translate(0px, 0px) rotate(-8deg) scaleX(1); }
@@ -244,14 +245,13 @@ export default function LocalVideoCarousel() {
           0%, 100% { opacity: 1;   transform: scale(1); }
           50%       { opacity: 0.2; transform: scale(0.5); }
         }
+        @keyframes drift {
+          0%   { transform: translateY(0px); }
+          50%  { transform: translateY(-12px); }
+          100% { transform: translateY(0px); }
+        }
         ::-webkit-scrollbar { display: none; }
       `}</style>
-
-      <div className="mb-10 text-center">
-        <h2 className="text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
-          Our <span className="text-[#f75781]">Gallery</span>
-        </h2>
-      </div>
 
       {/* ── Stars ── */}
       {stars.map((s) => (
@@ -261,11 +261,14 @@ export default function LocalVideoCarousel() {
             position: "absolute",
             left: `${s.x}%`,
             top: `${s.y}%`,
+            width: s.size,
+            height: s.size,
             pointerEvents: "none",
             zIndex: 0,
             animation: `twinkle ${s.duration}s ${s.delay}s ease-in-out infinite`,
           }}
         >
+          {/* 4-point star shape */}
           <svg viewBox="0 0 20 20" width={s.size} height={s.size}>
             <polygon
               points="10,0 12,8 20,10 12,12 10,20 8,12 0,10 8,8"
@@ -289,12 +292,10 @@ export default function LocalVideoCarousel() {
             animation: `floatButterfly ${b.duration}s ${b.delay}s ease-in-out infinite`,
           }}
         >
-          <div
-            style={{
-              animation: `flapWings ${b.flapDuration}s ease-in-out infinite`,
-              transformOrigin: "center",
-            }}
-          >
+          <div style={{
+            animation: `flapWings ${b.flapDuration}s ease-in-out infinite`,
+            transformOrigin: "center",
+          }}>
             <Butterfly size={b.size} color={b.color} wingColor={b.wingColor} />
           </div>
         </div>
@@ -319,10 +320,10 @@ export default function LocalVideoCarousel() {
           scrollbarWidth: "none",
           cursor: "grab",
           position: "relative",
-          zIndex: 5,
+          zIndex: 5, // above butterflies
         }}
       >
-        {LOCAL_VIDEOS.map((src, i) => {
+        {reelIds.map((_, i) => {
           const isActive = i === activeIndex;
           const w = isActive ? ACTIVE_W : SIDE_W;
           const h = isActive ? ACTIVE_H : SIDE_H;
@@ -331,9 +332,7 @@ export default function LocalVideoCarousel() {
             <div
               key={i}
               ref={(el) => (cardRefs.current[i] = el)}
-              onClick={() => {
-                if (!isDragging.current && !isActive) setActiveIndex(i);
-              }}
+              onClick={() => { if (!isDragging.current && !isActive) setActiveIndex(i); }}
               style={{
                 flexShrink: 0,
                 width: w,
@@ -345,45 +344,26 @@ export default function LocalVideoCarousel() {
                 position: "relative",
                 background: "#111",
                 zIndex: isActive ? 10 : 1,
-                transition:
-                  "width 0.35s cubic-bezier(.4,0,.2,1), height 0.35s cubic-bezier(.4,0,.2,1)",
+                transition: "width 0.35s cubic-bezier(.4,0,.2,1), height 0.35s cubic-bezier(.4,0,.2,1)",
               }}
             >
-              {/* ── Native HTML5 video — no YouTube, no API ── */}
-              <video
-                ref={(el) => (videoRefs.current[i] = el)}
-                src={src}
-                muted
-                playsInline
-                loop={false}
-                preload="metadata"
+              <div
+                id={`yt-player-${i}`}
                 style={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "cover",
-                  display: "block",
                   pointerEvents: isActive ? "auto" : "none",
                 }}
-                // Auto-advance when video ends — infinite loop back to first
-                onEnded={() => {
-                  setActiveIndex((prev) =>
-                    prev < LOCAL_VIDEOS.length - 1 ? prev + 1 : 0,
-                  );
-                }}
               />
-
-              {/* Dark overlay + blocks pause icon on non-active */}
               {!isActive && (
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background: "rgba(0,0,0,0.45)",
-                    borderRadius: 18,
-                    pointerEvents: "none",
-                    zIndex: 20,
-                  }}
-                />
+                <div style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "rgba(0,0,0,0.45)",
+                  borderRadius: 18,
+                  pointerEvents: "none",
+                  zIndex: 20,
+                }} />
               )}
             </div>
           );
@@ -391,75 +371,44 @@ export default function LocalVideoCarousel() {
       </div>
 
       {/* ── Arrows ── */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 16,
-          marginTop: 14,
-          position: "relative",
-          zIndex: 5,
-        }}
-      >
+      <div style={{
+        display: "flex", alignItems: "center",
+        justifyContent: "center", gap: 16, marginTop: 14,
+        position: "relative", zIndex: 5,
+      }}>
         <button
           onClick={goPrev}
           style={{
-            width: 36,
-            height: 36,
-            borderRadius: "50%",
+            width: 36, height: 36, borderRadius: "50%",
             background: "rgba(255,255,255,0.85)",
             backdropFilter: "blur(4px)",
             border: "2px solid pink",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            fontSize: 16,
-            color: "#333",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer", fontSize: 16, color: "#333",
             transition: "background 0.2s",
           }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.background = "rgba(255,255,255,1)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.background = "rgba(255,255,255,0.85)")
-          }
+          onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,1)"}
+          onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.85)"}
           aria-label="Previous"
-        >
-          ‹
-        </button>
+        >‹</button>
 
         <button
           onClick={goNext}
           style={{
-            width: 36,
-            height: 36,
-            borderRadius: "50%",
+            width: 36, height: 36, borderRadius: "50%",
             background: "rgba(255,255,255,0.85)",
             backdropFilter: "blur(4px)",
             border: "2px solid pink",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            fontSize: 16,
-            color: "#333",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer", fontSize: 16, color: "#333",
             transition: "background 0.2s",
           }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.background = "rgba(255,255,255,1)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.background = "rgba(255,255,255,1)")
-          }
+          onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,1)"}
+          onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,1)"}
           aria-label="Next"
-        >
-          ›
-        </button>
+        >›</button>
       </div>
 
-      <Testimonials />
     </div>
   );
 }

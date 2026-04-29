@@ -11,32 +11,56 @@ import { getCartCount } from "./cartStorage";
 const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567";
 const waLink = `https://wa.me/${waNumber.replace(/\D/g, "")}`;
 
-/* ── Category image map (place your images in /public/categories/) ── */
-const CATEGORY_IMAGES = {
-  "Soft Toys & Plush": "/categories/soft-toys.jpg",
-  "Building Sets & Blocks": "/categories/building-sets.jpg",
-  "Vehicles & Remote Control": "/categories/vehicles-rc.jpg",
-  "Dolls & Accessories": "/categories/dolls.jpg",
-  "Puzzles & Brain Teasers": "/categories/puzzles.jpg",
-  "Board Games": "/categories/board-games.jpg",
-  "Arts, Crafts & DIY": "/categories/arts-crafts.jpg",
-  "Baby & Toddler Toys": "/categories/baby-toddler.jpg",
-  "Educational & Learning Toys": "/categories/educational.jpg",
-  "Outdoor & Sports Toys": "/categories/outdoor-sports.jpg",
-  "Action Figures & Playsets": "/categories/action-figures.jpg",
-  "Party & Return Gifts": "/categories/return-gifts.jpg",
-};
-
 /* Featured 9 categories for the image grid */
 const GRID_CATEGORIES = [
-  { label: "Bestseller", href: "/shop?tags=Bestseller", img: "/categories/bestseller.jpg", emoji: "🔥" },
-  { label: "New Arrivals", href: "/shop?tags=New", img: "/categories/new.jpg", emoji: "🆕" },
-  { label: "Sale", href: "/shop?tags=Sale", img: "/categories/sale.jpg", emoji: "🚗" },
-  { label: "Limited Edition", href: "/shop?tags=Limited Edition", img: "/categories/limited-edition.jpg", emoji: "🧩" },
-  { label: "Award Winning", href: "/shop?tags=Award Winning", img: "/categories/board-games.jpg", emoji: "🏆" },
-  { label: "Eco Friendly", href: "/shop?tags=Eco Friendly", img: "/categories/arts-crafts.jpg", emoji: "🌱" },
-  { label: "Battery Operated", href: "/shop?category=Battery Operated Toys", img: "/categories/baby-toddler.jpg", emoji: "👶" },
-  { label: "Non Battery Operated", href: "/shop?category=Non Battery Toys", img: "/categories/educational.jpg", emoji: "📚" },
+  {
+    label: "Bestseller",
+    href: "/shop?tags=Bestseller",
+    img: "/navbar/img1.jpg",
+    emoji: "🔥",
+  },
+  {
+    label: "New Arrivals",
+    href: "/shop?tags=New",
+    img: "/navbar/img2.jpg",
+    emoji: "🆕",
+  },
+  {
+    label: "Sale",
+    href: "/shop?tags=Sale",
+    img: "/navbar/img3.jpg",
+    emoji: "🚗",
+  },
+  {
+    label: "Limited Edition",
+    href: "/shop?tags=Limited Edition",
+    img: "/navbar/img4.jpeg",
+    emoji: "🧩",
+  },
+  {
+    label: "Award Winning",
+    href: "/shop?tags=Award Winning",
+    img: "/navbar/img5.jpg",
+    emoji: "🏆",
+  },
+  {
+    label: "Eco Friendly",
+    href: "/shop?tags=Eco Friendly",
+    img: "/navbar/img6.jpg",
+    emoji: "🌱",
+  },
+  {
+    label: "Battery Operated",
+    href: "/shop?category=Battery Operated Toys",
+    img: "/navbar/img7.jpg",
+    emoji: "👶",
+  },
+  {
+    label: "Non Battery Operated",
+    href: "/shop?category=Non Battery Toys",
+    img: "/navbar/img8.jpg",
+    emoji: "📚",
+  },
 ];
 
 const ALL_SIDEBAR_CATEGORIES = [
@@ -44,7 +68,10 @@ const ALL_SIDEBAR_CATEGORIES = [
   { label: "Battery Operated Toys", path: "Battery Operated Toys" },
   { label: "Return Gifts Ideas", path: "Return Gifts Ideas" },
   { label: "School Essentials", path: "School Essentials" },
-  { label: "Stationary (Return Gifts + Regular)", path: "Stationary (Return Gifts + Regular)" },
+  {
+    label: "Stationary (Return Gifts + Regular)",
+    path: "Stationary (Return Gifts + Regular)",
+  },
   { label: "Non Battery Toys", path: "Non Battery Toys" },
   { label: "Soft and Plush Toys", path: "Soft and Plush Toys" },
   { label: "Puzzles and Brain Teasers", path: "Puzzles and Brain Teasers" },
@@ -57,7 +84,10 @@ const AGE_RANGES = [
   { label: "3 – 4 Years", path: "3,4" },
   { label: "5 – 7 Years", path: "5,6,7" },
   { label: "8 – 10 Years", path: "8,9,10" },
-  { label: "11+ Years", path: "11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50" },
+  {
+    label: "11+ Years",
+    path: "11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50",
+  },
 ];
 
 const PRICE_RANGES = [
@@ -208,7 +238,11 @@ function AnnouncementBar() {
               Icon: WaIcon,
               label: "WhatsApp",
             },
-            { href: "https://facebook.com", Icon: FbIcon, label: "Facebook" },
+            {
+              href: "https://www.facebook.com/people/Toys-for-kids/61560423274946/?rdid=FVWBSZ0jg6g1tcUF&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1DuTiFczCU%2F",
+              Icon: FbIcon,
+              label: "Facebook",
+            },
             { href: "https://instagram.com", Icon: IgIcon, label: "Instagram" },
           ].map(({ href, Icon, label }) => (
             <a
@@ -349,10 +383,10 @@ export default function Navbar({ onCartClick }) {
       <AnnouncementBar />
 
       <nav
-        className="nb-font sticky top-0 z-[1000] bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 px-4 md:px-8"
+        className="nb-font sticky top-0 z-[1000] bg-white/95 backdrop-blur-md "
         style={{ fontFamily: "'Nunito', sans-serif" }}
       >
-        <div className="max-w-[1500px] mx-auto flex items-center justify-between h-[80px] gap-4">
+        <div className="max-w-[1500px] mx-auto flex items-center justify-between h-[80px] gap-4 px-4 md:px-8">
           {/* Logo */}
           <Link href="/" className="relative shrink-0 flex items-center group">
             <div className="transition-transform duration-300 group-hover:scale-105 flex items-center">
@@ -460,32 +494,33 @@ export default function Navbar({ onCartClick }) {
           </div>
         </div>
 
-        {/* ════════ MEGA MENU ════════ */}
         <div
           ref={megaRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className={`absolute left-1/2 -translate-x-1/2 w-[95%] max-w-[1300px] z-999 transition-all duration-300 ease-in-out
+          className={`absolute left-0 right-0 w-full z-999 transition-all duration-300 ease-in-out bg-white shadow-2xl
             ${megaOpen ? "opacity-100 visible translate-y-0 pointer-events-auto" : "opacity-0 invisible -translate-y-3 pointer-events-none"}`}
-          style={{ top: "100%" }}
+          style={{
+            top: "100%",
+            borderTop: "2px solid #fce4ef",
+          }}
         >
           <div
-            className="flex flex-col rounded-b-2xl overflow-hidden border border-gray-100 shadow-2xl"
+            className="flex flex-col w-full max-w-[1600px] mx-auto overflow-hidden"
             style={{
               background: "#fff",
-              borderTop: "2px solid #fce4ef", 
             }}
           >
             {/* ── Main 5-column grid ── */}
             <div
               className="grid flex-1 w-full overflow-hidden"
-              style={{ gridTemplateColumns: "220px 380px 180px 240px 240px" }}
+              style={{ gridTemplateColumns: "1fr 1.2fr 0.8fr 1fr 300px" }}
             >
               {/* ── Col 1: Shop by Categories Sidebar ── */}
               <div
                 style={{
                   borderRight: "1px solid #f0f0f0",
-                  background: "#fafafa",
+                  background: "#fff",
                 }}
               >
                 <div
@@ -504,7 +539,7 @@ export default function Navbar({ onCartClick }) {
                     <li key={cat.label}>
                       <Link
                         href={catHref(cat.path)}
-                        className={`sidebar-cat-item flex items-center justify-between px-4 py-2.5 no-underline text-[0.82rem] font-semibold ${hoveredSidebarCat === cat.label ? "active" : ""}`}
+                        className={`sidebar-cat-item flex items-center justify-between px-4 py-2.5 no-underline text-[0.82rem] font-bold ${hoveredSidebarCat === cat.label ? "active" : ""}`}
                         style={{
                           color:
                             hoveredSidebarCat === cat.label
@@ -572,7 +607,7 @@ export default function Navbar({ onCartClick }) {
                         style={{ maxHeight: 72 }}
                       >
                         {/* Try to load image, fallback to emoji */}
-                        <span className="text-3xl">{cat.emoji}</span>
+                        {/* <span className="text-3xl">{cat.emoji}</span> */}
                         <Image
                           src={cat.img}
                           alt={cat.label}
@@ -613,7 +648,7 @@ export default function Navbar({ onCartClick }) {
                     <li key={age.label}>
                       <Link
                         href={`/shop?age=${encodeURIComponent(age.path)}`}
-                        className="age-row flex items-center justify-between py-2 text-[0.82rem] font-semibold no-underline transition-colors"
+                        className="age-row flex items-center justify-between py-2 text-[0.82rem] font-bold no-underline transition-colors"
                         style={{
                           color: "#444",
                           borderBottom: "1px solid #f5f5f5",
@@ -658,7 +693,7 @@ export default function Navbar({ onCartClick }) {
                     <li key={pr.label}>
                       <Link
                         href={pr.href}
-                        className="price-row flex items-center justify-between py-2 text-[0.82rem] font-semibold no-underline transition-colors"
+                        className="price-row flex items-center justify-between py-2 text-[0.82rem] font-bold no-underline transition-colors"
                         style={{
                           color: "#444",
                           borderBottom: "1px solid #f5f5f5",
@@ -728,7 +763,6 @@ export default function Navbar({ onCartClick }) {
 
               {/* ── Col 5: Why Shop With Us + Promo ── */}
               <div className="p-5">
-                
                 {/* Promo banner */}
                 <div
                   className="mt-auto rounded-2xl p-4 relative overflow-hidden h-[300px] flex flex-col"
@@ -773,7 +807,10 @@ export default function Navbar({ onCartClick }) {
 
             {/* ── Bottom badges bar ── */}
             <div
-              style={{ borderTop: "1px solid #f0f0f0", background: "#fafafa" }}
+              style={{
+                borderTop: "1px solid #f0f0f0",
+                background: "#fff",
+              }}
             >
               <div className="w-full grid grid-cols-4">
                 {BOTTOM_BADGES.map((b, i) => (
@@ -803,13 +840,13 @@ export default function Navbar({ onCartClick }) {
 
       {/* ── Mobile Overlay ── */}
       <div
-        className={`fixed inset-0 bg-black/50 z-[9999] transition-all duration-300 ${mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        className={`fixed inset-0 bg-black/50 z-9999 transition-all duration-300 ${mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
         onClick={closeMobileMenu}
       />
 
       {/* ── Mobile Drawer ── */}
       <div
-        className={`fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-white z-[10000] flex flex-col overflow-y-auto shadow-[-4px_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-white z-10000 flex flex-col overflow-y-auto shadow-[-4px_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
         style={{ fontFamily: "'Nunito', sans-serif" }}
       >
         <div
@@ -819,8 +856,8 @@ export default function Navbar({ onCartClick }) {
           <Image
             src="/Kids For Toy logo.png"
             alt="Logo"
-            width={120}
-            height={40}
+            width={200}
+            height={200}
             className="object-contain"
           />
           <button
@@ -902,9 +939,45 @@ export default function Navbar({ onCartClick }) {
                         borderBottom: "1px solid #fce4ef",
                       }}
                     >
-                      {CATEGORY_EMOJIS?.[cat.label] || "🧸"} {cat.label}
+                      {cat.label}
                     </Link>
                   ))}
+                </div>
+                {/* Featured Grid Categories */}
+                <div className="mb-6 mr-4">
+                  <div
+                    className="text-[0.75rem] font-black tracking-widest uppercase mb-3"
+                    style={{ color: "#e84393" }}
+                  >
+                    🚀 Featured Categories
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {GRID_CATEGORIES.map((cat) => (
+                      <Link
+                        key={cat.label}
+                        href={cat.href}
+                        onClick={closeMobileMenu}
+                        className="flex flex-col items-center gap-2 p-3 rounded-2xl border border-[#fce4ef] no-underline transition-all active:scale-95"
+                        style={{ background: "#fff" }}
+                      >
+                        <div
+                          className="w-full aspect-square rounded-xl overflow-hidden bg-[#fff0f6] flex items-center justify-center relative"
+                          style={{ maxHeight: 80 }}
+                        >
+                          {/* <span className="text-3xl">{cat.emoji}</span> */}
+                          <Image
+                            src={cat.img}
+                            alt={cat.label}
+                            fill
+                            className="object-cover absolute inset-0"
+                          />
+                        </div>
+                        <span className="text-[0.7rem] font-black text-center text-gray-700 leading-tight">
+                          {cat.label}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Shop by Age */}

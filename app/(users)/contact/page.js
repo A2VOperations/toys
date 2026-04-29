@@ -147,9 +147,9 @@ export default function ContactPage() {
           ))}
         </div>
 
-        <div className="relative z-10 mx-auto flex max-w-6xl flex-wrap items-end justify-between gap-8">
+        <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center justify-center gap-10 text-center lg:flex-row lg:items-end lg:justify-between lg:text-left">
           {/* left copy */}
-          <div>
+          <div className="flex flex-col items-center lg:items-start">
             {/* pill */}
             <div
               className="mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em]"
@@ -177,7 +177,7 @@ export default function ContactPage() {
               <br /> Bulk Orders
             </h1>
 
-            <div className="my-5 h-0.5 w-12 bg-[#f74872]" />
+            <div className="my-5 h-0.5 w-12 bg-[#f74872] lg:mx-0 mx-auto" />
 
             <p
               className="max-w-[550px] leading-[1.7] text-[#2b1a12] font-semibold!"
@@ -190,7 +190,7 @@ export default function ContactPage() {
           </div>
 
           <div
-            className={`relative z-10 mx-auto flex h-[260px] w-[260px] items-center justify-center rounded-full text-[120px] transition-all duration-1000 delay-200 animate-bounce-slow transform sm:h-[320px] sm:w-[320px] sm:text-[150px] md:mx-4 md:h-[320px] md:w-[320px] lg:mx-12 lg:h-[350px] lg:w-[400px] lg:text-[180px]`}
+            className={`relative z-10 mx-auto flex h-[260px] w-[260px] items-center justify-center rounded-full text-[120px] transition-all duration-1000 delay-200 animate-bounce-slow transform sm:h-[320px] sm:w-[320px] sm:text-[150px] md:h-[320px] md:w-[320px] lg:mx-0 lg:h-[350px] lg:w-[400px] lg:text-[180px]`}
           >
             <Image
               src="/contact/toys for kids-01.png"

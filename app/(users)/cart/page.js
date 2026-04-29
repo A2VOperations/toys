@@ -481,7 +481,7 @@ export default function CartPage() {
                       setCheckoutData({ ...checkoutData, name: e.target.value })
                     }
                     className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 outline-none"
-                    placeholder="John Doe"
+                    placeholder="Enter Name"
                   />
                 </div>
                 <div>
@@ -499,7 +499,7 @@ export default function CartPage() {
                       })
                     }
                     className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 outline-none"
-                    placeholder="john@example.com"
+                    placeholder="Enter Email"
                   />
                 </div>
                 <div>

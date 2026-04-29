@@ -88,7 +88,7 @@ const featuredBanners = [
     price: "₹0.99",
     bg: "bg-[#0bb31b]",
     image: "/home page/feature-1.webp",
-    link: "/shop?category=Lunch Box And Bottles,School Bags,Return Gifts Stationary",
+    link: "/shop?category=School Essentials",
   },
   {
     tag: "HOT DEAL",
@@ -96,7 +96,7 @@ const featuredBanners = [
     price: "₹34.00",
     bg: "bg-[#e81a3c]",
     image: "/home page/feature-2.webp",
-    link: "/shop?category=Educational Toys,Puzzles",
+    link: "/shop?category=Learning and Education Toys",
   },
   {
     tag: "LATEST",
@@ -104,7 +104,7 @@ const featuredBanners = [
     price: "₹35.99",
     bg: "bg-[#1a6ce8]",
     image: "/home page/feature-3.webp",
-    link: "/shop?category=Puzzles,Board Games",
+    link: "/shop?category=Puzzles and Brain Teasers",
   },
 ];
 
@@ -360,8 +360,6 @@ function PopularProductCard({ product, onAddToCart }) {
 export default function Home() {
   const router = useRouter();
 
-  // Touch swipe (removed carousel variables)
-
   const [heroVisible, setHeroVisible] = useState(false);
   const [dealTimer, setDealTimer] = useState({ h: 11, m: 47, s: 22 });
   const [popularProductsList, setPopularProductsList] = useState([]);
@@ -407,7 +405,7 @@ export default function Home() {
         setPopularVisible(5);
       }
     };
-    handleResize(); // Initial call
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -459,9 +457,15 @@ export default function Home() {
         setBatteryLoading(true);
 
         const [resReturn, resStat, resBatt] = await Promise.all([
-          fetch(`/api/toys?category=${encodeURIComponent("Return Gifts Ideas")}&limit=12`),
-          fetch(`/api/toys?category=${encodeURIComponent("Stationary (Return Gifts + Regular)")}&limit=12`),
-          fetch(`/api/toys?tags=${encodeURIComponent("Battery Operated")}&limit=12`)
+          fetch(
+            `/api/toys?category=${encodeURIComponent("Return Gifts Ideas")}&limit=12`,
+          ),
+          fetch(
+            `/api/toys?category=${encodeURIComponent("Stationary (Return Gifts + Regular)")}&limit=12`,
+          ),
+          fetch(
+            `/api/toys?tags=${encodeURIComponent("Battery Operated")}&limit=12`,
+          ),
         ]);
 
         const mapData = async (res) => {
@@ -470,7 +474,8 @@ export default function Home() {
             _id: t._id,
             name: t.title,
             category: t.category,
-            image: t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
+            image:
+              t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
             price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
             stock: t.stock,
             tags: t.tags || [],
@@ -480,13 +485,12 @@ export default function Home() {
         const [returnGiftsData, statData, battData] = await Promise.all([
           mapData(resReturn),
           mapData(resStat),
-          mapData(resBatt)
+          mapData(resBatt),
         ]);
 
         setReturnGifts(returnGiftsData);
         setStationary(statData);
         setBatteryItems(battData);
-
       } catch (err) {
         console.error("Failed to fetch specific sections", err);
       } finally {
@@ -593,14 +597,15 @@ export default function Home() {
     fetchCollectionProducts();
   }, [activeGender]);
 
-  // Fetch banner: immediately on mount, then poll
+  // ── Fetch banner ONCE on mount only ──
+  const bannerFetched = useRef(false);
   useEffect(() => {
-    let cancelled = false;
+    if (bannerFetched.current) return;
+    bannerFetched.current = true;
 
     const fetchBanner = async () => {
       try {
         const res = await fetch("/api/banner", { cache: "no-store" });
-        if (cancelled) return;
         if (res.ok) {
           const data = await res.json();
           setBannerData(data);
@@ -608,23 +613,17 @@ export default function Home() {
           setBannerData(null);
         }
       } catch (err) {
-        console.error("Banner refresh failed", err);
-        if (!cancelled) setBannerData(null);
+        console.error("Banner fetch failed", err);
+        setBannerData(null);
       } finally {
-        if (!cancelled) setBannerLoading(false);
+        setBannerLoading(false);
       }
     };
 
-    fetchBanner(); // ✅ run immediately
-    const interval = setInterval(fetchBanner, 30000); // every 30s is plenty
-
-    return () => {
-      cancelled = true;
-      clearInterval(interval);
-    };
+    fetchBanner();
   }, []);
 
-  // Countdown timer
+  // ── Countdown timer (only starts when bannerData has dates) ──
   useEffect(() => {
     if (!bannerData?.endDate) return;
 
@@ -646,7 +645,7 @@ export default function Home() {
       });
     };
 
-    tick(); // ✅ run immediately so timer doesn't show 0:00:00 for 1s
+    tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
   }, [bannerData?.startDate, bannerData?.endDate]);
@@ -848,7 +847,6 @@ export default function Home() {
             className="h-[150px] w-[150px] object-contain animate-floatLeftRight"
           />
         </div>
-        {/* Decorative elements */}
         <span className="absolute left-8 top-0 hidden text-2xl lg:block">
           <Image
             src="/home page/shape-17.png"
@@ -859,7 +857,6 @@ export default function Home() {
           />
         </span>
 
-        {/* Categories List */}
         <div className="pb-4 max-w-[1300px] mx-auto">
           <Swiper
             modules={[Autoplay]}
@@ -882,15 +879,12 @@ export default function Home() {
                   style={{ width: 140 }}
                 >
                   <div className="relative" style={{ width: 140, height: 140 }}>
-                    {/* Brushstroke ring image — must be square */}
                     <Image
                       src={c.borderImage}
                       alt="Decorative ring"
                       fill
                       className="object-contain"
                     />
-
-                    {/* Inner category image — centered inside the circle */}
                     <Image
                       src={c.image}
                       alt={c.label}
@@ -900,7 +894,6 @@ export default function Home() {
                       style={{ width: 90, height: 90, background: c.bg }}
                     />
                   </div>
-
                   <span className="mt-3 text-xs font-black text-gray-700 uppercase tracking-tight text-center">
                     {c.label}
                   </span>
@@ -948,7 +941,6 @@ export default function Home() {
 
       {bannerData && isBannerActive(bannerData) && (
         <section className="relative mx-auto w-full mt-6 sm:mt-10 mb-6 sm:mb-10 sm:px-0">
-          {/* Outer glow frame */}
           <div className="relative overflow-hidden sm:rounded-none shadow-[0_20px_50px_-12px_rgba(232,67,147,0.25)] sm:shadow-[0_32px_80px_-12px_rgba(232,67,147,0.25)]">
             <Swiper
               modules={[Autoplay, Navigation]}
@@ -974,11 +966,9 @@ export default function Home() {
                       priority={idx === 0}
                     />
 
-                    {/* Overlays - stronger on mobile for readability */}
                     <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/50 sm:via-black/30 to-black/20 sm:to-transparent" />
                     <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-black/40 sm:to-transparent" />
 
-                    {/* TOP: Countdown Timer - centered on mobile, top-right on desktop */}
                     <div className="absolute top-3 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:top-8 sm:right-10 z-20 flex flex-col items-center sm:items-end gap-1.5 sm:gap-3">
                       <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-white/80 bg-black/40 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-full">
                         Offer ends in
@@ -1014,7 +1004,6 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* LEFT: Text + CTA */}
                     <div className="absolute inset-0 flex flex-col justify-end pb-8 sm:pb-0 px-5 sm:px-12 sm:justify-center text-center sm:text-left items-center sm:items-start z-10">
                       <span className="inline-flex items-center gap-2 w-fit mb-3 sm:mb-4 bg-[#E84393]/90 backdrop-blur-sm text-white text-[9px] sm:text-[10px] font-black uppercase tracking-[0.18em] sm:tracking-[0.2em] px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-lg">
                         <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping inline-block" />
@@ -1034,7 +1023,6 @@ export default function Home() {
                       </Link>
                     </div>
 
-                    {/* Slide indicator dots */}
                     {(bannerData.images || bannerData.urls || []).length >
                       1 && (
                       <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
@@ -1178,14 +1166,12 @@ export default function Home() {
           />
         </div>
         <div className="relative z-10 max-w-[1400px] mx-auto">
-          {/* Header row: title + timer */}
           <div className="flex flex-col md:flex-row justify-center items-center mb-6 md:mb-8 gap-6">
             <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-left md:text-5xl">
               Deal of <span className="text-[#E84393]">the Day</span>
             </h2>
           </div>
 
-          {/* Tag filter pills */}
           <div className="flex justify-center gap-3 mb-8 flex-wrap">
             {[
               {
@@ -1218,7 +1204,6 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Products slider area with relative arrows */}
           {dealLoading ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               {Array.from({ length: 2 }).map((_, i) => (
@@ -1245,7 +1230,6 @@ export default function Home() {
             </div>
           ) : (
             <div className="relative px-0 sm:px-12">
-              {/* Left Arrow */}
               <button className="deal-prev absolute left-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
                 <svg
                   viewBox="0 0 24 24"
@@ -1284,10 +1268,10 @@ export default function Home() {
                       className="bg-white rounded-[30px] sm:rounded-[40px] flex flex-col sm:flex-row items-center gap-6 sm:gap-8 border-4 border-[#FFE0EE] shadow-xl hover:shadow-2xl transition-all h-full cursor-pointer"
                       onClick={() => router.push(`/shop/${d._id}`)}
                     >
-                      <div className="w-full sm:w-[45%] max-w-[240px] sm:max-w-none aspect-square relative shrink-0 rounded-l-[20px] md:rounded-l-[20px] overflow-hidden">
+                      <div className="w-full sm:w-[45%] aspect-square relative shrink-0 rounded-t-[20px] sm:rounded-l-[20px] sm:rounded-tr-none overflow-hidden">
                         <ProductTagBadge tag={d.tags?.[0]} />
                         <Image
-                          className="object-cover hover:scale-105 transition-transform duration-500 drop-shadow-md rounded-l-[20px] md:rounded-l-[20px]"
+                          className="object-cover hover:scale-105 transition-transform duration-500 drop-shadow-md rounded-t-[20px] sm:rounded-l-[20px] sm:rounded-tr-none"
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           src={d.image}
@@ -1301,7 +1285,7 @@ export default function Home() {
                         <p className="text-2xl font-black text-[#E84393]">
                           {d.price}
                         </p>
-                        <div className="flex gap-3 mt-auto flex-wrap">
+                        <div className="flex gap-3 mt-auto flex-wrap pb-4">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
@@ -1334,7 +1318,6 @@ export default function Home() {
                 ))}
               </Swiper>
 
-              {/* Right Arrow */}
               <button className="deal-next absolute right-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
                 <svg
                   viewBox="0 0 24 24"
@@ -1432,9 +1415,17 @@ export default function Home() {
           <PopularPicksArrowButton
             direction="right"
             onClick={() =>
-              setReturnGiftsCurrent((c) => Math.min(Math.max(0, returnGifts.length - popularVisible), c + 1))
+              setReturnGiftsCurrent((c) =>
+                Math.min(
+                  Math.max(0, returnGifts.length - popularVisible),
+                  c + 1,
+                ),
+              )
             }
-            disabled={returnGiftsCurrent === Math.max(0, returnGifts.length - popularVisible)}
+            disabled={
+              returnGiftsCurrent ===
+              Math.max(0, returnGifts.length - popularVisible)
+            }
           />
         </div>
       </section>
@@ -1506,9 +1497,17 @@ export default function Home() {
           <PopularPicksArrowButton
             direction="right"
             onClick={() =>
-              setStationaryCurrent((c) => Math.min(Math.max(0, stationary.length - popularVisible), c + 1))
+              setStationaryCurrent((c) =>
+                Math.min(
+                  Math.max(0, stationary.length - popularVisible),
+                  c + 1,
+                ),
+              )
             }
-            disabled={stationaryCurrent === Math.max(0, stationary.length - popularVisible)}
+            disabled={
+              stationaryCurrent ===
+              Math.max(0, stationary.length - popularVisible)
+            }
           />
         </div>
       </section>
@@ -1580,9 +1579,17 @@ export default function Home() {
           <PopularPicksArrowButton
             direction="right"
             onClick={() =>
-              setBatteryCurrent((c) => Math.min(Math.max(0, batteryItems.length - popularVisible), c + 1))
+              setBatteryCurrent((c) =>
+                Math.min(
+                  Math.max(0, batteryItems.length - popularVisible),
+                  c + 1,
+                ),
+              )
             }
-            disabled={batteryCurrent === Math.max(0, batteryItems.length - popularVisible)}
+            disabled={
+              batteryCurrent ===
+              Math.max(0, batteryItems.length - popularVisible)
+            }
           />
         </div>
       </section>
@@ -1601,7 +1608,6 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* LEFT BANNER */}
           <div className="relative min-h-[260px] overflow-hidden rounded-3xl shadow-xl md:col-span-1 md:min-h-auto">
-            {/* Background Image */}
             <Image
               src="/home page/ads-1.jpg"
               alt="toy for kids"
@@ -1609,23 +1615,18 @@ export default function Home() {
               sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover"
             />
-
-            {/* Overlay Gradient */}
             <div className="absolute inset-0 bg-black/20 opacity-80 backdrop-blur-[2px]"></div>
-
-            {/* Content */}
             <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 text-white md:justify-between md:p-8">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.2em] mb-2 drop-shadow-md">
                   Featured
                 </p>
-                <h2 className="mt-2 mb-4 text-2xl font-black leading-tight drop-shadow-lg md:text-2xl lg:text-3xl">
+                <h2 className="mt-2 mb-4 text-2xl font-black leading-tight drop-shadow-lg xl:text-3xl">
                   Kid Toy Collection <br /> for Summer
                 </h2>
-
                 <Link
                   href="/shop"
-                  className="mt-6 bg-white text-orange-500 px-6 py-2.5 rounded-full text-sm font-black hover:scale-105 transition-transform shadow-lg"
+                  className="mt-6 inline-block bg-white text-orange-500 text-center px-5 py-2 md:px-6 md:py-2.5 rounded-full text-xs md:text-sm font-black hover:scale-105 transition-transform shadow-lg"
                 >
                   View Shop
                 </Link>
@@ -1634,14 +1635,12 @@ export default function Home() {
           </div>
           {/* RIGHT CONTENT */}
           <div className="md:col-span-3 min-w-0">
-            {/* HEADER */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
                 Best Selling <span className="text-pink-500">products</span>
               </h2>
             </div>
 
-            {/* SLIDER */}
             <Swiper
               modules={[Navigation, Autoplay, Grid]}
               spaceBetween={20}
@@ -1799,25 +1798,19 @@ export default function Home() {
               background: "linear-gradient(135deg,#e8294c 0%,#c0123a 100%)",
             }}
           >
-            {/* Decorative circle */}
             <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full bg-white/10 group-hover:scale-125 transition-transform duration-500" />
             <div className="absolute right-4 bottom-4 w-28 h-28 rounded-full bg-white/5 group-hover:scale-110 transition-transform duration-500" />
-
-            {/* Text */}
             <div className="relative z-10">
-              <h3 className="text-white text-2xl font-black leading-tight drop-shadow mb-5">
+              <h3 className="text-white  text-2xl font-black leading-tight drop-shadow mb-5">
                 Puzzle for Kids
               </h3>
-
               <Link
                 href="/shop"
-                className="mt-5 border-2 border-white/60 text-white text-xs font-black px-6 py-2 rounded-full hover:bg-white hover:text-[#e8294c] transition-all duration-300"
+                className="mt-5 border-2 bg-white/80 border-gray-900 text-gray-900 text-xs font-black px-6 py-2 rounded-full hover:border-[#e8294c] hover:text-[#e8294c] transition-all duration-300"
               >
                 Shop now
               </Link>
             </div>
-
-            {/* Toy image */}
             <div className="absolute right-0 bottom-0 w-[160px] h-[160px] group-hover:scale-105 transition-transform duration-500">
               <Image
                 src="/home page/feature-1.webp"
@@ -1829,18 +1822,15 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Middle Card – Blue (Buy One Get One) */}
+          {/* Middle Card – Blue */}
           <div
             className="relative rounded-3xl overflow-hidden flex flex-col justify-between p-8 min-h-[220px] group cursor-pointer"
             style={{
               background: "linear-gradient(135deg,#1a9fe0 0%,#0d7cc7 100%)",
             }}
           >
-            {/* Wavy decorative blobs */}
             <div className="absolute -right-12 -top-12 w-56 h-56 rounded-full bg-white/10 group-hover:scale-110 transition-transform duration-500" />
             <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-64 h-24 rounded-full bg-white/5" />
-
-            {/* Text */}
             <div className="relative z-10">
               <span className="inline-block bg-white/20 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3">
                 Special Offer
@@ -1852,15 +1842,13 @@ export default function Home() {
               </h3>
               <Link
                 href="/shop"
-                className="mt-5 border-2 border-white/60 text-white text-sm font-black px-8 py-2.5 rounded-full hover:bg-white hover:text-[#1a9fe0] transition-all duration-300"
+                className="mt-5 border-2 bg-white/80 border-gray-900 text-gray-900 text-sm font-black px-8 py-2.5 rounded-full hover:bg-white hover:text-[#1a9fe0] transition-all duration-300"
               >
                 Shop now
               </Link>
             </div>
-
-            {/* Toy images collage */}
             <div className="absolute right-6 bottom-4 flex gap-3 items-end z-10 group-hover:scale-105 transition-transform duration-500">
-              <div className="relative w-24 h-24 rounded-full overflow-hidden hidden md:block lg:block ring-4 ring-white/40 shadow-xl">
+              <div className="relative w-24 h-24 rounded-full overflow-hidden hidden xl:block lg:block ring-4 ring-white/40 shadow-xl md:hidden">
                 <Image
                   src="/home page/feature-2.webp"
                   alt="Toy 1"
@@ -1888,24 +1876,18 @@ export default function Home() {
               background: "linear-gradient(135deg,#22c85e 0%,#16a34a 100%)",
             }}
           >
-            {/* Decorative circles */}
             <div className="absolute -left-8 -bottom-8 w-40 h-40 rounded-full bg-white/10 group-hover:scale-125 transition-transform duration-500" />
-
-            {/* Text */}
             <div className="relative z-10">
               <h3 className="text-white text-2xl font-black leading-tight drop-shadow mb-5">
                 Puzzle for Kids
               </h3>
-
               <Link
                 href="/shop"
-                className="mt-5 border-2 border-white/60 text-white text-xs font-black px-6 py-2 rounded-full hover:bg-white hover:text-[#16a34a] transition-all duration-300"
+                className="mt-5 border-2 bg-white/80 border-gray-900 text-gray-900 text-xs font-black px-6 py-2 rounded-full hover:bg-white hover:text-[#16a34a] transition-all duration-300"
               >
                 Shop now
               </Link>
             </div>
-
-            {/* Baby / toy image */}
             <div className="absolute right-0 bottom-0 w-[150px] h-[170px] group-hover:scale-105 transition-transform duration-500">
               <Image
                 src="/home page/girl with toys.png"
@@ -1942,7 +1924,6 @@ export default function Home() {
           />
         </div>
         <div className="relative z-10 max-w-[1300px] mx-auto">
-          {/* Header */}
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-slate-900 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
               Select from <span className="text-[#E84393]">Collection</span>
@@ -1956,7 +1937,6 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col md:flex-row gap-6">
-            {/* ── LEFT: Filter Sidebar ── */}
             <div className="shrink-0 md:w-48">
               <div className="bg-white border border-pink-100 rounded-lg overflow-hidden shadow-sm">
                 {[
@@ -2004,7 +1984,6 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Decorative emoji */}
               <div className="hidden md:flex justify-center mt-6 pointer-events-none select-none">
                 <span className="text-[80px] leading-none">
                   {activeGender === "Boy"
@@ -2016,7 +1995,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* ── RIGHT: Product Grid ── */}
             <div className="flex-1 min-h-75">
               {genderLoading ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -2052,7 +2030,6 @@ export default function Home() {
                       onClick={() => router.push(`/shop/${product._id}`)}
                       className="group bg-white overflow-hidden border border-gray-100 rounded-xl transition-all duration-300 flex flex-col cursor-pointer"
                     >
-                      {/* Image */}
                       <div className="relative bg-gray-50 h-44 overflow-hidden">
                         <ProductTagBadge tag={product.tags?.[0]} />
                         <Image
@@ -2062,8 +2039,6 @@ export default function Home() {
                           className="w-full h-full object-cover p-3 transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       </div>
-
-                      {/* Info */}
                       <div className="p-3 flex flex-col grow ">
                         <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">
                           {product.category || "Toy"}
@@ -2074,8 +2049,6 @@ export default function Home() {
                         <p className="mt-2 text-[#E84393] font-black text-sm mb-3">
                           {product.price}
                         </p>
-
-                        {/* Action Buttons */}
                         <div className="mt-auto grid grid-cols-[1fr_auto] gap-2 pt-2 border-t border-gray-100">
                           <button
                             onClick={(e) => {
@@ -2113,7 +2086,9 @@ export default function Home() {
         </div>
       </section>
 
-      <Testimonials />
+      <FacebookVideos />
+
+      {/* <Testimonials /> */}
 
       {/* Toast Notification */}
       {toastMessage && (
@@ -2124,8 +2099,6 @@ export default function Home() {
           </span>
         </div>
       )}
-
-      {/* <FacebookVideos /> */}
     </div>
   );
 }

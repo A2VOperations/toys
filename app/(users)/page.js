@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PiStarFourFill } from "react-icons/pi";
 import { addItemToCart } from "./cartStorage";
+import FacebookVideos from "./components/facebookGallery";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -361,8 +362,6 @@ export default function Home() {
 
   // Touch swipe (removed carousel variables)
 
-  const [activeTab, setActiveTab] = useState(0);
-  const [cartCount, setCartCount] = useState(0);
   const [heroVisible, setHeroVisible] = useState(false);
   const [dealTimer, setDealTimer] = useState({ h: 11, m: 47, s: 22 });
   const [popularProductsList, setPopularProductsList] = useState([]);
@@ -381,6 +380,15 @@ export default function Home() {
   const [bannerData, setBannerData] = useState(null);
   const [bannerLoading, setBannerLoading] = useState(true);
   const [bannerTimer, setBannerTimer] = useState({ h: 0, m: 0, s: 0 });
+  const [returnGifts, setReturnGifts] = useState([]);
+  const [returnGiftsLoading, setReturnGiftsLoading] = useState(true);
+  const [returnGiftsCurrent, setReturnGiftsCurrent] = useState(0);
+  const [stationary, setStationary] = useState([]);
+  const [stationaryLoading, setStationaryLoading] = useState(true);
+  const [stationaryCurrent, setStationaryCurrent] = useState(0);
+  const [batteryItems, setBatteryItems] = useState([]);
+  const [batteryLoading, setBatteryLoading] = useState(true);
+  const [batteryCurrent, setBatteryCurrent] = useState(0);
 
   const showToast = (message) => {
     setToastMessage(message);
@@ -441,6 +449,53 @@ export default function Home() {
       }
     }
     fetchPopular();
+  }, []);
+
+  useEffect(() => {
+    async function fetchSpecificSections() {
+      try {
+        setReturnGiftsLoading(true);
+        setStationaryLoading(true);
+        setBatteryLoading(true);
+
+        const [resReturn, resStat, resBatt] = await Promise.all([
+          fetch(`/api/toys?category=${encodeURIComponent("Return Gifts Ideas")}&limit=12`),
+          fetch(`/api/toys?category=${encodeURIComponent("Stationary (Return Gifts + Regular)")}&limit=12`),
+          fetch(`/api/toys?tags=${encodeURIComponent("Battery Operated")}&limit=12`)
+        ]);
+
+        const mapData = async (res) => {
+          const data = await res.json();
+          return (data?.toys || []).map((t) => ({
+            _id: t._id,
+            name: t.title,
+            category: t.category,
+            image: t.images?.[0] || "https://placehold.co/600x600?text=No+Image",
+            price: `₹${parseFloat(t.price || 0).toFixed(2)}`,
+            stock: t.stock,
+            tags: t.tags || [],
+          }));
+        };
+
+        const [returnGiftsData, statData, battData] = await Promise.all([
+          mapData(resReturn),
+          mapData(resStat),
+          mapData(resBatt)
+        ]);
+
+        setReturnGifts(returnGiftsData);
+        setStationary(statData);
+        setBatteryItems(battData);
+
+      } catch (err) {
+        console.error("Failed to fetch specific sections", err);
+      } finally {
+        setReturnGiftsLoading(false);
+        setStationaryLoading(false);
+        setBatteryLoading(false);
+      }
+    }
+    fetchSpecificSections();
   }, []);
 
   useEffect(() => {
@@ -756,15 +811,17 @@ export default function Home() {
             </h1>
             <p className="text-gray-600 dark:text-gray-500 mb-8 leading-relaxed md:text-sm lg:text-lg">
               Discover the ultimate collection of toys, educational stationery,
-              and unique return gifts. High-quality kids&apos; essentials delivered
-              at prices both shops and parents love.
+              and unique return gifts. High-quality kids&apos; essentials
+              delivered at prices both shops and parents love.
             </p>
-            <Link
-              href="/shop"
-              className="bg-white text-[#f52c6c] hover:text-white hover:bg-[#f52c6c] hover:border hover:border-white hover:border-dashed border border-dashed border-pink-500 px-6 py-4 rounded-full font-bold text-md uppercase tracking-widest shadow-lg shadow-pink-200 hover:scale-105 active:scale-95 transition-all"
-            >
-              View Shop
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
+              <Link
+                href="/shop"
+                className="bg-white text-[#f52c6c] hover:text-white hover:bg-[#f52c6c] hover:border hover:border-white hover:border-dashed border border-dashed border-pink-500 px-6 py-4 rounded-full font-bold text-md uppercase tracking-widest shadow-lg shadow-pink-200 hover:scale-105 active:scale-95 transition-all"
+              >
+                View Shop
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -1308,7 +1365,6 @@ export default function Home() {
         />
       </section>
 
-
       {/* ── Return gifts ── */}
       <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
         <div className="absolute top-20 hidden md:block">
@@ -1330,18 +1386,18 @@ export default function Home() {
         <div className="relative mx-auto max-w-[1400px] px-0 sm:px-6">
           <PopularPicksArrowButton
             direction="left"
-            onClick={() => setPopularCurrent((c) => Math.max(0, c - 1))}
-            disabled={popularCurrent === 0}
+            onClick={() => setReturnGiftsCurrent((c) => Math.max(0, c - 1))}
+            disabled={returnGiftsCurrent === 0}
           />
 
           <div className="overflow-hidden">
             <div
-              className={`flex transition-transform duration-500 ease-in-out ${popularLoading ? "py-2" : ""}`}
+              className={`flex transition-transform duration-500 ease-in-out ${returnGiftsLoading ? "py-2" : ""}`}
               style={{
-                transform: `translateX(-${popularCurrent * (100 / popularVisible)}%)`,
+                transform: `translateX(-${returnGiftsCurrent * (100 / popularVisible)}%)`,
               }}
             >
-              {popularLoading
+              {returnGiftsLoading
                 ? Array.from({ length: popularVisible }).map((_, i) => (
                     <div
                       key={i}
@@ -1356,7 +1412,7 @@ export default function Home() {
                       </div>
                     </div>
                   ))
-                : popularProductsList.map((product) => (
+                : returnGifts.map((product) => (
                     <div
                       key={product.name}
                       className="shrink-0 px-2 py-2"
@@ -1376,14 +1432,14 @@ export default function Home() {
           <PopularPicksArrowButton
             direction="right"
             onClick={() =>
-              setPopularCurrent((c) => Math.min(popularMaxIndex, c + 1))
+              setReturnGiftsCurrent((c) => Math.min(Math.max(0, returnGifts.length - popularVisible), c + 1))
             }
-            disabled={popularCurrent === popularMaxIndex}
+            disabled={returnGiftsCurrent === Math.max(0, returnGifts.length - popularVisible)}
           />
         </div>
-      </section>    
+      </section>
 
-{/* ── Stationary Items── */}
+      {/* ── Stationary Items── */}
       <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
         <div className="absolute top-20 hidden md:block">
           <Image
@@ -1404,18 +1460,18 @@ export default function Home() {
         <div className="relative mx-auto max-w-[1400px] px-0 sm:px-6">
           <PopularPicksArrowButton
             direction="left"
-            onClick={() => setPopularCurrent((c) => Math.max(0, c - 1))}
-            disabled={popularCurrent === 0}
+            onClick={() => setStationaryCurrent((c) => Math.max(0, c - 1))}
+            disabled={stationaryCurrent === 0}
           />
 
           <div className="overflow-hidden">
             <div
-              className={`flex transition-transform duration-500 ease-in-out ${popularLoading ? "py-2" : ""}`}
+              className={`flex transition-transform duration-500 ease-in-out ${stationaryLoading ? "py-2" : ""}`}
               style={{
-                transform: `translateX(-${popularCurrent * (100 / popularVisible)}%)`,
+                transform: `translateX(-${stationaryCurrent * (100 / popularVisible)}%)`,
               }}
             >
-              {popularLoading
+              {stationaryLoading
                 ? Array.from({ length: popularVisible }).map((_, i) => (
                     <div
                       key={i}
@@ -1430,7 +1486,7 @@ export default function Home() {
                       </div>
                     </div>
                   ))
-                : popularProductsList.map((product) => (
+                : stationary.map((product) => (
                     <div
                       key={product.name}
                       className="shrink-0 px-2 py-2"
@@ -1450,12 +1506,86 @@ export default function Home() {
           <PopularPicksArrowButton
             direction="right"
             onClick={() =>
-              setPopularCurrent((c) => Math.min(popularMaxIndex, c + 1))
+              setStationaryCurrent((c) => Math.min(Math.max(0, stationary.length - popularVisible), c + 1))
             }
-            disabled={popularCurrent === popularMaxIndex}
+            disabled={stationaryCurrent === Math.max(0, stationary.length - popularVisible)}
           />
         </div>
-      </section>    
+      </section>
+
+      {/* ── Classic & Battery Items── */}
+      <section className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-14">
+        <div className="absolute top-20 hidden md:block">
+          <Image
+            src="/home page/shape-20.png"
+            alt="Toy for kids"
+            width={180}
+            height={180}
+            priority
+            className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
+          />
+        </div>
+        <div className="mb-10 text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+            Classic & <span className="text-[#f75781]">Battery Powered</span>
+          </h2>
+        </div>
+
+        <div className="relative mx-auto max-w-[1400px] px-0 sm:px-6">
+          <PopularPicksArrowButton
+            direction="left"
+            onClick={() => setBatteryCurrent((c) => Math.max(0, c - 1))}
+            disabled={batteryCurrent === 0}
+          />
+
+          <div className="overflow-hidden">
+            <div
+              className={`flex transition-transform duration-500 ease-in-out ${batteryLoading ? "py-2" : ""}`}
+              style={{
+                transform: `translateX(-${batteryCurrent * (100 / popularVisible)}%)`,
+              }}
+            >
+              {batteryLoading
+                ? Array.from({ length: popularVisible }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="shrink-0 px-2"
+                      style={{ width: `${100 / popularVisible}%` }}
+                    >
+                      <div className="bg-white/60 animate-pulse rounded-2xl h-90 w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
+                        <div className="h-48 bg-gray-200/60 rounded-xl w-full mb-4"></div>
+                        <div className="h-5 bg-gray-200/60 rounded w-3/4 mb-2"></div>
+                        <div className="h-4 bg-gray-200/60 rounded w-1/2 mt-auto mb-3"></div>
+                        <div className="h-10 bg-gray-200/60 rounded-full w-full"></div>
+                      </div>
+                    </div>
+                  ))
+                : batteryItems.map((product) => (
+                    <div
+                      key={product.name}
+                      className="shrink-0 px-2 py-2"
+                      style={{ width: `${100 / popularVisible}%` }}
+                    >
+                      <div className="h-full shadow-xl shadow-gray-200 rounded-xl overflow-hidden">
+                        <PopularProductCard
+                          product={product}
+                          onAddToCart={addToCart}
+                        />
+                      </div>
+                    </div>
+                  ))}
+            </div>
+          </div>
+
+          <PopularPicksArrowButton
+            direction="right"
+            onClick={() =>
+              setBatteryCurrent((c) => Math.min(Math.max(0, batteryItems.length - popularVisible), c + 1))
+            }
+            disabled={batteryCurrent === Math.max(0, batteryItems.length - popularVisible)}
+          />
+        </div>
+      </section>
 
       <section className="relative isolate overflow-hidden bg-white py-14 md:py-16">
         <div className="pointer-events-none absolute right-8 top-0 hidden md:block -z-10 xl:right-20">
@@ -1507,7 +1637,7 @@ export default function Home() {
             {/* HEADER */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
-                Top Selling <span className="text-pink-500">products</span>
+                Best Selling <span className="text-pink-500">products</span>
               </h2>
             </div>
 
@@ -1994,6 +2124,8 @@ export default function Home() {
           </span>
         </div>
       )}
+
+      {/* <FacebookVideos /> */}
     </div>
   );
 }

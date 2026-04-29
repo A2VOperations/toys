@@ -513,9 +513,9 @@ export default async function HomePage() {
 
                   {/* Body */}
                   <div className="card-body">
-                    <div className="card-category">
+                    {/* <div className="card-category">
                       {product.category || "Toy"}
-                    </div>
+                    </div> */}
                     <div className="card-title-text">{product.title}</div>
                     <div className="card-meta">
                       {product.brand ? `${product.brand} · ` : "Self · "}{product.age}

@@ -11,30 +11,118 @@ import { getCartCount } from "./cartStorage";
 const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567";
 const waLink = `https://wa.me/${waNumber.replace(/\D/g, "")}`;
 
-const MEGA = {
-  categories: [
-    { label: "Action Figures", emoji: "🦸" },
-    { label: "Board Games", emoji: "♟️" },
-    { label: "Educational", emoji: "📚" },
-    { label: "Dolls", emoji: "🪆" },
-    { label: "Vehicles", emoji: "🚗" },
-    { label: "Puzzles", emoji: "🧩" },
-    { label: "Outdoor & Sports", emoji: "⚽" },
-    { label: "Arts & Crafts", emoji: "🎨" },
-  ],
-  tags: [
-    "🔥 Bestseller",
-    "✨ New",
-    "💰 Sale",
-    "🏆 Award Winning",
-    "🎯 Limited Edition",
-  ],
-  genders: [
-    { label: "Boys", emoji: "🚀", path: "Boy" },
-    { label: "Girls", emoji: "🌸", path: "Girl" },
-    { label: "Unisex", emoji: "🌈", path: "Unisex" },
-  ],
+/* ── Category image map (place your images in /public/categories/) ── */
+const CATEGORY_IMAGES = {
+  "Soft Toys & Plush": "/categories/soft-toys.jpg",
+  "Building Sets & Blocks": "/categories/building-sets.jpg",
+  "Vehicles & Remote Control": "/categories/vehicles-rc.jpg",
+  "Dolls & Accessories": "/categories/dolls.jpg",
+  "Puzzles & Brain Teasers": "/categories/puzzles.jpg",
+  "Board Games": "/categories/board-games.jpg",
+  "Arts, Crafts & DIY": "/categories/arts-crafts.jpg",
+  "Baby & Toddler Toys": "/categories/baby-toddler.jpg",
+  "Educational & Learning Toys": "/categories/educational.jpg",
+  "Outdoor & Sports Toys": "/categories/outdoor-sports.jpg",
+  "Action Figures & Playsets": "/categories/action-figures.jpg",
+  "Party & Return Gifts": "/categories/return-gifts.jpg",
 };
+
+/* Featured 9 categories for the image grid */
+const GRID_CATEGORIES = [
+  { label: "Bestseller", href: "/shop?tags=Bestseller", img: "/categories/bestseller.jpg", emoji: "🔥" },
+  { label: "New Arrivals", href: "/shop?tags=New", img: "/categories/new.jpg", emoji: "🆕" },
+  { label: "Sale", href: "/shop?tags=Sale", img: "/categories/sale.jpg", emoji: "🚗" },
+  { label: "Limited Edition", href: "/shop?tags=Limited Edition", img: "/categories/limited-edition.jpg", emoji: "🧩" },
+  { label: "Award Winning", href: "/shop?tags=Award Winning", img: "/categories/board-games.jpg", emoji: "🏆" },
+  { label: "Eco Friendly", href: "/shop?tags=Eco Friendly", img: "/categories/arts-crafts.jpg", emoji: "🌱" },
+  { label: "Battery Operated", href: "/shop?category=Battery Operated Toys", img: "/categories/baby-toddler.jpg", emoji: "👶" },
+  { label: "Non Battery Operated", href: "/shop?category=Non Battery Toys", img: "/categories/educational.jpg", emoji: "📚" },
+];
+
+const ALL_SIDEBAR_CATEGORIES = [
+  { label: "Outdoor & Sports", path: "Outdoor & Sports" },
+  { label: "Battery Operated Toys", path: "Battery Operated Toys" },
+  { label: "Return Gifts Ideas", path: "Return Gifts Ideas" },
+  { label: "School Essentials", path: "School Essentials" },
+  { label: "Stationary (Return Gifts + Regular)", path: "Stationary (Return Gifts + Regular)" },
+  { label: "Non Battery Toys", path: "Non Battery Toys" },
+  { label: "Soft and Plush Toys", path: "Soft and Plush Toys" },
+  { label: "Puzzles and Brain Teasers", path: "Puzzles and Brain Teasers" },
+  { label: "Learning and Education Toys", path: "Learning and Education Toys" },
+];
+
+const AGE_RANGES = [
+  { label: "0 – 12 Months", path: "0,1" },
+  { label: "1 – 2 Years", path: "1,2" },
+  { label: "3 – 4 Years", path: "3,4" },
+  { label: "5 – 7 Years", path: "5,6,7" },
+  { label: "8 – 10 Years", path: "8,9,10" },
+  { label: "11+ Years", path: "11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50" },
+];
+
+const PRICE_RANGES = [
+  { label: "Under ₹500", href: "/shop?maxPrice=500" },
+  { label: "₹500 – ₹1000", href: "/shop?minPrice=500&maxPrice=1000" },
+  { label: "₹1000 – ₹2000", href: "/shop?minPrice=2000" },
+  // { label: "₹2000 – ₹3000", href: "/shop?minPrice=2000&maxPrice=3000" },
+  // { label: "Above ₹3000", href: "/shop?minPrice=3000" },
+];
+
+const SERVICES = [
+  {
+    icon: "🔒",
+    title: "Secure Payments",
+    desc: "100% secure payments with trusted gateways.",
+  },
+  {
+    icon: "💵",
+    title: "Cash on Delivery",
+    desc: "Pay when you receive your doorstep.",
+  },
+  {
+    icon: "↩️",
+    title: "Easy Returns",
+    desc: "Hassle-free returns within 7 days.",
+  },
+  { icon: "⚡", title: "Fast Delivery", desc: "Quick delivery across India." },
+  // {
+  //   icon: "🎧",
+  //   title: "Customer Support",
+  //   desc: "We're here to help you 24/7.",
+  // },
+];
+
+const WHY_US = [
+  { title: "Wide Range of Toys", desc: "Explore 1000+ premium toys." },
+  {
+    title: "Best Quality Products",
+    desc: "Safe, durable & child-friendly toys.",
+  },
+  { title: "Affordable Prices", desc: "Best prices for the best toys." },
+  {
+    title: "Trusted by Parents",
+    desc: "Loved by thousands of happy families.",
+  },
+];
+
+const BOTTOM_BADGES = [
+  { icon: "🎁", title: "Exclusive Deals", desc: "Best offers on top toys" },
+  {
+    icon: "🏆",
+    title: "Award Winning Toys",
+    desc: "Curated for happy learning",
+  },
+  {
+    icon: "🛡️",
+    title: "Child Safe & Non-Toxic",
+    desc: "Made with safe materials",
+  },
+  {
+    icon: "🌱",
+    title: "Eco-Friendly Toys",
+    desc: "Sustainable & environment friendly",
+  },
+];
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -66,7 +154,8 @@ function AnnouncementBar() {
     <div
       className="relative w-full min-h-9 overflow-hidden flex items-center px-3 md:px-6"
       style={{
-        background: "linear-gradient(90deg, #b5105a 0%, #e84393 45%, #ff6b9d 75%, #e84393 100%)",
+        background:
+          "linear-gradient(90deg, #b5105a 0%, #e84393 45%, #ff6b9d 75%, #e84393 100%)",
         backgroundSize: "200% 100%",
         animation: "ann-bg 8s linear infinite",
         fontFamily: "'Nunito', sans-serif",
@@ -86,27 +175,50 @@ function AnnouncementBar() {
       `}</style>
 
       <div className="hidden md:flex items-center gap-1 text-white text-[0.78rem] font-semibold whitespace-nowrap flex-1">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
         </svg>
         <span className="ml-1">Open Hours: 9am – 10pm</span>
         <div className="ann-divider" />
       </div>
 
-      <Link href="/#dealOf" className="flex-1 md:flex-none text-white text-[0.75rem] sm:text-[0.78rem] md:text-[0.82rem] whitespace-nowrap text-center">
-        Today's Deals – <strong className="font-extrabold">Click to Save More</strong>
+      <Link
+        href="/#dealOf"
+        className="flex-1 md:flex-none text-white text-[0.75rem] sm:text-[0.78rem] md:text-[0.82rem] whitespace-nowrap text-center"
+      >
+        Today's Deals –{" "}
+        <strong className="font-extrabold">Click to Save More</strong>
       </Link>
 
       <div className="hidden sm:flex items-center gap-1 text-white text-[0.78rem] font-semibold whitespace-nowrap flex-1 justify-end">
         <div className="flex items-center gap-2">
           {[
-            { href: `https://wa.me/${waNumber}`, Icon: WaIcon, label: "WhatsApp" },
+            {
+              href: `https://wa.me/${waNumber}`,
+              Icon: WaIcon,
+              label: "WhatsApp",
+            },
             { href: "https://facebook.com", Icon: FbIcon, label: "Facebook" },
             { href: "https://instagram.com", Icon: IgIcon, label: "Instagram" },
           ].map(({ href, Icon, label }) => (
-            <a key={label} href={href} target="_blank" rel="noreferrer"
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
               className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25"
-              aria-label={label}>
+              aria-label={label}
+            >
               <Icon />
             </a>
           ))}
@@ -124,6 +236,8 @@ export default function Navbar({ onCartClick }) {
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileShopSubmenu, setMobileShopSubmenu] = useState(false);
+  const [hoveredSidebarCat, setHoveredSidebarCat] =
+    useState("All Toys & Games");
   const megaRef = useRef(null);
   const timerRef = useRef(null);
   const pathname = usePathname();
@@ -133,23 +247,33 @@ export default function Navbar({ onCartClick }) {
     const update = () => setLocalCartCount(getCartCount());
     window.addEventListener("cartUpdated", update);
     window.addEventListener("storage", update);
-    return () => { window.removeEventListener("cartUpdated", update); window.removeEventListener("storage", update); };
+    return () => {
+      window.removeEventListener("cartUpdated", update);
+      window.removeEventListener("storage", update);
+    };
   }, []);
 
-  useEffect(() => { setMegaOpen(false); setMobileMenuOpen(false); setMobileShopSubmenu(false); }, [pathname]);
+  useEffect(() => {
+    setMegaOpen(false);
+    setMobileMenuOpen(false);
+    setMobileShopSubmenu(false);
+  }, [pathname]);
 
   useEffect(() => {
-    const handleResize = () => { if (window.innerWidth >= 1280) setMobileMenuOpen(false); };
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) setMobileMenuOpen(false);
+    };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileMenuOpen]);
 
-  /* ── Stable hover: open on button enter, close only when leaving BOTH button + panel ── */
   const handleMouseEnter = () => {
     clearTimeout(timerRef.current);
     setMegaOpen(true);
@@ -158,18 +282,57 @@ export default function Navbar({ onCartClick }) {
     timerRef.current = setTimeout(() => setMegaOpen(false), 200);
   };
 
-  const closeMobileMenu = () => { setMobileMenuOpen(false); setMobileShopSubmenu(false); };
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setMobileShopSubmenu(false);
+  };
+
+  /* Build category href */
+  const catHref = (label) =>
+    label === "All Toys & Games" || label === ""
+      ? "/shop"
+      : label === "age"
+        ? "/shop?sortBy=age"
+        : label === "brands"
+          ? "/shop?sortBy=brands"
+          : `/shop?category=${encodeURIComponent(label)}`;
 
   return (
     <>
       <style>{`
-        /* Pink glow on mega hover links */
-        .mega-cat-link:hover { color: #e84393 !important; padding-left: 10px; }
-        .mega-cat-link { transition: color 0.2s, padding-left 0.2s; }
-        .mega-collection-item:hover { background: linear-gradient(90deg,#fff0f6,#fce4ef) !important; color: #e84393 !important; }
-        .mega-tag:hover { background: #e84393 !important; color: #fff !important; border-color: #e84393 !important; }
-        .mega-gender-card:hover { border-color: #e84393 !important; color: #e84393 !important; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(232,67,147,0.18) !important; }
-        /* Bridge: invisible gap-filler between button and panel so mouse can travel */
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+        .nb-font { font-family: 'Nunito', sans-serif; }
+
+        /* Sidebar category hover */
+        .sidebar-cat-item { transition: background 0.15s, color 0.15s; cursor: pointer; }
+        .sidebar-cat-item:hover, .sidebar-cat-item.active {
+          background: #fff0f6 !important;
+          color: #e84393 !important;
+        }
+        .sidebar-cat-item:hover .cat-arrow, .sidebar-cat-item.active .cat-arrow {
+          color: #e84393;
+        }
+
+        /* Grid card hover */
+        .grid-cat-card:hover { border-color: #e84393 !important; box-shadow: 0 4px 16px rgba(232,67,147,0.15) !important; }
+        .grid-cat-card:hover .grid-cat-label { color: #e84393 !important; }
+
+        /* Age / Price row hover */
+        .age-row:hover { color: #e84393 !important; }
+        .price-row:hover { color: #e84393 !important; }
+
+        /* Service icon */
+        .service-row:hover .service-icon { background: #fce4ef !important; }
+
+        /* Why us check */
+        .why-row { transition: color 0.15s; }
+        .why-row:hover { color: #e84393 !important; }
+
+        /* Bottom badges */
+        .bottom-badge:hover { background: #fff0f6 !important; }
+
+        /* Mega bridge */
         .mega-bridge {
           position: absolute;
           left: 0; right: 0;
@@ -178,6 +341,9 @@ export default function Navbar({ onCartClick }) {
           background: transparent;
           z-index: 998;
         }
+
+        /* Mobile drawer */
+        .mobile-cat-link:hover { color: #e84393 !important; }
       `}</style>
 
       <AnnouncementBar />
@@ -186,13 +352,18 @@ export default function Navbar({ onCartClick }) {
         className="nb-font sticky top-0 z-[1000] bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 px-4 md:px-8"
         style={{ fontFamily: "'Nunito', sans-serif" }}
       >
-        <div className="max-w-[1400px] mx-auto flex items-center justify-between h-[80px] gap-4">
-
+        <div className="max-w-[1500px] mx-auto flex items-center justify-between h-[80px] gap-4">
           {/* Logo */}
           <Link href="/" className="relative shrink-0 flex items-center group">
-            <div className="transition-transform duration-300 group-hover:scale-105">
-              <Image src="/Kids For Toy logo.png" alt="Logo" width={160} height={50}
-                className="w-auto h-[48px] md:h-[54px] object-contain" priority />
+            <div className="transition-transform duration-300 group-hover:scale-105 flex items-center">
+              <Image
+                src="/Toy for kids logo.png"
+                alt="Logo"
+                width={220}
+                height={150}
+                className="w-[200px] md:w-[220px] object-contain"
+                priority
+              />
             </div>
           </Link>
 
@@ -201,42 +372,62 @@ export default function Navbar({ onCartClick }) {
             {navLinks.map((link) =>
               link.name === "Shop" ? (
                 <li key="Shop" className="relative">
-                  {/* Button + invisible bridge to panel */}
-                  <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="relative">
+                  <div
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    className="relative"
+                  >
                     <button
                       className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-[0.95rem] font-bold transition-all duration-200 cursor-pointer border-none
-                        ${megaOpen || pathname === "/shop"
-                          ? "bg-[#e84393] text-white shadow-lg shadow-[#e84393]/30"
-                          : "bg-transparent text-gray-600 hover:bg-[#fff0f6] hover:text-[#e84393]"}`}
+                        ${
+                          megaOpen || pathname === "/shop"
+                            ? "bg-[#e84393] text-white shadow-lg shadow-[#e84393]/30"
+                            : "bg-transparent text-gray-600 hover:bg-[#fff0f6] hover:text-[#e84393]"
+                        }`}
                     >
                       Shop
-                      <svg className={`w-4 h-4 transition-transform duration-200 ${megaOpen ? "rotate-180" : ""}`}
-                        fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      <svg
+                        className={`w-4 h-4 transition-transform duration-200 ${megaOpen ? "rotate-180" : ""}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={3}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M19 9l-7 7-7-7"
+                        />
                       </svg>
                     </button>
-                    {/* Invisible bridge so cursor can travel to mega panel without it closing */}
                     {megaOpen && <div className="mega-bridge" />}
                   </div>
                 </li>
               ) : (
                 <li key={link.name}>
-                  <Link href={link.path}
+                  <Link
+                    href={link.path}
                     className={`px-5 py-2.5 rounded-full text-[0.95rem] font-bold transition-all duration-200 no-underline inline-block
-                      ${pathname === link.path
-                        ? "bg-[#e84393] text-white shadow-lg shadow-[#e84393]/30"
-                        : "text-gray-600 hover:bg-[#fff0f6] hover:text-[#e84393]"}`}>
+                      ${
+                        pathname === link.path
+                          ? "bg-[#e84393] text-white shadow-lg shadow-[#e84393]/30"
+                          : "text-gray-600 hover:bg-[#fff0f6] hover:text-[#e84393]"
+                      }`}
+                  >
                     {link.name}
                   </Link>
                 </li>
-              )
+              ),
             )}
           </ul>
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            <Link href="/cart" onClick={onCartClick}
-              className="relative flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white border-2 border-[#e84393]/20 text-[#e84393] font-bold no-underline transition-all duration-200 hover:bg-[#e84393] hover:text-white hover:border-[#e84393] hover:shadow-lg hover:shadow-[#e84393]/30">
+            <Link
+              href="/cart"
+              onClick={onCartClick}
+              className="relative flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white border-2 border-[#e84393]/20 text-[#e84393] font-bold no-underline transition-all duration-200 hover:bg-[#e84393] hover:text-white hover:border-[#e84393] hover:shadow-lg hover:shadow-[#e84393]/30"
+            >
               <span className="text-lg">🛒</span>
               <span className="hidden sm:inline">Cart</span>
               {localCartCount > 0 && (
@@ -246,273 +437,520 @@ export default function Navbar({ onCartClick }) {
               )}
             </Link>
 
-            <button className="xl:hidden p-2 rounded-xl text-gray-600 hover:bg-[#fff0f6] hover:text-[#e84393] transition-colors"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menu">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+            <button
+              className="xl:hidden p-2 rounded-xl text-gray-600 hover:bg-[#fff0f6] hover:text-[#e84393] transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Menu"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
               </svg>
             </button>
           </div>
         </div>
 
         {/* ════════ MEGA MENU ════════ */}
-        {/*
-          Key fix: the mega panel itself ALSO gets onMouseEnter/Leave with the same handlers,
-          so hovering inside the panel keeps it open.
-        */}
         <div
           ref={megaRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className={`absolute left-0 right-0 w-full z-[999] transition-all duration-300 ease-in-out
+          className={`absolute left-1/2 -translate-x-1/2 w-[95%] max-w-[1300px] z-999 transition-all duration-300 ease-in-out
             ${megaOpen ? "opacity-100 visible translate-y-0 pointer-events-auto" : "opacity-0 invisible -translate-y-3 pointer-events-none"}`}
           style={{ top: "100%" }}
         >
-          {/* Pink-tinted backdrop */}
-          <div className="absolute inset-0 -z-10" style={{
-            background: "linear-gradient(180deg, rgba(252,228,239,0.6) 0%, rgba(255,255,255,0) 100%)",
-            backdropFilter: "blur(6px)",
-          }} />
-
-          <div style={{
-            background: "linear-gradient(180deg, #fff5f9 0%, #ffffff 60%)",
-            boxShadow: "0 24px 60px rgba(232,67,147,0.12), 0 4px 16px rgba(0,0,0,0.06)",
-            borderTop: "2px solid #fce4ef",
-          }}>
-            <div className="max-w-[1400px] mx-auto grid grid-cols-5" style={{ minHeight: 480 }}>
-
-              {/* ── Col 1: Categories ── */}
-              <div className="p-5 pl-5 col-span-2" style={{ borderRight: "1px solid #fce4ef" }}>
-                <div className="mb-7">
-                  <span className="inline-block text-[0.65rem] font-black tracking-[0.22em] uppercase px-3 py-1 rounded-full mb-3"
-                    style={{ background: "#fce4ef", color: "#e84393" }}>
-                    ✦ Browse
+          <div
+            className="flex flex-col rounded-b-2xl overflow-hidden border border-gray-100 shadow-2xl"
+            style={{
+              background: "#fff",
+              borderTop: "2px solid #fce4ef", 
+            }}
+          >
+            {/* ── Main 5-column grid ── */}
+            <div
+              className="grid flex-1 w-full overflow-hidden"
+              style={{ gridTemplateColumns: "220px 380px 180px 240px 240px" }}
+            >
+              {/* ── Col 1: Shop by Categories Sidebar ── */}
+              <div
+                style={{
+                  borderRight: "1px solid #f0f0f0",
+                  background: "#fafafa",
+                }}
+              >
+                <div
+                  className="px-4 py-3"
+                  style={{ borderBottom: "2px solid #e84393" }}
+                >
+                  <span
+                    className="text-[0.72rem] font-black uppercase tracking-widest"
+                    style={{ color: "#e84393" }}
+                  >
+                    Shop by Categories
                   </span>
-                  <h3 className="text-xl font-black text-gray-900 leading-tight">All Categories</h3>
                 </div>
-                <ul className="grid grid-cols-2 gap-x-6 gap-y-0 list-none p-0 m-0">
-                  {CATEGORIES.map((label) => (
-                    <li key={label}>
-                      <Link href={`/shop?category=${encodeURIComponent(label)}`}
-                        className="mega-cat-link flex items-center gap-1 py-1.5 text-gray-500 font-bold text-[0.85rem] no-underline group">
-                        <span className="text-base opacity-60 group-hover:opacity-100 transition-all group-hover:scale-110 inline-block">
-                          {CATEGORY_EMOJIS[label] || "🧸"}
-                        </span>
-                        <span className="truncate">{label}</span>
+                <ul className="list-none p-0 m-0">
+                  {ALL_SIDEBAR_CATEGORIES.map((cat) => (
+                    <li key={cat.label}>
+                      <Link
+                        href={catHref(cat.path)}
+                        className={`sidebar-cat-item flex items-center justify-between px-4 py-2.5 no-underline text-[0.82rem] font-semibold ${hoveredSidebarCat === cat.label ? "active" : ""}`}
+                        style={{
+                          color:
+                            hoveredSidebarCat === cat.label
+                              ? "#e84393"
+                              : "#444",
+                          background:
+                            hoveredSidebarCat === cat.label
+                              ? "#fff0f6"
+                              : "transparent",
+                        }}
+                        onMouseEnter={() => setHoveredSidebarCat(cat.label)}
+                      >
+                        {cat.label}
+                        <svg
+                          className="cat-arrow w-3.5 h-3.5 flex-shrink-0"
+                          style={{
+                            color:
+                              hoveredSidebarCat === cat.label
+                                ? "#e84393"
+                                : "#bbb",
+                          }}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
                       </Link>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* ── Col 2: Tags + Gender ── */}
-              <div className="p-10" style={{ borderRight: "1px solid #fce4ef", background: "linear-gradient(160deg,#fff8fb,#ffffff)" }}>
-                <div className="mb-8">
-                  <span className="inline-block text-[0.65rem] font-black tracking-[0.22em] uppercase px-3 py-1 rounded-full mb-4"
-                    style={{ background: "#fff0eb", color: "#ff6b35" }}>
-                    🔥 Trending
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {MEGA.tags.map((t) => {
-                      const tagValue = t.replace(/[^a-zA-Z\s]/g, "").trim();
-                      return (
-                        <Link key={t} href={`/shop?tags=${encodeURIComponent(tagValue)}`}
-                          className="mega-tag px-4 py-1.5 rounded-full text-[0.78rem] font-bold no-underline transition-all duration-200"
-                          style={{ background: "#fff0f6", border: "1.5px solid #fce4ef", color: "#e84393" }}>
-                          {t}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div>
-                  <span className="inline-block text-[0.65rem] font-black tracking-[0.22em] uppercase px-3 py-1 rounded-full mb-5"
-                    style={{ background: "#f3e8ff", color: "#9c27b0" }}>
-                    👶 For Every Child
-                  </span>
-                  <div className="grid grid-cols-3 gap-3">
-                    {MEGA.genders.map((g) => (
-                      <Link key={g.label} href={`/shop?gender=${encodeURIComponent(g.path)}`}
-                        className="mega-gender-card flex flex-col items-center justify-center p-3 rounded-2xl no-underline transition-all duration-200"
-                        style={{ background: "#fff", border: "1.5px solid #fce4ef", color: "#555" }}>
-                        <span className="text-2xl mb-1">{g.emoji}</span>
-                        <span className="text-[0.65rem] font-black uppercase tracking-wider">{g.label}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* ── Col 3: Quick Collections ── */}
-              <div className="p-10" style={{ borderRight: "1px solid #fce4ef" }}>
-                <div className="mb-7">
-                  <span className="inline-block text-[0.65rem] font-black tracking-[0.22em] uppercase px-3 py-1 rounded-full mb-3"
-                    style={{ background: "#fce4ef", color: "#e84393" }}>
-                    ⚡ Quick Access
-                  </span>
-                  <h3 className="text-xl font-black text-gray-900">Collections</h3>
-                </div>
-                <ul className="flex flex-col gap-1 list-none p-0 m-0">
-                  {[
-                    { label: "New Arrivals", href: "/shop?sortBy=latest", icon: "✨", desc: "Fresh drops this week" },
-                    { label: "Best Sellers", href: "/shop?tags=Bestseller", icon: "🔥", desc: "Top picks by parents" },
-                    { label: "Flash Sale", href: "/shop?tags=Sale", icon: "💥", desc: "Limited-time deals" },
-                    { label: "Under Rs.1000", href: "/shop?maxPrice=1000", icon: "💰", desc: "Budget-friendly fun" },
-                  ].map((item) => (
-                    <li key={item.label}>
-                      <Link href={item.href}
-                        className="mega-collection-item flex items-center gap-3 py-3 px-4 rounded-xl no-underline transition-all duration-200 group"
-                        style={{ color: "#555" }}>
-                        <span className="w-9 h-9 rounded-full flex items-center justify-center text-base flex-shrink-0 transition-all"
-                          style={{ background: "#fce4ef" }}>
-                          {item.icon}
-                        </span>
-                        <div>
-                          <div className="font-bold text-[0.9rem] leading-tight">{item.label}</div>
-                          <div className="text-[0.72rem] text-gray-400 font-semibold">{item.desc}</div>
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* ── Col 4: Featured Promo ── */}
-              <div className="p-10 flex flex-col justify-between relative overflow-hidden"
-                style={{ background: "linear-gradient(145deg,#fff0f6 0%,#fce4ef 60%,#fff5f9 100%)" }}>
-                {/* Decorative blobs */}
-                <div className="absolute -top-8 -right-8 w-36 h-36 rounded-full pointer-events-none"
-                  style={{ background: "radial-gradient(circle,rgba(232,67,147,0.18),transparent 70%)" }} />
-                <div className="absolute bottom-10 -left-6 w-28 h-28 rounded-full pointer-events-none"
-                  style={{ background: "radial-gradient(circle,rgba(255,107,157,0.15),transparent 70%)" }} />
-
-                <div className="relative z-10">
-                  <span className="inline-block px-3 py-1 text-[0.6rem] font-black uppercase tracking-widest rounded-lg mb-5"
-                    style={{ background: "#fff", border: "1px solid #fce4ef", color: "#e84393", boxShadow: "0 2px 8px rgba(232,67,147,0.1)" }}>
-                    ✨ Featured Selection
-                  </span>
-                  <h3 className="text-3xl font-black text-gray-900 leading-tight mb-4">
-                    The <br />
-                    <span style={{ color: "#e84393" }}>Toy Stack</span>
-                  </h3>
-                  <p className="text-sm text-gray-500 font-semibold leading-relaxed mb-7">
-                    Hand-picked toys that spark creativity and bring endless joy to every child.
-                  </p>
-                  <div className="flex gap-6 mb-8">
-                    {[ { val: "4.9★", label: "Rating" }, { val: "10k+", label: "Happy Kids" }].map(({ val, label }) => (
-                      <div key={label}>
-                        <div className="text-xl font-black" style={{ color: "#e84393" }}>{val}</div>
-                        <div className="text-[0.6rem] font-bold uppercase tracking-widest text-gray-400">{label}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <Link href="/shop"
-                  className="relative z-10 inline-flex items-center justify-center px-10 py-4 rounded-full text-sm font-black text-white no-underline transition-all duration-200 hover:-translate-y-1"
+              {/* ── Col 2: All Toys & Games image grid ── */}
+              <div className="p-5" style={{ borderRight: "1px solid #f0f0f0" }}>
+                <div
+                  className="mb-3"
                   style={{
-                    background: "linear-gradient(135deg,#e84393,#c4176e)",
-                    boxShadow: "0 8px 24px rgba(232,67,147,0.35)",
-                  }}>
-                  SHOP MORE
-                </Link>
+                    borderBottom: "2px solid #e84393",
+                    paddingBottom: "8px",
+                  }}
+                >
+                  <span
+                    className="text-[0.72rem] font-black uppercase tracking-widest"
+                    style={{ color: "#e84393" }}
+                  >
+                    All Toys &amp; Games
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {GRID_CATEGORIES.map((cat) => (
+                    <Link
+                      key={cat.label}
+                      href={cat.href}
+                      className="grid-cat-card flex flex-col items-center gap-1 p-2 rounded-xl border border-gray-100 no-underline transition-all duration-200"
+                      style={{ background: "#fff" }}
+                    >
+                      <div
+                        className="w-full aspect-square rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center relative"
+                        style={{ maxHeight: 72 }}
+                      >
+                        {/* Try to load image, fallback to emoji */}
+                        <span className="text-3xl">{cat.emoji}</span>
+                        <Image
+                          src={cat.img}
+                          alt={cat.label}
+                          fill
+                          className="object-cover absolute inset-0"
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                          }}
+                        />
+                      </div>
+                      <span className="grid-cat-label text-[0.7rem] font-medium text-center text-gray-600 leading-tight transition-colors">
+                        {cat.label}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
               </div>
 
+              {/* ── Col 3: Shop by Age + Shop by Price ── */}
+              <div className="p-5" style={{ borderRight: "1px solid #f0f0f0" }}>
+                {/* Shop by Age */}
+                <div
+                  className="mb-4"
+                  style={{
+                    borderBottom: "2px solid #e84393",
+                    paddingBottom: "8px",
+                  }}
+                >
+                  <span
+                    className="text-[0.72rem] font-black uppercase tracking-widest"
+                    style={{ color: "#e84393" }}
+                  >
+                    Shop by Age
+                  </span>
+                </div>
+                <ul className="list-none p-0 m-0 mb-6">
+                  {AGE_RANGES.map((age) => (
+                    <li key={age.label}>
+                      <Link
+                        href={`/shop?age=${encodeURIComponent(age.path)}`}
+                        className="age-row flex items-center justify-between py-2 text-[0.82rem] font-semibold no-underline transition-colors"
+                        style={{
+                          color: "#444",
+                          borderBottom: "1px solid #f5f5f5",
+                        }}
+                      >
+                        {age.label}
+                        <svg
+                          className="w-3.5 h-3.5 text-gray-300"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Shop by Price */}
+                <div
+                  className="mb-4"
+                  style={{
+                    borderBottom: "2px solid #e84393",
+                    paddingBottom: "8px",
+                  }}
+                >
+                  <span
+                    className="text-[0.72rem] font-black uppercase tracking-widest"
+                    style={{ color: "#e84393" }}
+                  >
+                    Shop by Price
+                  </span>
+                </div>
+                <ul className="list-none p-0 m-0">
+                  {PRICE_RANGES.map((pr) => (
+                    <li key={pr.label}>
+                      <Link
+                        href={pr.href}
+                        className="price-row flex items-center justify-between py-2 text-[0.82rem] font-semibold no-underline transition-colors"
+                        style={{
+                          color: "#444",
+                          borderBottom: "1px solid #f5f5f5",
+                        }}
+                      >
+                        {pr.label}
+                        <svg
+                          className="w-3.5 h-3.5 text-gray-300"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* ── Col 4: Our Services ── */}
+              <div className="p-5" style={{ borderRight: "1px solid #f0f0f0" }}>
+                <div
+                  className="mb-4"
+                  style={{
+                    borderBottom: "2px solid #e84393",
+                    paddingBottom: "8px",
+                  }}
+                >
+                  <span
+                    className="text-[0.72rem] font-black uppercase tracking-widest"
+                    style={{ color: "#e84393" }}
+                  >
+                    Our Services
+                  </span>
+                </div>
+                <ul className="list-none p-0 m-0">
+                  {SERVICES.map((svc) => (
+                    <li
+                      key={svc.title}
+                      className="service-row flex items-start gap-3 py-2.5"
+                      style={{ borderBottom: "1px solid #f5f5f5" }}
+                    >
+                      <div
+                        className="service-icon w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all text-base"
+                        style={{ background: "#f5f5f5" }}
+                      >
+                        {svc.icon}
+                      </div>
+                      <div>
+                        <div className="text-[0.82rem] font-bold text-gray-800">
+                          {svc.title}
+                        </div>
+                        <div className="text-[0.72rem] text-gray-400 font-semibold leading-snug">
+                          {svc.desc}
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* ── Col 5: Why Shop With Us + Promo ── */}
+              <div className="p-5">
+                
+                {/* Promo banner */}
+                <div
+                  className="mt-auto rounded-2xl p-4 relative overflow-hidden h-[300px] flex flex-col"
+                  style={{
+                    background: "linear-gradient(135deg,#fff0f6,#fce4ef)",
+                  }}
+                >
+                  <div
+                    className="text-[0.6rem] font-black uppercase tracking-widest mb-3"
+                    style={{ color: "#e84393" }}
+                  >
+                    Limited Time Offer
+                  </div>
+                  <div
+                    className="text-2xl md:text-3xl font-black leading-tight mb-3"
+                    style={{ color: "#e84393" }}
+                  >
+                    UP TO 30%
+                    <br />
+                    OFF
+                  </div>
+                  <div className="text-[0.7rem] md:text-[1rem] font-bold text-gray-500 mb-3">
+                    On Selected Toys
+                  </div>
+                  <Link
+                    href="/shop?tags=Sale"
+                    className="mt-auto self-start inline-flex items-center gap-1 px-4 py-2 rounded-full text-white text-[0.75rem] font-black no-underline transition-all hover:-translate-y-0.5"
+                    style={{
+                      background: "#e84393",
+                      boxShadow: "0 4px 12px rgba(232,67,147,0.35)",
+                    }}
+                  >
+                    SHOP NOW →
+                  </Link>
+                  {/* decorative teddy emoji */}
+                  <div className="absolute -bottom-1 right-2 text-5xl opacity-80 select-none pointer-events-none">
+                    🧸
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Bottom badges bar ── */}
+            <div
+              style={{ borderTop: "1px solid #f0f0f0", background: "#fafafa" }}
+            >
+              <div className="w-full grid grid-cols-4">
+                {BOTTOM_BADGES.map((b, i) => (
+                  <div
+                    key={b.title}
+                    className="bottom-badge flex items-center gap-3 px-6 py-3 transition-colors"
+                    style={{
+                      borderRight: i < 3 ? "1px solid #f0f0f0" : "none",
+                    }}
+                  >
+                    <span className="text-2xl">{b.icon}</span>
+                    <div>
+                      <div className="text-[0.8rem] font-black text-gray-800">
+                        {b.title}
+                      </div>
+                      <div className="text-[0.7rem] text-gray-400 font-semibold">
+                        {b.desc}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </nav>
 
       {/* ── Mobile Overlay ── */}
-      <div className={`fixed inset-0 bg-black/50 z-[9999] transition-all duration-300 ${mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
-        onClick={closeMobileMenu} />
+      <div
+        className={`fixed inset-0 bg-black/50 z-[9999] transition-all duration-300 ${mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        onClick={closeMobileMenu}
+      />
 
       {/* ── Mobile Drawer ── */}
-      <div className={`fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-white z-[10000] flex flex-col overflow-y-auto shadow-[-4px_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
-        style={{ fontFamily: "'Nunito', sans-serif" }}>
-        <div className="p-5 flex justify-between items-center" style={{ borderBottom: "2px solid #fce4ef" }}>
-          <Image src="/Kids For Toy logo.png" alt="Logo" width={120} height={40} className="object-contain" />
-          <button onClick={closeMobileMenu}
+      <div
+        className={`fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-white z-[10000] flex flex-col overflow-y-auto shadow-[-4px_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+        style={{ fontFamily: "'Nunito', sans-serif" }}
+      >
+        <div
+          className="p-5 flex justify-between items-center"
+          style={{ borderBottom: "2px solid #fce4ef" }}
+        >
+          <Image
+            src="/Kids For Toy logo.png"
+            alt="Logo"
+            width={120}
+            height={40}
+            className="object-contain"
+          />
+          <button
+            onClick={closeMobileMenu}
             className="text-2xl cursor-pointer font-black px-3 py-1 rounded-lg transition-all"
             style={{ color: "#e84393", background: "none", border: "none" }}
-            onMouseEnter={e => e.currentTarget.style.background = "#fce4ef"}
-            onMouseLeave={e => e.currentTarget.style.background = "none"}>
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#fce4ef")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
+          >
             ✕
           </button>
         </div>
 
         <div className="flex-1 p-5">
-          {[{ name: "Home", path: "/" }, { name: "About", path: "/about" }].map((link) => (
-            <Link key={link.name} href={link.path} onClick={closeMobileMenu}
+          {[
+            { name: "Home", path: "/" },
+            { name: "About", path: "/about" },
+          ].map((link) => (
+            <Link
+              key={link.name}
+              href={link.path}
+              onClick={closeMobileMenu}
               className="flex items-center justify-between py-3.5 no-underline font-extrabold text-lg"
-              style={{ borderBottom: "1px solid #fce4ef", color: pathname === link.path ? "#e84393" : "#444" }}>
+              style={{
+                borderBottom: "1px solid #fce4ef",
+                color: pathname === link.path ? "#e84393" : "#444",
+              }}
+            >
               {link.name}
             </Link>
           ))}
 
           <div>
-            <button onClick={() => setMobileShopSubmenu(!mobileShopSubmenu)}
+            <button
+              onClick={() => setMobileShopSubmenu(!mobileShopSubmenu)}
               className="w-full flex items-center justify-between py-3.5 font-extrabold text-lg cursor-pointer"
-              style={{ background: "none", border: "none", borderBottom: "1px solid #fce4ef", color: "#444" }}>
+              style={{
+                background: "none",
+                border: "none",
+                borderBottom: "1px solid #fce4ef",
+                color: "#444",
+              }}
+            >
               Shop
-              <svg style={{ transform: mobileShopSubmenu ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}
-                width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                style={{
+                  transform: mobileShopSubmenu ? "rotate(180deg)" : "none",
+                  transition: "transform 0.2s",
+                }}
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </button>
 
             {mobileShopSubmenu && (
               <div className="ml-4 mt-2 mb-2">
+                {/* All Categories */}
                 <div className="mb-5">
-                  <div className="text-[0.75rem] font-black tracking-widest uppercase mb-3" style={{ color: "#e84393" }}>🗂️ Categories</div>
-                  {CATEGORIES.map((label) => (
-                    <Link key={label} href={`/shop?category=${encodeURIComponent(label)}`} onClick={closeMobileMenu}
-                      className="block py-2.5 pl-4 font-semibold text-[1rem] no-underline"
-                      style={{ color: "#666", borderBottom: "1px solid #fce4ef" }}>
-                      {CATEGORY_EMOJIS[label] || "🧸"} {label}
+                  <div
+                    className="text-[0.75rem] font-black tracking-widest uppercase mb-3"
+                    style={{ color: "#e84393" }}
+                  >
+                    🗂️ Categories
+                  </div>
+                  {ALL_SIDEBAR_CATEGORIES.map((cat) => (
+                    <Link
+                      key={cat.label}
+                      href={catHref(cat.path)}
+                      onClick={closeMobileMenu}
+                      className="mobile-cat-link block py-2.5 pl-4 font-semibold text-[1rem] no-underline transition-colors"
+                      style={{
+                        color: "#666",
+                        borderBottom: "1px solid #fce4ef",
+                      }}
+                    >
+                      {CATEGORY_EMOJIS?.[cat.label] || "🧸"} {cat.label}
                     </Link>
                   ))}
                 </div>
+
+                {/* Shop by Age */}
                 <div className="mb-5">
-                  <div className="text-[0.75rem] font-black tracking-widest uppercase mb-3" style={{ color: "#e84393" }}>🏷️ Trending Tags</div>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {MEGA.tags.map((t) => {
-                      const tagValue = t.replace(/[^a-zA-Z\s]/g, "").trim();
-                      return (
-                        <Link key={t} href={`/shop?tags=${encodeURIComponent(tagValue)}`} onClick={closeMobileMenu}
-                          className="rounded-full px-3 py-1.5 text-[0.8rem] font-bold no-underline"
-                          style={{ background: "#fff0f6", border: "1px solid #fce4ef", color: "#e84393" }}>
-                          {t}
-                        </Link>
-                      );
-                    })}
+                  <div
+                    className="text-[0.75rem] font-black tracking-widest uppercase mb-3"
+                    style={{ color: "#e84393" }}
+                  >
+                    👶 Shop by Age
                   </div>
+                  {AGE_RANGES.map((age) => (
+                    <Link
+                      key={age.label}
+                      href={`/shop?age=${encodeURIComponent(age.path)}`}
+                      onClick={closeMobileMenu}
+                      className="mobile-cat-link block py-2.5 pl-4 font-semibold text-[1rem] no-underline transition-colors"
+                      style={{
+                        color: "#666",
+                        borderBottom: "1px solid #fce4ef",
+                      }}
+                    >
+                      {age.label}
+                    </Link>
+                  ))}
                 </div>
+
+                {/* Shop by Price */}
                 <div className="mb-5">
-                  <div className="text-[0.75rem] font-black tracking-widest uppercase mb-3" style={{ color: "#e84393" }}>👶 Shop by Gender</div>
-                  <div className="grid grid-cols-3 gap-2 mb-4">
-                    {MEGA.genders.map((g) => (
-                      <Link key={g.label} href={`/shop?gender=${encodeURIComponent(g.path)}`} onClick={closeMobileMenu}
-                        className="flex flex-col items-center p-3 rounded-xl no-underline font-extrabold text-[0.8rem]"
-                        style={{ border: "2px solid #fce4ef", color: "#555", background: "#fff" }}>
-                        <span className="text-2xl">{g.emoji}</span>{g.label}
-                      </Link>
-                    ))}
+                  <div
+                    className="text-[0.75rem] font-black tracking-widest uppercase mb-3"
+                    style={{ color: "#e84393" }}
+                  >
+                    💰 Shop by Price
                   </div>
-                </div>
-                <div className="mb-5">
-                  <div className="text-[0.75rem] font-black tracking-widest uppercase mb-3" style={{ color: "#e84393" }}>⚡ Quick Access</div>
-                  {[
-                    { l: "New Arrivals", href: "/shop?sortBy=latest" },
-                    { l: "Best Sellers", href: "/shop?tags=Bestseller" },
-                    { l: "Flash Sale", href: "/shop?tags=Sale" },
-                    { l: "Under Rs.1000", href: "/shop?maxPrice=1000" },
-                  ].map(({ l, href }) => (
-                    <Link key={l} href={href} onClick={closeMobileMenu}
-                      className="block py-2.5 pl-4 font-semibold text-[1rem] no-underline"
-                      style={{ color: "#666", borderBottom: "1px solid #fce4ef" }}>
-                      {l}
+                  {PRICE_RANGES.map((pr) => (
+                    <Link
+                      key={pr.label}
+                      href={pr.href}
+                      onClick={closeMobileMenu}
+                      className="mobile-cat-link block py-2.5 pl-4 font-semibold text-[1rem] no-underline transition-colors"
+                      style={{
+                        color: "#666",
+                        borderBottom: "1px solid #fce4ef",
+                      }}
+                    >
+                      {pr.label}
                     </Link>
                   ))}
                 </div>
@@ -520,45 +958,72 @@ export default function Navbar({ onCartClick }) {
             )}
           </div>
 
-          <Link href="/contact" onClick={closeMobileMenu}
+          <Link
+            href="/contact"
+            onClick={closeMobileMenu}
             className="flex items-center justify-between py-3.5 no-underline font-extrabold text-lg"
-            style={{ borderBottom: "1px solid #fce4ef", color: pathname === "/contact" ? "#e84393" : "#444" }}>
+            style={{
+              borderBottom: "1px solid #fce4ef",
+              color: pathname === "/contact" ? "#e84393" : "#444",
+            }}
+          >
             Contact
           </Link>
         </div>
 
-        <a href={waLink} target="_blank" rel="noopener noreferrer"
+        <a
+          href={waLink}
+          target="_blank"
+          rel="noopener noreferrer"
           className="mx-5 mb-3 py-3 flex items-center justify-center gap-2 rounded-full font-extrabold text-white no-underline text-base"
-          style={{ background: "#25D366" }}>
+          style={{ background: "#25D366" }}
+        >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
           </svg>
           WhatsApp Us
         </a>
 
-        <div className="mx-5 my-2 p-5 rounded-2xl"
-          style={{ background: "linear-gradient(160deg,#fff0f6 0%,#fce4ef 100%)" }}>
-          <span className="text-[10px] font-black uppercase" style={{ color: "#e84393" }}>✨ The Toy Stack</span>
-          <h3 className="text-[1.2rem] font-black mt-1 mb-3 text-gray-900">DISCOVER PLAYTIME MAGIC</h3>
-          <div className="flex gap-4 mb-3">
-            {[ { val: "4.9★", l: "Rating" }].map(({ val, l }) => (
-              <div key={l}>
-                <span className="text-[1.1rem] font-black" style={{ color: "#e84393" }}>{val}</span>
-                <div className="text-[10px] text-gray-400">{l}</div>
-              </div>
-            ))}
-          </div>
-          <Link href="/shop" onClick={closeMobileMenu}
+        <div
+          className="mx-5 my-2 p-5 rounded-2xl"
+          style={{
+            background: "linear-gradient(160deg,#fff0f6 0%,#fce4ef 100%)",
+          }}
+        >
+          <span
+            className="text-[10px] font-black uppercase"
+            style={{ color: "#e84393" }}
+          >
+            ✨ Limited Time Offer
+          </span>
+          <h3
+            className="text-[1.2rem] font-black mt-1 mb-1"
+            style={{ color: "#e84393" }}
+          >
+            UP TO 30% OFF
+          </h3>
+          <p className="text-[0.75rem] text-gray-500 font-semibold mb-3">
+            On Selected Toys
+          </p>
+          <Link
+            href="/shop?tags=Sale"
+            onClick={closeMobileMenu}
             className="inline-block text-white px-5 py-2.5 rounded-full text-xs font-black no-underline"
-            style={{ background: "#e84393" }}>
-            SHOP ALL →
+            style={{ background: "#e84393" }}
+          >
+            SHOP NOW →
           </Link>
         </div>
 
-        <Link href="/cart"
-          onClick={(e) => { if (onCartClick) onCartClick(e); closeMobileMenu(); }}
+        <Link
+          href="/cart"
+          onClick={(e) => {
+            if (onCartClick) onCartClick(e);
+            closeMobileMenu();
+          }}
           className="mx-5 mb-5 py-3 text-white no-underline text-center rounded-full font-extrabold text-lg flex items-center justify-center gap-2"
-          style={{ background: "#e84393" }}>
+          style={{ background: "#e84393" }}
+        >
           🛒 View Cart {localCartCount > 0 && `(${localCartCount})`}
         </Link>
       </div>

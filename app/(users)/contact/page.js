@@ -193,8 +193,8 @@ export default function ContactPage() {
             className={`relative z-10 mx-auto flex h-[260px] w-[260px] items-center justify-center rounded-full text-[120px] transition-all duration-1000 delay-200 animate-bounce-slow transform sm:h-[320px] sm:w-[320px] sm:text-[150px] md:mx-4 md:h-[320px] md:w-[320px] lg:mx-12 lg:h-[350px] lg:w-[400px] lg:text-[180px]`}
           >
             <Image
-              src="/contact/toys for kids.png"
-              alt="toys for kids"
+              src="/contact/toys for kids-01.png"
+              alt="toys for kids 01"
               width={400}
               height={400}
               priority

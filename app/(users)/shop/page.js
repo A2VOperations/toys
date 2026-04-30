@@ -82,7 +82,7 @@ function ShopPageContent() {
   const [isFirstSyncComplete, setIsFirstSyncComplete] = useState(false);
   const isFirstRender = useRef(true);
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9643399433";
 
   const buildSearchParams = useCallback((nextFilters, nextPage = 1) => {
     const params = new URLSearchParams();

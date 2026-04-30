@@ -42,7 +42,7 @@ const heroStars = [
 ];
 
 const waNumber = (
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567"
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9643399433"
 ).replace(/\D/g, "");
 const mapLocation =
   process.env.NEXT_PUBLIC_MAP_LOCATION ||
@@ -68,7 +68,7 @@ const CARDS = [
   {
     icon: <PhoneIcon />,
     label: "Phone Number",
-    value: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567",
+    value: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9643399433",
     iconBg: "bg-orange-50",
     iconColor: "text-orange-600",
   },

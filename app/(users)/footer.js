@@ -5,7 +5,7 @@ import styles from "./footer.module.css";
 import Image from "next/image";
 
 const waNumber = (
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567"
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9643399433"
 ).replace(/\D/g, "");
 
 const WaIcon = () => (
@@ -112,7 +112,7 @@ export default function Footer() {
               <p> kamalpurBurari Delhi 110084</p>
               <p className="py-2 ">
                 {" "}
-                {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567"}{" "}
+                {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9643399433"}{" "}
               </p>
               <p>
                 {process.env.NEXT_PUBLIC_EMAIL_TO ||

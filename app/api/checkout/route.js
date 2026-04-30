@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { MailtrapClient } from "mailtrap";
 
+const MAILTRAP_TOKEN =
+  process.env.MAILTRAP_TOKEN || "accee842d565d8e6f4978dabaff49cbd";
+
 export async function POST(request) {
   try {
     const { name, email, phone, address, pdfBase64 } = await request.json();
@@ -12,7 +15,7 @@ export async function POST(request) {
       );
     }
 
-    if (!process.env.MAILTRAP_TOKEN) {
+    if (!MAILTRAP_TOKEN) {
       throw new Error("MAILTRAP_TOKEN is not configured.");
     }
 
@@ -28,7 +31,7 @@ export async function POST(request) {
       process.env.NEXT_PUBLIC_EMAIL_TO || "toysforkidsdelhi@gmail.com";
 
     const client = new MailtrapClient({
-      token: process.env.MAILTRAP_TOKEN,
+      token: MAILTRAP_TOKEN,
     });
 
     const mailOptions = {

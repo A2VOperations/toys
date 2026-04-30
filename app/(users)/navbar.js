@@ -8,7 +8,7 @@ import { CATEGORIES, CATEGORY_EMOJIS } from "./categories";
 import { getCartCount } from "./cartStorage";
 
 /* ── WhatsApp from .env ── */
-const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923001234567";
+const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9643399433";
 const waLink = `https://wa.me/${waNumber.replace(/\D/g, "")}`;
 
 /* Featured 9 categories for the image grid */

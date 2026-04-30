@@ -158,8 +158,8 @@ export default function BannerManager() {
       }
 
       const payload = {
-        startDate: formData.start,
-        endDate: formData.end,
+        startDate: new Date(formData.start).toISOString(),
+        endDate: new Date(formData.end).toISOString(),
         timing: Number(formData.timing),
       };
 

@@ -52,7 +52,11 @@ export async function PUT(req) {
     await dbConnect();
     const { id, images, startDate, endDate, timing } = await req.json();
     
-    let updateData = { startDate, endDate, timing };
+    let updateData = { 
+      startDate: new Date(startDate), 
+      endDate: new Date(endDate), 
+      timing 
+    };
 
     // Only upload new images if the user actually selected new ones
     if (images && images.length > 0 && images[0].startsWith("data:image")) {

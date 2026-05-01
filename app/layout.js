@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
-import Navbar from "./(users)/navbar";
-import Footer from "./(users)/footer";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/grid";
@@ -85,6 +84,19 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-full flex flex-col">
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-ED3SM8SSF0"
+        />
+        <Script id="google-analytics">
+          {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+
+              gtag('config', 'G-ED3SM8SSF0');
+            `}
+        </Script>
         {children}
       </body>
     </html>

@@ -9,6 +9,7 @@ const navLinks = [
   { name: "Add Products", path: "/admin/home/addProduct" },
   { name: "My Shop", path: "/admin/home/shop" },
   { name: "Banners", path: "/admin/home/banners" },
+  { name: "Offers", path: "/admin/home/offers" },
   { name: "Settings", path: "/admin/home/settings" },
 ];
 

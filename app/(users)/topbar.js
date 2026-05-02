@@ -7,7 +7,7 @@ import "swiper/css";
 const slides = [
   {
     icon: "🚚",
-    text: "Free Shipping on orders over ₹2500",
+    text: "Free Shipping on orders over ₹8000",
     link: null,
   },
   {

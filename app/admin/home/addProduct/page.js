@@ -283,7 +283,7 @@ export default function AddToyForm() {
             </div>
             <div className="field-card">
               <span className="section-label">Age</span>
-              <input className="toy-input" placeholder="e.g. 3–5 yrs" value={formData.age}
+              <input className="toy-input" placeholder="e.g. 5 " value={formData.age}
                 onChange={(e) => setFormData((p) => ({ ...p, age: e.target.value }))} />
             </div>
             <div className="field-card">

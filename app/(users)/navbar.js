@@ -105,11 +105,6 @@ const SERVICES = [
     desc: "100% secure payments with trusted gateways.",
   },
   {
-    icon: "💵",
-    title: "Cash on Delivery",
-    desc: "Pay when you receive your doorstep.",
-  },
-  {
     icon: "↩️",
     title: "Easy Returns",
     desc: "Hassle-free returns within 7 days.",
@@ -275,6 +270,30 @@ export default function Navbar({ onCartClick }) {
   const megaRef = useRef(null);
   const timerRef = useRef(null);
   const pathname = usePathname();
+  const [offerData, setOfferData] = useState({
+    title: "Limited Time Offer",
+    heading: "UP TO 30%\nOFF",
+    subheading: "On Selected Toys",
+    linkText: "SHOP NOW →",
+    linkUrl: "/shop?tags=Sale",
+  });
+
+  useEffect(() => {
+    fetch("/api/offer")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.offer) {
+          setOfferData({
+            title: data.offer.title || "Limited Time Offer",
+            heading: data.offer.heading || "UP TO 30%\nOFF",
+            subheading: data.offer.subheading || "On Selected Toys",
+            linkText: data.offer.linkText || "SHOP NOW →",
+            linkUrl: data.offer.linkUrl || "/shop?tags=Sale",
+          });
+        }
+      })
+      .catch((err) => console.error("Failed to load offer:", err));
+  }, []);
 
   useEffect(() => {
     setLocalCartCount(getCartCount());
@@ -778,11 +797,9 @@ export default function Navbar({ onCartClick }) {
                   </div>
                   <div
                     className="text-2xl md:text-3xl font-black leading-tight mb-3"
-                    style={{ color: "#e84393" }}
+                    style={{ color: "#e84393", whiteSpace: "pre-line" }}
                   >
-                    UP TO 30%
-                    <br />
-                    OFF
+                    {offerData.heading}
                   </div>
                   <div className="text-[0.7rem] md:text-[1rem] font-bold text-gray-500 mb-3">
                     On Selected Toys

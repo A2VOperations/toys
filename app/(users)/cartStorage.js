@@ -26,10 +26,11 @@ export const writeCartItems = (items) => {
   }
   
   try {
-    // Store ONLY id and quantity - minimal data
-    const minimalItems = items.map(({ id, quantity }) => ({
+    // Store id, quantity and comment - minimal data
+    const minimalItems = items.map(({ id, quantity, comment }) => ({
       id,
-      quantity: Math.max(1, Number(quantity) || 1)
+      quantity: Math.max(1, Number(quantity) || 1),
+      comment: comment || ""
     }));
     
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(minimalItems));
@@ -47,7 +48,7 @@ export const writeCartItems = (items) => {
  * Centrally managed add-to-cart logic.
  * Handles stock validation, duplicate items, and dispatches the update event.
  */
-export const addItemToCart = (product, quantity = 1) => {
+export const addItemToCart = (product, quantity = 1, comment = "") => {
   if (!product) return { ok: false, message: "Invalid product" };
   
   const productId = product._id || product.id;
@@ -65,8 +66,12 @@ export const addItemToCart = (product, quantity = 1) => {
   if (existingIndex >= 0) {
     const currentQty = Number(updatedItems[existingIndex].quantity) || 0;
     updatedItems[existingIndex].quantity = Math.min(currentQty + finalQuantity, stock);
+    // If a new comment is provided, update it, otherwise keep existing
+    if (comment) {
+      updatedItems[existingIndex].comment = comment;
+    }
   } else {
-    updatedItems.push({ id: productId, quantity: Math.min(finalQuantity, stock) });
+    updatedItems.push({ id: productId, quantity: Math.min(finalQuantity, stock), comment });
   }
 
   return writeCartItems(updatedItems);

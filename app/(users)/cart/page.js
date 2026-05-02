@@ -156,21 +156,30 @@ export default function CartPage() {
       doc.text(`Address: ${checkoutData.address}`, 14, 66);
 
       // Table mapping
-      const tableColumn = ["Item ID", "Product Name", "Qty", "Price", "Total"];
+      const tableColumn = ["Item ID", "Product Name", "Comment", "Qty", "Price", "Total"];
       const tableRows = [];
+      
+      let cartItemsText = "";
 
       cartItems.forEach((item) => {
         const product = productsData[item.id] || {};
         const title = product.title || "Unknown Product";
+        const comment = item.comment || "-";
         const price = Number(product.price) || 0;
         const qty = Number(item.quantity) || 0;
         tableRows.push([
           item.id.slice(0, 8),
           title,
+          comment,
           qty,
           `Rs. ${price.toFixed(2)}`,
           `Rs. ${(price * qty).toFixed(2)}`,
         ]);
+        
+        cartItemsText += `- ${title} (Qty: ${qty}) - Rs. ${(price * qty).toFixed(2)}\n`;
+        if (item.comment) {
+          cartItemsText += `  Comment: ${item.comment}\n`;
+        }
       });
 
       autoTable(doc, {
@@ -197,6 +206,7 @@ export default function CartPage() {
           body: JSON.stringify({
             ...checkoutData,
             pdfBase64,
+            cartItemsText,
           }),
         });
 
@@ -377,6 +387,13 @@ export default function CartPage() {
                           </span>
                         )}
                       </div>
+
+                      {cartItem.comment && (
+                        <div className="mt-4 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                          <span className="font-bold text-gray-900 block mb-1">Your Comment:</span>
+                          {cartItem.comment}
+                        </div>
+                      )}
                     </div>
                   </div>
                 );

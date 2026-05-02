@@ -375,131 +375,131 @@ function BrandCard({ brand, index }) {
 
 // ─── Center Suspense Spinner ─────────────────────────────────────────────────
 
-function BrandsLoader() {
-  return (
-    <div className="flex flex-col items-center justify-center py-20 gap-5">
-      {/* Animated toy spinner */}
-      <div className="relative w-20 h-20">
-        {/* Outer ring */}
-        <div className="absolute inset-0 rounded-full border-4 border-pink-100" />
-        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-pink-500 border-r-fuchsia-400 animate-spin" />
-        {/* Inner pulse */}
-        <div className="absolute inset-3 rounded-full bg-pink-50 animate-pulse flex items-center justify-center text-2xl">
-          🧸
-        </div>
-      </div>
-      <div className="text-center">
-        <p className="text-sm font-black text-gray-600">Loading Brands</p>
-        <p className="text-xs text-gray-400 font-semibold mt-1">
-          Gathering toys from our shelves…
-        </p>
-      </div>
-      {/* Bouncing dots */}
-      <div className="flex gap-2">
-        {[0, 1, 2].map((i) => (
-          <div
-            key={i}
-            className="w-2 h-2 rounded-full bg-pink-400 animate-bounce"
-            style={{ animationDelay: `${i * 0.15}s` }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
+// function BrandsLoader() {
+//   return (
+//     <div className="flex flex-col items-center justify-center py-20 gap-5">
+//       {/* Animated toy spinner */}
+//       <div className="relative w-20 h-20">
+//         {/* Outer ring */}
+//         <div className="absolute inset-0 rounded-full border-4 border-pink-100" />
+//         <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-pink-500 border-r-fuchsia-400 animate-spin" />
+//         {/* Inner pulse */}
+//         <div className="absolute inset-3 rounded-full bg-pink-50 animate-pulse flex items-center justify-center text-2xl">
+//           🧸
+//         </div>
+//       </div>
+//       <div className="text-center">
+//         <p className="text-sm font-black text-gray-600">Loading Brands</p>
+//         <p className="text-xs text-gray-400 font-semibold mt-1">
+//           Gathering toys from our shelves…
+//         </p>
+//       </div>
+//       {/* Bouncing dots */}
+//       <div className="flex gap-2">
+//         {[0, 1, 2].map((i) => (
+//           <div
+//             key={i}
+//             className="w-2 h-2 rounded-full bg-pink-400 animate-bounce"
+//             style={{ animationDelay: `${i * 0.15}s` }}
+//           />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
 
 // ─── Brands Section ──────────────────────────────────────────────────────────
 
-export function BrandsSection() {
-  const [brands, setBrands] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// export function BrandsSection() {
+//   const [brands, setBrands] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function loadBrandsFromToys() {
-      try {
-        // Fetch all toys (high limit so we get all unique brands)
-        const res = await fetch("/api/toys?limit=200&page=1");
-        if (!res.ok) throw new Error("Failed to fetch toys");
+//   useEffect(() => {
+//     async function loadBrandsFromToys() {
+//       try {
+//         // Fetch all toys (high limit so we get all unique brands)
+//         const res = await fetch("/api/toys?limit=200&page=1");
+//         if (!res.ok) throw new Error("Failed to fetch toys");
 
-        const data = await res.json();
-        const toys = data.toys || [];
+//         const data = await res.json();
+//         const toys = data.toys || [];
 
-        // Group toys by brand
-        const map = {};
-        for (const toy of toys) {
-          const brandName = (toy.brand || "").trim();
-          if (!brandName) continue; // skip toys without a brand
-          if (!map[brandName]) map[brandName] = { name: brandName, toys: [] };
-          map[brandName].toys.push(toy);
-        }
+//         // Group toys by brand
+//         const map = {};
+//         for (const toy of toys) {
+//           const brandName = (toy.brand || "").trim();
+//           if (!brandName) continue; // skip toys without a brand
+//           if (!map[brandName]) map[brandName] = { name: brandName, toys: [] };
+//           map[brandName].toys.push(toy);
+//         }
 
-        setBrands(Object.values(map));
-      } catch (e) {
-        setError("Could not load brands. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    }
+//         setBrands(Object.values(map));
+//       } catch (e) {
+//         setError("Could not load brands. Please try again.");
+//       } finally {
+//         setLoading(false);
+//       }
+//     }
 
-    loadBrandsFromToys();
-  }, []);
+//     loadBrandsFromToys();
+//   }, []);
 
-  return (
-    <section className="py-20 px-5 bg-gray-50 relative overflow-hidden">
-      {/* Dot pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.04] pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, #f2608a 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-        }}
-      />
+//   return (
+//     <section className="py-20 px-5 bg-gray-50 relative overflow-hidden">
+//       {/* Dot pattern */}
+//       <div
+//         className="absolute inset-0 opacity-[0.04] pointer-events-none"
+//         style={{
+//           backgroundImage:
+//             "radial-gradient(circle, #f2608a 1px, transparent 1px)",
+//           backgroundSize: "28px 28px",
+//         }}
+//       />
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* Heading */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-            Shop by <span className="text-pink-500">Brands</span>
-          </h2>
-        </div>
+//       <div className="max-w-6xl mx-auto relative z-10">
+//         {/* Heading */}
+//         <div className="text-center mb-12">
+//           <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+//             Shop by <span className="text-pink-500">Brands</span>
+//           </h2>
+//         </div>
 
-        {/* States */}
-        {loading ? (
-          <BrandsLoader />
-        ) : error ? (
-          <div className="text-center py-10 text-red-400 bg-red-50 rounded-2xl font-semibold max-w-md mx-auto">
-            ⚠️ {error}
-          </div>
-        ) : brands.length === 0 ? (
-          <div className="text-center py-10 text-gray-400 bg-white rounded-2xl font-semibold max-w-md mx-auto border-2 border-dashed border-gray-200">
-            🎁 No brands found in the catalog yet.
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
-            {brands.map((brand, i) => (
-              <BrandCard key={brand.name} brand={brand} index={i} />
-            ))}
-          </div>
-        )}
+//         {/* States */}
+//         {loading ? (
+//           <BrandsLoader />
+//         ) : error ? (
+//           <div className="text-center py-10 text-red-400 bg-red-50 rounded-2xl font-semibold max-w-md mx-auto">
+//             ⚠️ {error}
+//           </div>
+//         ) : brands.length === 0 ? (
+//           <div className="text-center py-10 text-gray-400 bg-white rounded-2xl font-semibold max-w-md mx-auto border-2 border-dashed border-gray-200">
+//             🎁 No brands found in the catalog yet.
+//           </div>
+//         ) : (
+//           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+//             {brands.map((brand, i) => (
+//               <BrandCard key={brand.name} brand={brand} index={i} />
+//             ))}
+//           </div>
+//         )}
 
-        {/* Footer link */}
-        <div className="text-center mt-12 pt-8 border-t-2 border-dashed border-pink-200">
-          <p className="text-gray-400 text-sm font-semibold">
-            Discover our full collection —{" "}
-            <Link
-              href="/shop"
-              className="text-pink-500 font-black hover:underline"
-            >
-              Browse All Toys →
-            </Link>
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
+//         {/* Footer link */}
+//         <div className="text-center mt-12 pt-8 border-t-2 border-dashed border-pink-200">
+//           <p className="text-gray-400 text-sm font-semibold">
+//             Discover our full collection —{" "}
+//             <Link
+//               href="/shop"
+//               className="text-pink-500 font-black hover:underline"
+//             >
+//               Browse All Toys →
+//             </Link>
+//           </p>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 
 // ─── Main Export ─────────────────────────────────────────────────────────────
 
@@ -637,7 +637,7 @@ export default function AboutSection() {
         </div>
       </section>
       <AboutInfoSection />
-      <BrandsSection />
+      {/* <BrandsSection /> */}
       <Testimonials />
     </>
   );

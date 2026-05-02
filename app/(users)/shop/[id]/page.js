@@ -106,6 +106,7 @@ export default function ProductDetailsPage() {
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [comment, setComment] = useState("");
   const [cartMessage, setCartMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -155,7 +156,7 @@ export default function ProductDetailsPage() {
   };
 
   const addToCart = () => {
-    const result = addItemToCart(product, quantity);
+    const result = addItemToCart(product, quantity, comment);
     if (result.ok) {
       setCartMessage("Added to cart.");
     } else {
@@ -457,6 +458,20 @@ export default function ProductDetailsPage() {
                     {cartMessage}
                   </div>
                 )}
+
+                <div className="mt-4">
+                  <label htmlFor="product-comment" className="block text-sm font-medium text-gray-700 mb-2">
+                    Add a Comment (Optional)
+                  </label>
+                  <textarea
+                    id="product-comment"
+                    rows={3}
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    className="block w-full rounded-xl border border-gray-300 shadow-sm focus:border-[#f74872] focus:ring-[#f74872] sm:text-sm p-3 outline-none"
+                    placeholder="Enter any specific instructions or comments for this product..."
+                  />
+                </div>
 
                 <div className="mt-8 flex sm:flex-row gap-4 border-t border-gray-200 pt-8">
                   <button

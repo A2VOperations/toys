@@ -6,7 +6,7 @@ const MAILTRAP_TOKEN =
 
 export async function POST(request) {
   try {
-    const { name, email, phone, address, pdfBase64 } = await request.json();
+    const { name, email, phone, address, pdfBase64, cartItemsText } = await request.json();
 
     if (!pdfBase64) {
       return NextResponse.json(
@@ -41,7 +41,7 @@ export async function POST(request) {
         "Reply-To": email,
       },
       subject: `New Order from ${name}`,
-      text: `You have received a new order.\n\nCustomer Details:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nAddress: ${address}\n\nPlease find the PDF receipt attached.`,
+      text: `You have received a new order.\n\nCustomer Details:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nAddress: ${address}\n\nOrder Details:\n${cartItemsText || "N/A"}\n\nPlease find the PDF receipt attached.`,
       category: "Integration Test",
       attachments: [
         {

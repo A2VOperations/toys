@@ -233,6 +233,7 @@ export default function Home() {
   const [bannerData, setBannerData] = useState(null);
   const [bannerLoading, setBannerLoading] = useState(true);
   const [bannerTimer, setBannerTimer] = useState({ h: 0, m: 0, s: 0 });
+  const [offerData, setOfferData] = useState({ heading: "UP TO 30%\nOFF" });
 
   const showToast = (message) => {
     setToastMessage(message);
@@ -240,6 +241,19 @@ export default function Home() {
       setToastMessage("");
     }, 3000);
   };
+
+  useEffect(() => {
+    fetch("/api/offer")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.offer) {
+          setOfferData({
+            heading: data.offer.heading || "UP TO 30%\nOFF",
+          });
+        }
+      })
+      .catch((err) => console.error("Error fetching offer:", err));
+  }, []);
 
   useEffect(() => {
     async function fetchBestselling() {
@@ -1307,10 +1321,8 @@ export default function Home() {
               <span className="inline-block bg-white/20 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3">
                 Special Offer
               </span>
-              <h3 className="text-white text-4xl mb-6 font-black leading-tight drop-shadow-sm z-1000">
-                Buy One
-                <br />
-                Get One
+              <h3 className="text-white text-4xl mb-6 font-black leading-tight drop-shadow-sm z-1000" style={{ whiteSpace: "pre-line" }}>
+                {offerData.heading}
               </h3>
               <Link
                 href="/shop"

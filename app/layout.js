@@ -62,7 +62,7 @@ export default function RootLayout({ children }) {
     telephone: "9643399433",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Kh no 793/1 Budh bazar road kamalpur Burari",
+      streetAddress: "A3 793/1, Vijay Colony, Block B, Kamal Pur, Burari",
       addressLocality: "Delhi",
       postalCode: "110084",
       addressCountry: "IN",
@@ -98,7 +98,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col">
         <Script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=G-VKMJH81W82"
+          src="https://www.googletagmanager.com/gtag/js?id=G-DJMZ5G9764"
         />
         <Script id="google-analytics">
           {`
@@ -106,7 +106,7 @@ export default function RootLayout({ children }) {
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
 
-              gtag('config', 'G-VKMJH81W82');
+              gtag('config', 'G-DJMZ5G9764');
             `}
         </Script>
         {children}

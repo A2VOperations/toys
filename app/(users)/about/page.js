@@ -585,9 +585,9 @@ export default function AboutSection() {
               </div>
               <div className="hidden md:block w-px bg-pink-100" />
               <div className="flex-1">
-                <h3 className="text-3xl font-black text-pink-500">100+</h3>
+                <h3 className="text-3xl font-black text-pink-500">3000+</h3>
                 <p className="text-gray-500 text-xs mt-1 font-semibold">
-                  Active Delivery Partners
+                  Reseller in All Over India
                 </p>
               </div>
               <div className="hidden md:block w-px bg-pink-100" />

@@ -108,8 +108,8 @@ export default function Footer() {
               />
             </Link>
             <div className={styles.infoText}>
-              <p>Kh no 793/1 Budh bazar road </p>
-              <p> kamalpurBurari Delhi 110084</p>
+              <p>A3 793/1, Vijay Colony, Block B,</p>
+              <p>Kamal Pur, Burari, Delhi 110084</p>
               <p className="py-2 ">
                 {" "}
                 {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9643399433"}{" "}

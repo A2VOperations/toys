@@ -163,10 +163,22 @@ export default function CartPage() {
       doc.text("Toys for Kids", 196, 20, { align: "right" });
       doc.setFontSize(9);
       doc.setTextColor(100, 100, 100);
-      doc.text("Kh no 793/1 Budh bazar road", 196, 28, { align: "right" });
-      doc.text("Kamalpur Burari, Delhi 110084", 196, 33, { align: "right" });
-      doc.text(`Phone: ${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9643399433"}`, 196, 38, { align: "right" });
-      doc.text("Email: toysforkidsdelhi@gmail.com", 196, 43, { align: "right" });
+      doc.text("A3 793/1, Vijay Colony, Block B", 196, 28, { align: "right" });
+      doc.text("Kamal Pur, Burari", 196, 33, {
+        align: "right",
+      });
+      doc.text("Delhi, 110084", 196, 38, {
+        align: "right",
+      });
+      doc.text(
+        `Phone: ${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9643399433"}`,
+        196,
+        38,
+        { align: "right" },
+      );
+      doc.text("Email: toysforkidsdelhi@gmail.com", 196, 43, {
+        align: "right",
+      });
 
       // Divider
       doc.setDrawColor(220, 220, 220);
@@ -181,7 +193,7 @@ export default function CartPage() {
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.text("Bill To:", 14, 85);
-      
+
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
       doc.text(`Name: ${checkoutData.name}`, 14, 93);
@@ -196,9 +208,16 @@ export default function CartPage() {
       doc.text(`${new Date().toLocaleDateString()}`, 165, 93);
 
       // Table mapping
-      const tableColumn = ["Item ID", "Product Name", "Comment", "Qty", "Price", "Total"];
+      const tableColumn = [
+        "Item ID",
+        "Product Name",
+        "Comment",
+        "Qty",
+        "Price",
+        "Total",
+      ];
       const tableRows = [];
-      
+
       let cartItemsText = "";
 
       cartItems.forEach((item) => {
@@ -215,7 +234,7 @@ export default function CartPage() {
           `Rs. ${price.toFixed(2)}`,
           `Rs. ${(price * qty).toFixed(2)}`,
         ]);
-        
+
         cartItemsText += `- ${title} (Qty: ${qty}) - Rs. ${(price * qty).toFixed(2)}\n`;
         if (item.comment) {
           cartItemsText += `  Comment: ${item.comment}\n`;
@@ -227,7 +246,11 @@ export default function CartPage() {
         head: [tableColumn],
         body: tableRows,
         styles: { fontSize: 9 },
-        headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold' }
+        headStyles: {
+          fillColor: [240, 240, 240],
+          textColor: [0, 0, 0],
+          fontStyle: "bold",
+        },
       });
 
       const finalY = doc.lastAutoTable?.finalY || 125;
@@ -235,6 +258,23 @@ export default function CartPage() {
       doc.setFont("helvetica", "bold");
       doc.text(`Total Items: ${totalItems}`, 14, finalY + 12);
       doc.text(`Final Amount: Rs. ${totalPrice.toFixed(2)}`, 14, finalY + 20);
+
+      // Footer / Terms & Conditions
+      doc.setFontSize(8);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(100, 100, 100);
+      const footerY = finalY + 35;
+      const footerLines = [
+        "Thank you for your message. We're Wholesaler original online item kids toys mug bottle on wholesale rate.",
+        "All item properly check & dispatched only own stock. Opening video mandatory when you parcel received same hours.",
+        "No video no complain accepted. Price non negotiations. Retail prices posted in group bulk for direct message.",
+        "Courier is 60 per kg all over india. We aren't charge packing charges & freight. No COD.",
+        "Once order confirmed no change no cancel.",
+        "",
+        "Thank you",
+        "Toys for kids wholesaler",
+      ];
+      doc.text(footerLines, 14, footerY);
 
       // Save directly to user device
       doc.save(`Receipt_${Date.now()}.pdf`);
@@ -432,7 +472,9 @@ export default function CartPage() {
 
                       {cartItem.comment && (
                         <div className="mt-4 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100">
-                          <span className="font-bold text-gray-900 block mb-1">Your Comment:</span>
+                          <span className="font-bold text-gray-900 block mb-1">
+                            Your Comment:
+                          </span>
                           {cartItem.comment}
                         </div>
                       )}
@@ -563,7 +605,7 @@ export default function CartPage() {
                 </div>
                 <div>
                   <label className="block text-md font-medium text-gray-700 mb-1">
-                    Phone Number  
+                    Phone Number
                   </label>
                   <input
                     minLength={10}
@@ -584,7 +626,7 @@ export default function CartPage() {
                 </div>
                 <div>
                   <label className="block text-md font-medium text-gray-700 mb-1">
-                  Address
+                    Address
                   </label>
                   <textarea
                     required

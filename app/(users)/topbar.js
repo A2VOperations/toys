@@ -31,6 +31,11 @@ const slides = [
     link: null,
   },
   {
+    icon: "🚀",
+    text: "Same Day Dispatch for orders before 12 PM",
+    link: null,
+  },
+  {
     icon: "🔒",
     text: "Safe & Secure Payments (COD Available)",
     link: null,

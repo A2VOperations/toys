@@ -105,6 +105,19 @@ const sections = [
   },
   {
     id: "s5",
+    title: "Shipping & Dispatch",
+    icon: "🚀",
+    content: (
+      <p>
+        We offer <strong className="text-[#3B1A2E]">same day dispatch</strong>{" "}
+        for all orders received before 12:00 PM. Orders placed after this time,
+        or on Sundays and public holidays, will be dispatched the following
+        working day.
+      </p>
+    ),
+  },
+  {
+    id: "s6",
     title: "Refunds",
     icon: "💰",
     content: (
@@ -123,7 +136,7 @@ const sections = [
     ),
   },
   {
-    id: "s6",
+    id: "s7",
     title: "Non-Returnable Items",
     icon: "🔒",
     content: (
@@ -135,7 +148,7 @@ const sections = [
     ),
   },
   {
-    id: "s7",
+    id: "s8",
     title: "Pricing & Payment",
     icon: "₹",
     content: (
@@ -148,7 +161,7 @@ const sections = [
     ),
   },
   {
-    id: "s8",
+    id: "s9",
     title: "Intellectual Property",
     icon: "©️",
     content: (
@@ -160,7 +173,7 @@ const sections = [
     ),
   },
   {
-    id: "s9",
+    id: "s10",
     title: "Governing Law",
     icon: "⚖️",
     content: (
@@ -171,7 +184,7 @@ const sections = [
     ),
   },
   {
-    id: "s10",
+    id: "s11",
     title: "Contact Us",
     icon: "📬",
     content: (

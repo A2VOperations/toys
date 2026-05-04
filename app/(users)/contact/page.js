@@ -46,7 +46,7 @@ const waNumber = (
 ).replace(/\D/g, "");
 const mapLocation =
   process.env.NEXT_PUBLIC_MAP_LOCATION ||
-  "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3498.108502575005!2d77.19453617550505!3d28.74616675603734!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjjCsDQ0JzQ2LjIiTiA3N8KwMTEnNDkuNiJF!5e0!3m2!1sen!2sin!4v1745403061619!5m2!1sen!2sin";
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13992.458304593985!2d77.17810128715817!3d28.74599589999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cff8172c8a46b%3A0xc2ad6cca1d0c51e8!2sToys%20for%20kids!5e0!3m2!1sen!2sin!4v1777871039428!5m2!1sen!2sin";
 
 const CARDS = [
   {
@@ -54,7 +54,7 @@ const CARDS = [
     label: "Shop",
     value: process.env.NEXT_PUBLIC_ADDRESS
       ? process.env.NEXT_PUBLIC_ADDRESS
-      : "Kh no 793/1 Budh bazar road kamalpur Burari Delhi 110084",
+      : "A3 793/1, Vijay Colony, Block B, Kamal Pur, Burari, Delhi, 110084",
     iconBg: "bg-[#fff0f4]",
     iconColor: "text-[#f74872]",
   },
@@ -201,7 +201,6 @@ export default function ContactPage() {
               className="object-contain"
             />
           </div>
-
         </div>
 
         {/* bottom stats – hidden on mobile */}

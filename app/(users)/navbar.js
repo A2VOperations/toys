@@ -221,7 +221,7 @@ function AnnouncementBar() {
         href="/#dealOf"
         className="flex-1 md:flex-none text-white text-[0.75rem] sm:text-[0.78rem] md:text-[0.82rem] whitespace-nowrap text-center"
       >
-        Today's Deals –{" "}
+        Today&apos;s Deals –{" "}
         <strong className="font-extrabold">Click to Save More</strong>
       </Link>
 
@@ -238,7 +238,7 @@ function AnnouncementBar() {
               Icon: FbIcon,
               label: "Facebook",
             },
-            { href: "https://instagram.com", Icon: IgIcon, label: "Instagram" },
+            { href: "https://www.instagram.com/toys_for_kids_wholeseller?utm_source=qr&igsh=MW10b29jMHpmbjV6eg%3D%3D", Icon: IgIcon, label: "Instagram" },
           ].map(({ href, Icon, label }) => (
             <a
               key={label}

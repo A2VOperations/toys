@@ -58,7 +58,7 @@ function getCategoryEmoji(category = "") {
     return "🧸";
   if (cat.includes("block")) return "🟥";
   return "🎁";
-} 
+}
 
 const promoTags = [
   "Puzzles",
@@ -110,7 +110,7 @@ export function AboutInfoSection() {
         <div className="text-center mb-14">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-snug">
             Founded & Managed by{" "}
-            <span className="text-pink-500">Jyoti Agarwal</span>
+            <span className="text-pink-500">Jyoti Agrawal</span>
           </h2>
           <p className="text-gray-400 mt-3 max-w-2xl mx-auto text-sm leading-relaxed font-medium">
             With over{" "}
@@ -195,7 +195,9 @@ export function AboutInfoSection() {
         {/* Why Choose Us */}
         <div className="bg-white rounded-xl border-2 border-pink-100 p-8 shadow-sm">
           <div className="flex items-center justify-center gap-3 mb-8">
-            <h3 className="text-3xl font-black text-gray-800">Why Choose Us?</h3>
+            <h3 className="text-3xl font-black text-gray-800">
+              Why Choose Us?
+            </h3>
           </div>
           <div className="grid sm:grid-cols-2 gap-3">
             {whyChooseUs.map((point, i) => (
@@ -550,7 +552,8 @@ export default function AboutSection() {
               {/* We are a retail business in the Ecommerce{" "}
               <span className="text-pink-500">Products and accessories</span>{" "}
               for kids */}
-              Trusted for kid&apos;s toys, stationery, gifts & everyday essentials
+              Trusted for kid&apos;s toys, stationery, gifts & everyday
+              essentials
               <br />
               <span className="text-pink-500">retail & wholesale.</span>
             </h2>
@@ -561,9 +564,9 @@ export default function AboutSection() {
               destination for kids seeking a diverse range of high-quality toys
               and accessories. */}
               Founded and managed by{" "}
-              <span className="text-pink-500 font-bold">Jyoti Agarwal</span> , we have
-              been working in this industry for more than 8 years, serving
-              customers with reliable products, fair pricing, and a
+              <span className="text-pink-500 font-bold">Jyoti Agrawal</span> ,
+              we have been working in this industry for more than 8 years,
+              serving customers with reliable products, fair pricing, and a
               customer-first approach.
             </p>
 
@@ -577,7 +580,7 @@ export default function AboutSection() {
               <div className="flex-1">
                 <h3 className="text-3xl font-black text-pink-500">20+</h3>
                 <p className="text-gray-500 text-xs mt-1 font-semibold">
-                  Cities Covered
+                  All India
                 </p>
               </div>
               <div className="hidden md:block w-px bg-pink-100" />

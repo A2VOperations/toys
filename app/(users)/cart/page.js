@@ -142,18 +142,58 @@ export default function CartPage() {
       // Generate PDF directly in the browser to avoid Next.js server API crashes
       const doc = new jsPDF();
 
-      // Header
-      doc.setFontSize(24);
-      doc.text("Order Receipt", 105, 20, { align: "center" });
+      // Helper to add image
+      const addImageProcess = (url) => {
+        return new Promise((resolve) => {
+          const img = new window.Image();
+          img.src = url;
+          img.onload = () => resolve(img);
+          img.onerror = () => resolve(null);
+        });
+      };
+
+      const logoImg = await addImageProcess("/Kids For Toy logo.png");
+      if (logoImg) {
+        doc.addImage(logoImg, "PNG", 14, 8, 45, 37);
+      }
+
+      // Store Details (Top Right)
+      doc.setFontSize(20);
+      doc.setTextColor(40, 40, 40);
+      doc.text("Toys for Kids", 196, 20, { align: "right" });
+      doc.setFontSize(9);
+      doc.setTextColor(100, 100, 100);
+      doc.text("Kh no 793/1 Budh bazar road", 196, 28, { align: "right" });
+      doc.text("Kamalpur Burari, Delhi 110084", 196, 33, { align: "right" });
+      doc.text(`Phone: ${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9643399433"}`, 196, 38, { align: "right" });
+      doc.text("Email: toysforkidsdelhi@gmail.com", 196, 43, { align: "right" });
+
+      // Divider
+      doc.setDrawColor(220, 220, 220);
+      doc.line(14, 58, 196, 58);
+
+      // Receipt Title
+      doc.setFontSize(18);
+      doc.setTextColor(0, 0, 0);
+      doc.text("ORDER RECEIPT", 105, 70, { align: "center" });
 
       // Customer Details
-      doc.setFontSize(14);
-      doc.text("Customer Details", 14, 40);
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text("Bill To:", 14, 85);
+      
+      doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
-      doc.text(`Name: ${checkoutData.name}`, 14, 48);
-      doc.text(`Email: ${checkoutData.email}`, 14, 54);
-      doc.text(`Phone: ${checkoutData.phone}`, 14, 60);
-      doc.text(`Address: ${checkoutData.address}`, 14, 66);
+      doc.text(`Name: ${checkoutData.name}`, 14, 93);
+      doc.text(`Email: ${checkoutData.email}`, 14, 99);
+      doc.text(`Phone: ${checkoutData.phone}`, 14, 105);
+      doc.text(`Address: ${checkoutData.address}`, 14, 111);
+
+      // Order Date
+      doc.setFont("helvetica", "bold");
+      doc.text("Order Date:", 140, 93);
+      doc.setFont("helvetica", "normal");
+      doc.text(`${new Date().toLocaleDateString()}`, 165, 93);
 
       // Table mapping
       const tableColumn = ["Item ID", "Product Name", "Comment", "Qty", "Price", "Total"];
@@ -183,12 +223,14 @@ export default function CartPage() {
       });
 
       autoTable(doc, {
-        startY: 75,
+        startY: 125,
         head: [tableColumn],
         body: tableRows,
+        styles: { fontSize: 9 },
+        headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold' }
       });
 
-      const finalY = doc.lastAutoTable?.finalY || 75;
+      const finalY = doc.lastAutoTable?.finalY || 125;
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.text(`Total Items: ${totalItems}`, 14, finalY + 12);

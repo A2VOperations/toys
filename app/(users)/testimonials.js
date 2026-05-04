@@ -298,7 +298,9 @@ export default function Testimonials() {
           ))}
         </Swiper> */}
 
-        <GoogleReviewsWidget instanceId="CmlSvnJ0NTjEq4WOaipr" />
+        {/* Elfsight Google Reviews | Untitled Google Reviews */}
+        <script src="https://elfsightcdn.com/platform.js" async></script>
+        <div className="elfsight-app-ebeacab4-832b-4bc2-9dcd-6eeefd1a5511" data-elfsight-app-lazy></div>
       </div>
     </section>
   );

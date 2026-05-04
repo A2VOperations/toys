@@ -8,12 +8,22 @@ import "swiper/css/grid";
 export const metadata = {
   title: {
     default: "Toys for Kids | Best Toys, Stationery & Return Gifts in Delhi",
-    template: "%s | Toys for Kids"
+    template: "%s | Toys for Kids",
   },
-  description: "Discover a wide range of high-quality kids' toys, educational stationery, school bags, and unique return gifts at Toys for Kids. Wholesale and retail prices available in Sant Nagar Burari, Delhi.",
-  keywords: ["toys for kids", "kids toys Delhi", "educational toys", "school stationery", "return gifts", "wholesale toys Burari", "kids essentials", "Jyoti Agarwal toys"],
-  authors: [{ name: "Jyoti Agarwal" }],
-  creator: "Jyoti Agarwal",
+  description:
+    "Discover a wide range of high-quality kids' toys, educational stationery, school bags, and unique return gifts at Toys for Kids. Wholesale and retail prices available in Sant Nagar Burari, Delhi.",
+  keywords: [
+    "toys for kids",
+    "kids toys Delhi",
+    "educational toys",
+    "school stationery",
+    "return gifts",
+    "wholesale toys Burari",
+    "kids essentials",
+    "Jyoti Agrawal toys",
+  ],
+  authors: [{ name: "Jyoti Agrawal" }],
+  creator: "Jyoti Agrawal",
   publisher: "Toys for Kids",
   formatDetection: {
     email: false,
@@ -22,8 +32,9 @@ export const metadata = {
   },
   openGraph: {
     title: "Toys for Kids | Best Toys, Stationery & Return Gifts in Delhi",
-    description: "Quality kids' essentials including toys, stationery, and return gifts at affordable prices.",
-    url: "https://toysforkids.in", // Replace with actual domain if known
+    description:
+      "Quality kids' essentials including toys, stationery, and return gifts at affordable prices.",
+    url: "http://toysforkids.co.in", // Replace with actual domain if known
     siteName: "Toys for Kids",
     locale: "en_IN",
     type: "website",
@@ -31,7 +42,8 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Toys for Kids | Best Toys, Stationery & Return Gifts",
-    description: "Quality kids' essentials including toys, stationery, and return gifts at affordable prices.",
+    description:
+      "Quality kids' essentials including toys, stationery, and return gifts at affordable prices.",
   },
   robots: {
     index: true,
@@ -43,36 +55,36 @@ export default function RootLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Store",
-    "name": "Toys for Kids",
-    "image": "https://toysforkids.in/Kids For Toy logo.png", // Replace with actual logo/main image
-    "@id": "https://toysforkids.in",
-    "url": "https://toysforkids.in",
-    "telephone": "9643399433",
-    "address": {
+    name: "Toys for Kids",
+    image: "http://toysforkids.co.in/Kids For Toy footer.png",
+    "@id": "http://toysforkids.co.in/",
+    url: "http://toysforkids.co.in/",
+    telephone: "9643399433",
+    address: {
       "@type": "PostalAddress",
-      "streetAddress": "Kh no 793/1 Budh bazar road kamalpur Burari",
-      "addressLocality": "Delhi",
-      "postalCode": "110084",
-      "addressCountry": "IN"
+      streetAddress: "Kh no 793/1 Budh bazar road kamalpur Burari",
+      addressLocality: "Delhi",
+      postalCode: "110084",
+      addressCountry: "IN",
     },
-    "openingHoursSpecification": {
+    openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
+      dayOfWeek: [
         "Monday",
         "Tuesday",
         "Wednesday",
         "Thursday",
         "Friday",
         "Saturday",
-        "Sunday"
+        "Sunday",
       ],
-      "opens": "09:00",
-      "closes": "22:00"
+      opens: "09:00",
+      closes: "22:00",
     },
-    // "sameAs": [
-    //   "https://www.facebook.com/toysforkids", // Replace with actual social links
-    //   "https://www.instagram.com/toysforkids"
-    // ]
+    sameAs: [
+      "https://www.facebook.com/people/Toys-for-kids/61560423274946/?rdid=FVWBSZ0jg6g1tcUF&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1DuTiFczCU%2F",
+      "https://www.instagram.com/toys_for_kids_wholeseller?utm_source=qr&igsh=MW10b29jMHpmbjV6eg%3D%3D",
+    ],
   };
 
   return (
@@ -86,7 +98,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col">
         <Script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=G-ED3SM8SSF0"
+          src="https://www.googletagmanager.com/gtag/js?id=G-VKMJH81W82"
         />
         <Script id="google-analytics">
           {`
@@ -94,7 +106,7 @@ export default function RootLayout({ children }) {
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
 
-              gtag('config', 'G-ED3SM8SSF0');
+              gtag('config', 'G-VKMJH81W82');
             `}
         </Script>
         {children}

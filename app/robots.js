@@ -1,10 +1,10 @@
 export default function robots() {
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/admin/', '/api/'],
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/admin/", "/api/"],
     },
-    sitemap: 'https://toysforkids.in/sitemap.xml',
+    sitemap: "http://toysforkids.co.in/sitemap.xml",
   };
 }

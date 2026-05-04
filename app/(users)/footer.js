@@ -108,7 +108,7 @@ export default function Footer() {
               />
             </Link>
             <div className={styles.infoText}>
-              <p>Kh no 793/1 Budh bazar road  </p>
+              <p>Kh no 793/1 Budh bazar road </p>
               <p> kamalpurBurari Delhi 110084</p>
               <p className="py-2 ">
                 {" "}
@@ -196,7 +196,7 @@ export default function Footer() {
               <FbIcon />
             </a>
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/toys_for_kids_wholeseller?utm_source=qr&igsh=MW10b29jMHpmbjV6eg%3D%3D"
               target="_blank"
               rel="noreferrer"
               className={`${styles.socialIcon} ${styles.iconIg}`}

@@ -36,11 +36,6 @@ const slides = [
     link: null,
   },
   {
-    icon: "🔒",
-    text: "Safe & Secure Payments (COD Available)",
-    link: null,
-  },
-  {
     icon: "⭐",
     text: "Trusted by Thousands of Happy Customers",
     link: null,

@@ -4,8 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { CATEGORIES, CATEGORY_EMOJIS } from "./categories";
-import { PRODUCT_CATEGORIES, PRODUCT_SUBCATEGORIES } from "@/constants/productCategories";
+import {
+  PRODUCT_CATEGORIES,
+  PRODUCT_SUBCATEGORIES,
+} from "@/constants/productCategories";
 import { getCartCount } from "./cartStorage";
 
 /* ── WhatsApp from .env ── */
@@ -101,24 +103,6 @@ const SERVICES = [
     desc: "Hassle-free returns within 7 days.",
   },
   { icon: "⚡", title: "Fast Delivery", desc: "Quick delivery across India." },
-  // {
-  //   icon: "🎧",
-  //   title: "Customer Support",
-  //   desc: "We're here to help you 24/7.",
-  // },
-];
-
-const WHY_US = [
-  { title: "Wide Range of Toys", desc: "Explore 1000+ premium toys." },
-  {
-    title: "Best Quality Products",
-    desc: "Safe, durable & child-friendly toys.",
-  },
-  { title: "Affordable Prices", desc: "Best prices for the best toys." },
-  {
-    title: "Trusted by Parents",
-    desc: "Loved by thousands of happy families.",
-  },
 ];
 
 const BOTTOM_BADGES = [
@@ -229,7 +213,11 @@ function AnnouncementBar() {
               Icon: FbIcon,
               label: "Facebook",
             },
-            { href: "https://www.instagram.com/toys_for_kids_wholeseller?utm_source=qr&igsh=MW10b29jMHpmbjV6eg%3D%3D", Icon: IgIcon, label: "Instagram" },
+            {
+              href: "https://www.instagram.com/toys_for_kids_wholeseller?utm_source=qr&igsh=MW10b29jMHpmbjV6eg%3D%3D",
+              Icon: IgIcon,
+              label: "Instagram",
+            },
           ].map(({ href, Icon, label }) => (
             <a
               key={label}
@@ -511,7 +499,7 @@ export default function Navbar({ onCartClick }) {
           ref={megaRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className={`absolute left-0 right-0 w-full z-999 transition-all duration-300 ease-in-out bg-[#fcfaf8] shadow-2xl
+          className={`absolute left-0 right-0 w-full z-999 transition-all duration-300 ease-in-out bg-[#fcfaf8] shadow-2xl overflow-x-hidden
             ${megaOpen ? "opacity-100 visible translate-y-0 pointer-events-auto" : "opacity-0 invisible -translate-y-3 pointer-events-none"}`}
           style={{
             top: "100%",
@@ -519,7 +507,7 @@ export default function Navbar({ onCartClick }) {
           }}
         >
           <div
-            className="flex flex-col w-full max-w-[1600px] mx-auto overflow-visible"
+            className="flex flex-col w-full max-w-[1600px] mx-auto overflow-x-hidden overflow-y-visible"
             style={{
               background: "#fff",
             }}
@@ -551,65 +539,73 @@ export default function Navbar({ onCartClick }) {
                   <ul className="list-none p-0 m-0">
                     {ALL_SIDEBAR_CATEGORIES.map((cat) => (
                       <li key={cat.label}>
-                      <Link
-                        href={catHref(cat.path)}
-                        className={`sidebar-cat-item flex items-center justify-between px-4 py-2.5 no-underline text-[0.82rem] font-bold ${hoveredSidebarCat === cat.label ? "active" : ""}`}
-                        style={{
-                          color:
-                            hoveredSidebarCat === cat.label
-                              ? "#e84393"
-                              : "#444",
-                          background:
-                            hoveredSidebarCat === cat.label
-                              ? "#fff0f6"
-                              : "transparent",
-                        }}
-                        onMouseEnter={() => setHoveredSidebarCat(cat.label)}
-                      >
-                        {cat.label}
-                        {(PRODUCT_SUBCATEGORIES[cat.label] || cat.label === "All Toys & Games") && (
-                          <svg
-                            className="cat-arrow w-3.5 h-3.5 flex-shrink-0"
-                            style={{
-                              color:
-                                hoveredSidebarCat === cat.label
-                                  ? "#e84393"
-                                  : "#bbb",
-                            }}
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2.5}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M9 5l7 7-7 7"
-                            />
-                          </svg>
-                        )}
-                      </Link>
-                      
-                      {hoveredSidebarCat === cat.label && PRODUCT_SUBCATEGORIES[cat.label] && (
-                        <div className="absolute left-full top-0 w-[450px] bg-white shadow-xl border border-gray-100 z-[1001] py-3 rounded-r-xl" style={{ minHeight: '100%' }}>
-                          <div className="px-4 py-2 mb-2 border-b border-gray-50">
-                            <span className="text-[0.72rem] font-black uppercase tracking-widest text-[#e84393]">
-                              {cat.label} Subcategories
-                            </span>
-                          </div>
-                          <div className="grid grid-cols-2 gap-x-2 px-2">
-                            {PRODUCT_SUBCATEGORIES[cat.label].map(sub => (
-                              <Link key={sub} href={`/shop?category=${encodeURIComponent(cat.label)}&subCategory=${encodeURIComponent(sub)}`} 
-                                 className="block px-3 py-2 text-[0.82rem] font-bold text-gray-600 rounded-lg hover:bg-[#fff0f6] hover:text-[#e84393] transition-colors">
-                                {sub}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                        <Link
+                          href={catHref(cat.path)}
+                          className={`sidebar-cat-item flex items-center justify-between px-4 py-2.5 no-underline text-[0.82rem] font-bold ${hoveredSidebarCat === cat.label ? "active" : ""}`}
+                          style={{
+                            color:
+                              hoveredSidebarCat === cat.label
+                                ? "#e84393"
+                                : "#444",
+                            background:
+                              hoveredSidebarCat === cat.label
+                                ? "#fff0f6"
+                                : "transparent",
+                          }}
+                          onMouseEnter={() => setHoveredSidebarCat(cat.label)}
+                        >
+                          {cat.label}
+                          {(PRODUCT_SUBCATEGORIES[cat.label] ||
+                            cat.label === "All Toys & Games") && (
+                            <svg
+                              className="cat-arrow w-3.5 h-3.5 flex-shrink-0"
+                              style={{
+                                color:
+                                  hoveredSidebarCat === cat.label
+                                    ? "#e84393"
+                                    : "#bbb",
+                              }}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2.5}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
+                          )}
+                        </Link>
+
+                        {hoveredSidebarCat === cat.label &&
+                          PRODUCT_SUBCATEGORIES[cat.label] && (
+                            <div
+                              className="absolute left-full top-0 w-[380px] bg-white shadow-xl border border-gray-100 z-[1001] py-3 rounded-r-xl"
+                              style={{ maxWidth: "calc(100vw - 200px)" }}
+                            >
+                              <div className="px-4 py-2 mb-2 border-b border-gray-50">
+                                <span className="text-[0.72rem] font-black uppercase tracking-widest text-[#e84393]">
+                                  {cat.label} Subcategories
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-2 gap-x-2 px-2">
+                                {PRODUCT_SUBCATEGORIES[cat.label].map((sub) => (
+                                  <Link
+                                    key={sub}
+                                    href={`/shop?category=${encodeURIComponent(cat.label)}&subCategory=${encodeURIComponent(sub)}`}
+                                    className="block px-3 py-2 text-[0.82rem] font-bold text-gray-600 rounded-lg hover:bg-[#fff0f6] hover:text-[#e84393] transition-colors"
+                                  >
+                                    {sub}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
 
@@ -965,7 +961,10 @@ export default function Navbar({ onCartClick }) {
                     const hasSub = PRODUCT_SUBCATEGORIES[cat.label];
                     const isExpanded = mobileExpandedCat === cat.label;
                     return (
-                      <div key={cat.label} style={{ borderBottom: "1px solid #fce4ef" }}>
+                      <div
+                        key={cat.label}
+                        style={{ borderBottom: "1px solid #fce4ef" }}
+                      >
                         <div className="flex items-center justify-between">
                           <Link
                             href={catHref(cat.path)}
@@ -976,11 +975,30 @@ export default function Navbar({ onCartClick }) {
                           </Link>
                           {hasSub && (
                             <button
-                              onClick={() => setMobileExpandedCat(isExpanded ? null : cat.label)}
+                              onClick={() =>
+                                setMobileExpandedCat(
+                                  isExpanded ? null : cat.label,
+                                )
+                              }
                               className="p-3 text-[#e84393] transition-transform duration-200"
-                              style={{ transform: isExpanded ? "rotate(180deg)" : "none", background: "none", border: "none" }}
+                              style={{
+                                transform: isExpanded
+                                  ? "rotate(180deg)"
+                                  : "none",
+                                background: "none",
+                                border: "none",
+                              }}
                             >
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
                                 <polyline points="6 9 12 15 18 9" />
                               </svg>
                             </button>

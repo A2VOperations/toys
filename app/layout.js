@@ -94,6 +94,11 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Elfsight Platform Script - loaded before hydration */}
+        <Script 
+          src="https://elfsightcdn.com/platform.js" 
+          strategy="beforeInteractive" 
+        />
       </head>
       <body className="min-h-full flex flex-col">
         <Script

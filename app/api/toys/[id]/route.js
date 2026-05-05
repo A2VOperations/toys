@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getToyById, updateToy, deleteToy } from "@/backend/controller/toyController";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req, { params }) {
   try {
     const { id } = await params;

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { PRODUCT_CATEGORIES } from "@/constants/productCategories";
+import { PRODUCT_CATEGORIES, PRODUCT_SUBCATEGORIES } from "@/constants/productCategories";
 
 const CATEGORIES = PRODUCT_CATEGORIES;
 
@@ -11,7 +11,7 @@ const CATEGORY_EMOJIS = {
   "Return Gifts Ideas":                  "🎁",
   "School Essentials":                   "🎒",
   "Stationary (Return Gifts + Regular)": "✏️",
-  "Non Battery Toys":                    "🧸",
+  "Toys":                              "🧸",
   "Soft and Plush Toys":                 "🐻",
   "Puzzles and Brain Teasers":           "🧩",
   "Learning and Education Toys":         "📚",
@@ -42,6 +42,7 @@ export default function AddToyForm() {
   const [formData, setFormData] = useState({
     title:       "",
     category:    [],   // ← same as tags, [String]
+    subCategory: [],
     brand:       "",
     stock:       3,
     description: "",
@@ -51,13 +52,28 @@ export default function AddToyForm() {
     price:       0,
   });
 
+  const availableSubCategories = Array.from(new Set(formData.category.reduce((acc, cat) => {
+    if (PRODUCT_SUBCATEGORIES[cat]) acc.push(...PRODUCT_SUBCATEGORIES[cat]);
+    return acc;
+  }, [])));
+
   const handleCategory = (cat) => {
-    setFormData((prev) => ({
-      ...prev,
-      category: prev.category.includes(cat)
+    setFormData((prev) => {
+      const newCategory = prev.category.includes(cat)
         ? prev.category.filter((c) => c !== cat)
-        : [...prev.category, cat],
-    }));
+        : [...prev.category, cat];
+      
+      const newAvailableSubCategories = Array.from(new Set(newCategory.reduce((acc, c) => {
+        if (PRODUCT_SUBCATEGORIES[c]) acc.push(...PRODUCT_SUBCATEGORIES[c]);
+        return acc;
+      }, [])));
+
+      return {
+        ...prev,
+        category: newCategory,
+        subCategory: prev.subCategory.filter(s => newAvailableSubCategories.includes(s)),
+      };
+    });
   };
 
   const handleImageChange = async (e) => {
@@ -142,6 +158,7 @@ export default function AddToyForm() {
           stock:  Number(formData.stock),
           price:  Number(formData.price),
           images: imageBase64s,
+          subCategory: formData.subCategory,
           // category is already the array — no extra field needed
         }),
       });
@@ -266,6 +283,24 @@ export default function AddToyForm() {
               <p style={{ marginTop: 8, fontSize: 11, fontWeight: 700, color: "#aaa" }}>Select at least one category</p>
             )}
           </div>
+
+          {/* SUBCATEGORY */}
+          {availableSubCategories.length > 0 && (
+            <div className="field-card">
+              <span className="section-label">Subcategories</span>
+              <div className="flex flex-wrap gap-2">
+                {availableSubCategories.map((subcat) => (
+                  <button key={subcat} type="button" onClick={() => setFormData(p => ({ 
+                      ...p, 
+                      subCategory: p.subCategory.includes(subcat) ? p.subCategory.filter(s => s !== subcat) : [...p.subCategory, subcat] 
+                    }))}
+                    className={`cat-pill ${formData.subCategory.includes(subcat) ? "active" : ""}`}>
+                    {subcat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* BRAND */}
           <div className="field-card">

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getToys, addToy } from "@/backend/controller/toyController";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
@@ -8,6 +10,7 @@ export async function GET(req) {
       title: searchParams.get("title") || "",
       category: searchParams.get("category") || "",   // keep for backwards compat
       categories: searchParams.get("categories") || "", // new multi-category filter
+      subCategory: searchParams.get("subCategory") || "",
       brand: searchParams.get("brand") || "",
       gender: searchParams.get("gender") || "",
       age: searchParams.get("age") || "",
@@ -43,7 +46,7 @@ export async function GET(req) {
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { title, categories } = body;
+    const { title, categories, subCategory } = body;
 
     // support both old `category` (string) and new `category` (array)
     const hasCategory =

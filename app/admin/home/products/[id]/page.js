@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { PRODUCT_CATEGORIES } from "@/constants/productCategories";
+import { PRODUCT_CATEGORIES, PRODUCT_SUBCATEGORIES } from "@/constants/productCategories";
 
 const CATEGORIES = PRODUCT_CATEGORIES;
 
@@ -12,7 +12,7 @@ const CATEGORY_EMOJIS = {
   "Return Gifts Ideas":                  "🎁",
   "School Essentials":                   "🎒",
   "Stationary (Return Gifts + Regular)": "✏️",
-  "Non Battery Toys":                    "🧸",
+  "Toys":                              "🧸",
   "Soft and Plush Toys":                 "🐻",
   "Puzzles and Brain Teasers":           "🧩",
   "Learning and Education Toys":         "📚",
@@ -41,6 +41,7 @@ function toyToFormData(toy) {
   return {
     title:       toy.title       || "",
     category:    normaliseCat(toy),
+    subCategory: Array.isArray(toy.subCategory) ? toy.subCategory : (toy.subCategory ? [toy.subCategory] : []),
     brand:       toy.brand       || "",
     stock:       toy.stock       ?? 0,
     description: toy.description || "",
@@ -68,9 +69,14 @@ export default function ProductDetailPage() {
   const [checkingTitle, setCheckingTitle] = useState(false);
 
   const [formData, setFormData] = useState({
-    title: "", category: [], brand: "", stock: 0,
+    title: "", category: [], subCategory: [], brand: "", stock: 0,
     description: "", gender: "Unisex", age: "", tags: [], price: 0,
   });
+
+  const availableSubCategories = Array.from(new Set(formData.category.reduce((acc, cat) => {
+    if (PRODUCT_SUBCATEGORIES[cat]) acc.push(...PRODUCT_SUBCATEGORIES[cat]);
+    return acc;
+  }, [])));
 
   useEffect(() => {
     async function fetchToy() {
@@ -95,12 +101,22 @@ export default function ProductDetailPage() {
   }, [id, router]);
 
   const handleCategory = (cat) => {
-    setFormData((prev) => ({
-      ...prev,
-      category: prev.category.includes(cat)
+    setFormData((prev) => {
+      const newCategory = prev.category.includes(cat)
         ? prev.category.filter((c) => c !== cat)
-        : [...prev.category, cat],
-    }));
+        : [...prev.category, cat];
+      
+      const newAvailableSubCategories = Array.from(new Set(newCategory.reduce((acc, c) => {
+        if (PRODUCT_SUBCATEGORIES[c]) acc.push(...PRODUCT_SUBCATEGORIES[c]);
+        return acc;
+      }, [])));
+
+      return {
+        ...prev,
+        category: newCategory,
+        subCategory: prev.subCategory.filter(s => newAvailableSubCategories.includes(s)),
+      };
+    });
   };
 
   const handleImageChange = async (e) => {
@@ -180,6 +196,7 @@ export default function ProductDetailPage() {
         stock:  Number(formData.stock),
         price:  Number(formData.price),
         images: newImages.length > 0 ? newImages : (toy?.images ?? []),
+        subCategory: formData.subCategory,
         // category is already the array — same pattern as tags
       };
       const res = await fetch(`/api/toys/${id}`, {
@@ -366,6 +383,31 @@ export default function ProductDetailPage() {
               </p>
             )}
           </div>
+
+          {/* SUBCATEGORY */}
+          {availableSubCategories.length > 0 && (
+            <div className="field-card">
+              <span className="section-label">Subcategories</span>
+              <div className="flex flex-wrap gap-2">
+                {availableSubCategories.map((subcat) => {
+                  const isActive = formData.subCategory.includes(subcat);
+                  return editMode ? (
+                    <button key={subcat} type="button" onClick={() => setFormData(p => ({ 
+                        ...p, 
+                        subCategory: p.subCategory.includes(subcat) ? p.subCategory.filter(s => s !== subcat) : [...p.subCategory, subcat] 
+                      }))}
+                      className={`cat-pill clickable${isActive ? " active" : ""}`}>
+                      {subcat}
+                    </button>
+                  ) : (
+                    <span key={subcat} className={`cat-pill readonly${isActive ? " active" : ""}`}>
+                      {subcat}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* BRAND */}
           <div className="field-card">

@@ -1,11 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import Testimonials from "../testimonials";
+import dynamic from "next/dynamic";
 
 // ─── ADD YOUR LOCAL VIDEO FILES HERE ────────────────────────────────
 // Place your video files in: /public/videos/
 // Then just add the filename below
+
+const ReviewsWidget = dynamic(() => import("../testimonials"), {
+  ssr: false,
+});
+
 const LOCAL_VIDEOS = [
   "/facebook video/facebookVideo1.mp4",
   "/facebook video/facebookVideo2.mp4",
@@ -459,7 +464,7 @@ export default function LocalVideoCarousel() {
         </button>
       </div>
 
-      <Testimonials />
+      <ReviewsWidget />
     </div>
   );
 }

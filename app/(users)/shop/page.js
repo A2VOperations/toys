@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 import { CATEGORIES } from "../categories";
+import { PRODUCT_SUBCATEGORIES } from "@/constants/productCategories";
 
 const PAGE_SIZE = 9;
 
@@ -46,6 +47,7 @@ const SORT_OPTIONS = [
 
 const defaultFilters = {
   category: "",
+  subCategory: "",
   gender: "",
   age: "",
   tags: [],
@@ -113,6 +115,7 @@ function ShopPageContent() {
     setFilters({
       ...defaultFilters,
       category: searchParams.get("category") || "",
+      subCategory: searchParams.get("subCategory") || "",
       gender: searchParams.get("gender") || "",
       age: searchParams.get("age") || "",
       tags: searchParams.get("tags") ? searchParams.get("tags").split(",") : [],
@@ -597,6 +600,8 @@ function ShopPageContent() {
                       .split(",")
                       .filter(Boolean)
                       .includes(cat);
+                      
+                    const subCats = PRODUCT_SUBCATEGORIES[cat] || [];
 
                     const handleCatToggle = () => {
                       const current = filters.category.split(",").filter(Boolean);
@@ -610,28 +615,59 @@ function ShopPageContent() {
                     };
 
                     return (
-                      <label key={cat} className="flex items-center gap-3.5 cursor-pointer group">
-                        <input
-                          type="checkbox"
-                          checked={selected}
-                          onChange={handleCatToggle}
-                          className="peer sr-only"
-                        />
-                        <div className={`w-[18px] h-[18px] rounded-[3px] border flex items-center justify-center transition-all
-                          ${selected
-                            ? "bg-[#f74872] border-[#f74872]"
-                            : "border-gray-200 bg-gray-50 group-hover:border-gray-400"}`}
-                        >
-                          {selected && (
-                            <svg className="w-[10px] h-[10px] text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                            </svg>
-                          )}
-                        </div>
-                        <span className={`text-[15px] leading-none transition-colors ${selected ? "text-[#f74872]" : "text-gray-500"}`}>
-                          {cat}
-                        </span>
-                      </label>
+                      <div key={cat} className="flex flex-col gap-2">
+                        <label className="flex items-center gap-3.5 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            checked={selected}
+                            onChange={handleCatToggle}
+                            className="peer sr-only"
+                          />
+                          <div className={`w-[18px] h-[18px] rounded-[3px] border flex items-center justify-center transition-all
+                            ${selected
+                              ? "bg-[#f74872] border-[#f74872]"
+                              : "border-gray-200 bg-gray-50 group-hover:border-gray-400"}`}
+                          >
+                            {selected && (
+                              <svg className="w-[10px] h-[10px] text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </div>
+                          <span className={`text-[15px] leading-none transition-colors ${selected ? "text-[#f74872]" : "text-gray-500"}`}>
+                            {cat}
+                          </span>
+                        </label>
+                        
+                        {selected && subCats.length > 0 && (
+                          <div className="ml-8 flex flex-col gap-2 mt-1">
+                            {subCats.map(sub => {
+                              const subSelected = filters.subCategory.split(",").filter(Boolean).includes(sub);
+                              const handleSubToggle = () => {
+                                const current = filters.subCategory.split(",").filter(Boolean);
+                                const updated = subSelected ? current.filter(s => s !== sub) : [...current, sub];
+                                const next = { ...filters, subCategory: updated.join(",") };
+                                setFilters(next);
+                                setPagination(p => ({ ...p, currentPage: 1 }));
+                                router.push(`${pathname}?${buildSearchParams(next)}`, { scroll: false });
+                              };
+                              return (
+                                <label key={sub} className="flex items-center gap-2.5 cursor-pointer group">
+                                  <input type="checkbox" checked={subSelected} onChange={handleSubToggle} className="peer sr-only" />
+                                  <div className={`w-[14px] h-[14px] rounded-full border flex items-center justify-center transition-all
+                                    ${subSelected ? "bg-[#f74872] border-[#f74872]" : "border-gray-300 bg-transparent group-hover:border-gray-500"}`}
+                                  >
+                                    {subSelected && <div className="w-[6px] h-[6px] rounded-full bg-white" />}
+                                  </div>
+                                  <span className={`text-[13px] leading-none transition-colors ${subSelected ? "text-[#f74872] font-semibold" : "text-gray-500"}`}>
+                                    {sub}
+                                  </span>
+                                </label>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
                     );
                   })}
                 </div>

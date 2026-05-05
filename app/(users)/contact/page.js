@@ -199,6 +199,7 @@ export default function ContactPage() {
               height={400}
               priority
               className="object-contain"
+              style={{ height: 'auto' }}
             />
           </div>
         </div>
@@ -234,6 +235,7 @@ export default function ContactPage() {
         width={1000}
         height={1000}
         className="bottom-0 left-0 right-0 z-0 w-full bg-[#fccf7d]"
+        style={{ height: 'auto' }}
       />
 
       {/* ── INFO CARDS ───────────────────────────────────────────────────── */}

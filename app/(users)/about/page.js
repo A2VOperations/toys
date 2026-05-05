@@ -2,11 +2,15 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Testimonials from "../testimonials";
+import dynamic from "next/dynamic";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { PiStarFourFill } from "react-icons/pi";
+
+const Testimonials = dynamic(() => import("../testimonials"), {
+  ssr: false,
+});
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 

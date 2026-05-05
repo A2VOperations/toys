@@ -4,6 +4,7 @@ import { PRODUCT_CATEGORIES } from '../../constants/productCategories';
 const ToySchema = new mongoose.Schema({
   title: { type: String, required: true },
   category: { type: [String], required: true, enum: PRODUCT_CATEGORIES },
+  subCategory: { type: [String] },
   brand: { type: String },
   images: {
     type: [String],

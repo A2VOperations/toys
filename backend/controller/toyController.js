@@ -40,6 +40,7 @@ export const addToy = async (data) => {
     ...data,
     images:   imageUrls,
     category: Array.isArray(data.category) ? data.category : [],
+    subCategory: Array.isArray(data.subCategory) ? data.subCategory : (data.subCategory ? [data.subCategory] : []),
   });
   return await toy.save();
 };
@@ -51,7 +52,7 @@ export const getToys = async (query = {}) => {
   await dbConnect();
 
   const {
-    title, category, brand, gender, age, tags,
+    title, category, subCategory, brand, gender, age, tags,
     page = 1, limit = 9, sortBy, latestUploaded,
     minPrice, maxPrice,
     fields,
@@ -60,6 +61,15 @@ export const getToys = async (query = {}) => {
   const mongoQuery = {};
 
   if (title) mongoQuery.title = { $regex: title, $options: 'i' };
+
+  if (subCategory) {
+    const subCategories = parseMulti(subCategory);
+    if (subCategories.length) {
+      mongoQuery.subCategory = {
+        $in: subCategories.map((s) => new RegExp(`^${escapeRegExp(s)}$`, 'i')),
+      };
+    }
+  }
 
   const categoryFilter = parseMulti(category);
   if (categoryFilter.length) {
@@ -161,7 +171,7 @@ export const updateToy = async (id, body) => {
   await dbConnect();
 
   const {
-    title, category, brand, stock, description,
+    title, category, subCategory, brand, stock, description,
     gender, age, tags, images, price,
   } = body;
 
@@ -184,6 +194,7 @@ export const updateToy = async (id, body) => {
     {
       title, brand, price,
       category: Array.isArray(category) ? category : [],  // just like tags
+      subCategory: Array.isArray(subCategory) ? subCategory : (subCategory ? [subCategory] : []),
       stock:    Number(stock) || 0,
       description, gender, age,
       tags: tags || [],

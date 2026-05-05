@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { CATEGORIES, CATEGORY_EMOJIS } from "./categories";
+import { PRODUCT_CATEGORIES, PRODUCT_SUBCATEGORIES } from "@/constants/productCategories";
 import { getCartCount } from "./cartStorage";
 
 /* ── WhatsApp from .env ── */
@@ -56,27 +57,17 @@ const GRID_CATEGORIES = [
     emoji: "👶",
   },
   {
-    label: "Non Battery Operated",
-    href: "/shop?category=Non Battery Toys",
+    label: "Toys",
+    href: "/shop?category=Toys",
     img: "/navbar/imgs7 (2).png",
     emoji: "📚",
   },
 ];
 
-const ALL_SIDEBAR_CATEGORIES = [
-  { label: "Outdoor & Sports", path: "Outdoor & Sports" },
-  { label: "Battery Operated Toys", path: "Battery Operated Toys" },
-  { label: "Return Gifts Ideas", path: "Return Gifts Ideas" },
-  { label: "School Essentials", path: "School Essentials" },
-  {
-    label: "Stationary (Return Gifts + Regular)",
-    path: "Stationary (Return Gifts + Regular)",
-  },
-  { label: "Non Battery Toys", path: "Non Battery Toys" },
-  { label: "Soft and Plush Toys", path: "Soft and Plush Toys" },
-  { label: "Puzzles and Brain Teasers", path: "Puzzles and Brain Teasers" },
-  { label: "Learning and Education Toys", path: "Learning and Education Toys" },
-];
+const ALL_SIDEBAR_CATEGORIES = PRODUCT_CATEGORIES.map((cat) => ({
+  label: cat,
+  path: cat,
+}));
 
 const AGE_RANGES = [
   { label: "0 – 12 Months", path: "0,1" },
@@ -267,6 +258,7 @@ export default function Navbar({ onCartClick }) {
   const [mobileShopSubmenu, setMobileShopSubmenu] = useState(false);
   const [hoveredSidebarCat, setHoveredSidebarCat] =
     useState("All Toys & Games");
+  const [mobileExpandedCat, setMobileExpandedCat] = useState(null);
   const megaRef = useRef(null);
   const timerRef = useRef(null);
   const pathname = usePathname();
@@ -310,6 +302,7 @@ export default function Navbar({ onCartClick }) {
     setMegaOpen(false);
     setMobileMenuOpen(false);
     setMobileShopSubmenu(false);
+    setMobileExpandedCat(null);
   }, [pathname]);
 
   useEffect(() => {
@@ -338,6 +331,7 @@ export default function Navbar({ onCartClick }) {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
     setMobileShopSubmenu(false);
+    setMobileExpandedCat(null);
   };
 
   /* Build category href */
@@ -525,14 +519,14 @@ export default function Navbar({ onCartClick }) {
           }}
         >
           <div
-            className="flex flex-col w-full max-w-[1600px] mx-auto overflow-hidden"
+            className="flex flex-col w-full max-w-[1600px] mx-auto overflow-visible"
             style={{
               background: "#fff",
             }}
           >
             {/* ── Main 5-column grid ── */}
             <div
-              className="grid flex-1 w-full overflow-hidden"
+              className="grid flex-1 w-full overflow-visible relative"
               style={{ gridTemplateColumns: "1fr 1.2fr 0.8fr 1fr 300px" }}
             >
               {/* ── Col 1: Shop by Categories Sidebar ── */}
@@ -553,9 +547,10 @@ export default function Navbar({ onCartClick }) {
                     Shop by Categories
                   </span>
                 </div>
-                <ul className="list-none p-0 m-0">
-                  {ALL_SIDEBAR_CATEGORIES.map((cat) => (
-                    <li key={cat.label}>
+                <div className="relative">
+                  <ul className="list-none p-0 m-0">
+                    {ALL_SIDEBAR_CATEGORIES.map((cat) => (
+                      <li key={cat.label}>
                       <Link
                         href={catHref(cat.path)}
                         className={`sidebar-cat-item flex items-center justify-between px-4 py-2.5 no-underline text-[0.82rem] font-bold ${hoveredSidebarCat === cat.label ? "active" : ""}`}
@@ -572,29 +567,50 @@ export default function Navbar({ onCartClick }) {
                         onMouseEnter={() => setHoveredSidebarCat(cat.label)}
                       >
                         {cat.label}
-                        <svg
-                          className="cat-arrow w-3.5 h-3.5 flex-shrink-0"
-                          style={{
-                            color:
-                              hoveredSidebarCat === cat.label
-                                ? "#e84393"
-                                : "#bbb",
-                          }}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2.5}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
+                        {(PRODUCT_SUBCATEGORIES[cat.label] || cat.label === "All Toys & Games") && (
+                          <svg
+                            className="cat-arrow w-3.5 h-3.5 flex-shrink-0"
+                            style={{
+                              color:
+                                hoveredSidebarCat === cat.label
+                                  ? "#e84393"
+                                  : "#bbb",
+                            }}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2.5}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        )}
                       </Link>
+                      
+                      {hoveredSidebarCat === cat.label && PRODUCT_SUBCATEGORIES[cat.label] && (
+                        <div className="absolute left-full top-0 w-[450px] bg-white shadow-xl border border-gray-100 z-[1001] py-3 rounded-r-xl" style={{ minHeight: '100%' }}>
+                          <div className="px-4 py-2 mb-2 border-b border-gray-50">
+                            <span className="text-[0.72rem] font-black uppercase tracking-widest text-[#e84393]">
+                              {cat.label} Subcategories
+                            </span>
+                          </div>
+                          <div className="grid grid-cols-2 gap-x-2 px-2">
+                            {PRODUCT_SUBCATEGORIES[cat.label].map(sub => (
+                              <Link key={sub} href={`/shop?category=${encodeURIComponent(cat.label)}&subCategory=${encodeURIComponent(sub)}`} 
+                                 className="block px-3 py-2 text-[0.82rem] font-bold text-gray-600 rounded-lg hover:bg-[#fff0f6] hover:text-[#e84393] transition-colors">
+                                {sub}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>
+                </div>
               </div>
 
               {/* ── Col 2: All Toys & Games image grid ── */}
@@ -945,20 +961,48 @@ export default function Navbar({ onCartClick }) {
                   >
                     🗂️ Categories
                   </div>
-                  {ALL_SIDEBAR_CATEGORIES.map((cat) => (
-                    <Link
-                      key={cat.label}
-                      href={catHref(cat.path)}
-                      onClick={closeMobileMenu}
-                      className="mobile-cat-link block py-2.5 pl-4 font-semibold text-[1rem] no-underline transition-colors"
-                      style={{
-                        color: "#666",
-                        borderBottom: "1px solid #fce4ef",
-                      }}
-                    >
-                      {cat.label}
-                    </Link>
-                  ))}
+                  {ALL_SIDEBAR_CATEGORIES.map((cat) => {
+                    const hasSub = PRODUCT_SUBCATEGORIES[cat.label];
+                    const isExpanded = mobileExpandedCat === cat.label;
+                    return (
+                      <div key={cat.label} style={{ borderBottom: "1px solid #fce4ef" }}>
+                        <div className="flex items-center justify-between">
+                          <Link
+                            href={catHref(cat.path)}
+                            onClick={closeMobileMenu}
+                            className="mobile-cat-link flex-1 py-2.5 pl-4 font-semibold text-[1rem] no-underline transition-colors text-[#666]"
+                          >
+                            {cat.label}
+                          </Link>
+                          {hasSub && (
+                            <button
+                              onClick={() => setMobileExpandedCat(isExpanded ? null : cat.label)}
+                              className="p-3 text-[#e84393] transition-transform duration-200"
+                              style={{ transform: isExpanded ? "rotate(180deg)" : "none", background: "none", border: "none" }}
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="6 9 12 15 18 9" />
+                              </svg>
+                            </button>
+                          )}
+                        </div>
+                        {hasSub && isExpanded && (
+                          <div className="bg-[#fff0f6] py-1 border-b border-[#fce4ef]/50">
+                            {hasSub.map((sub) => (
+                              <Link
+                                key={sub}
+                                href={`/shop?category=${encodeURIComponent(cat.label)}&subCategory=${encodeURIComponent(sub)}`}
+                                onClick={closeMobileMenu}
+                                className="block py-2.5 pl-10 pr-4 font-bold text-[0.85rem] text-gray-500 hover:text-[#e84393] transition-colors no-underline"
+                              >
+                                • {sub}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
                 {/* Featured Grid Categories */}
                 <div className="mb-6 mr-4">

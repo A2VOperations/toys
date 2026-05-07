@@ -32,9 +32,7 @@ export default function Testimonials() {
         </div>
 
         {/* Elfsight Google Reviews Widget Container */}
-        <div 
-          className="elfsight-app-ebeacab4-832b-4bc2-9dcd-6eeefd1a5511" 
-        ></div>
+        <div className="elfsight-app-ebeacab4-832b-4bc2-9dcd-6eeefd1a5511"></div>
       </div>
     </section>
   );

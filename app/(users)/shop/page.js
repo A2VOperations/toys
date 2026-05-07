@@ -571,7 +571,7 @@ function ShopPageContent() {
                       type="checkbox"
                       checked={filters.category === ""}
                       onChange={() => {
-                        const next = { ...filters, category: "" };
+                        const next = { ...filters, category: "", subCategory: "" };
                         setFilters(next);
                         setPagination((p) => ({ ...p, currentPage: 1 }));
                         router.push(`${pathname}?${buildSearchParams(next)}`, { scroll: false });

@@ -191,7 +191,7 @@ function KiteSVG() {
     <svg
       viewBox="0 0 72 96"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns="https://www.w3.org/2000/svg"
       className="h-20 w-16"
     >
       <polygon

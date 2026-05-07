@@ -796,7 +796,7 @@ export default function Navbar({ onCartClick }) {
               <div className="p-5">
                 {/* Promo banner */}
                 <div
-                  className="mt-auto rounded-2xl p-4 relative overflow-hidden h-[300px] flex flex-col"
+                  className="mt-auto rounded-2xl p-4 relative overflow-hidden h-auto flex flex-col"
                   style={{
                     background: "linear-gradient(135deg,#fff0f6,#fce4ef)",
                   }}
@@ -885,8 +885,8 @@ export default function Navbar({ onCartClick }) {
           <Image
             src="/Kids For Toy logo.png"
             alt="Logo"
-            width={200}
-            height={200}
+            width={100}
+            height={100}
             className="object-contain"
           />
           <button
@@ -900,7 +900,7 @@ export default function Navbar({ onCartClick }) {
           </button>
         </div>
 
-        <div className="flex-1 p-5">
+        <div className="flex-1 px-5 py-2">
           {[
             { name: "Home", path: "/" },
             { name: "About", path: "/about" },
@@ -909,7 +909,7 @@ export default function Navbar({ onCartClick }) {
               key={link.name}
               href={link.path}
               onClick={closeMobileMenu}
-              className="flex items-center justify-between py-3.5 no-underline font-extrabold text-lg"
+              className="flex items-center justify-between py-2 no-underline font-extrabold text-lg"
               style={{
                 borderBottom: "1px solid #fce4ef",
                 color: pathname === link.path ? "#e84393" : "#444",
@@ -1137,7 +1137,7 @@ export default function Navbar({ onCartClick }) {
         </a>
 
         <div
-          className="mx-5 my-2 p-5 rounded-2xl"
+          className="mx-5 my-2 p-5 rounded-2xl relative overflow-hidden"
           style={{
             background: "linear-gradient(160deg,#fff0f6 0%,#fce4ef 100%)",
           }}
@@ -1146,38 +1146,32 @@ export default function Navbar({ onCartClick }) {
             className="text-[10px] font-black uppercase"
             style={{ color: "#e84393" }}
           >
-            ✨ Limited Time Offer
+            ✨ {offerData.title}
           </span>
           <h3
             className="text-[1.2rem] font-black mt-1 mb-1"
-            style={{ color: "#e84393" }}
+            style={{ color: "#e84393", whiteSpace: "pre-line" }}
           >
-            UP TO 30% OFF
+            {offerData.heading}
           </h3>
           <p className="text-[0.75rem] text-gray-500 font-semibold mb-3">
-            On Selected Toys
+            {offerData.subheading}
           </p>
           <Link
-            href="/shop?tags=Sale"
+            href={offerData.linkUrl}
             onClick={closeMobileMenu}
             className="inline-block text-white px-5 py-2.5 rounded-full text-xs font-black no-underline"
             style={{ background: "#e84393" }}
           >
-            SHOP NOW →
+            {offerData.linkText}
           </Link>
+          {/* decorative teddy emoji */}
+          <div className="absolute -bottom-1 right-2 text-4xl opacity-80 select-none pointer-events-none">
+            🧸
+          </div>
         </div>
 
-        <Link
-          href="/cart"
-          onClick={(e) => {
-            if (onCartClick) onCartClick(e);
-            closeMobileMenu();
-          }}
-          className="mx-5 mb-5 py-3 text-white no-underline text-center rounded-full font-extrabold text-lg flex items-center justify-center gap-2"
-          style={{ background: "#e84393" }}
-        >
-          🛒 View Cart {localCartCount > 0 && `(${localCartCount})`}
-        </Link>
+        
       </div>
     </>
   );

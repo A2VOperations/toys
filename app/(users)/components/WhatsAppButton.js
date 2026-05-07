@@ -52,7 +52,7 @@ export default function WhatsAppButton() {
 
       {/* WhatsApp SVG icon */}
       <svg
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns="https://www.w3.org/2000/svg"
         viewBox="0 0 32 32"
         width="28"
         height="28"

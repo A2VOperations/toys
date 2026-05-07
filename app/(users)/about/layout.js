@@ -1,7 +1,16 @@
 export const metadata = {
   title: "About Us",
   description:
-    "Learn more about Toys for Kids, founded by Jyoti Agrawal. With over 8 years of experience, we provide high-quality kids' toys, stationery, and return gifts at wholesale and retail prices in Delhi.",
+    "Toys for Kids is a trusted kids' toy and stationery store in Delhi, founded by Jyoti Agrawal. 8+ years of experience in wholesale and retail toys, return gifts & school stationery across India.",
+  keywords: [
+    "about Toys for Kids Delhi",
+    "Jyoti Agrawal toys wholesaler",
+    "trusted kids toy store India",
+    "toy supplier Burari Delhi",
+  ],
+  alternates: {
+    canonical: "https://toysforkids.co.in/about",
+  },
 };
 
 export default function AboutLayout({ children }) {

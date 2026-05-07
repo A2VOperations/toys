@@ -5,6 +5,6 @@ export default function robots() {
       allow: "/",
       disallow: ["/admin/", "/api/"],
     },
-    sitemap: "http://toysforkids.co.in/sitemap.xml",
+    sitemap: "https://toysforkids.co.in/sitemap.xml",
   };
 }

@@ -85,7 +85,7 @@ export const metadata = {
     },
   },
   alternates: {
-    canonical: "https://toysforkids.co.in",
+    canonical: "https://www.toysforkids.co.in",
   },
 };
 

@@ -193,7 +193,7 @@ function ShopPageContent() {
     const fetchFilterOptions = async () => {
       try {
         const response = await fetch(
-          "/api/toys?page=1&limit=500&latestUploaded=false",
+          "/api/toys?page=1&limit=1000000&latestUploaded=false",
         );
         const data = await response.json();
         if (!response.ok) return;

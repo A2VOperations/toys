@@ -53,12 +53,6 @@ const GRID_CATEGORIES = [
     emoji: "🌱",
   },
   {
-    label: "Battery Operated",
-    href: "/shop?category=Battery Operated Toys",
-    img: "/navbar/imgs8.png",
-    emoji: "👶",
-  },
-  {
     label: "Toys",
     href: "/shop?category=Toys",
     img: "/navbar/imgs7 (2).png",

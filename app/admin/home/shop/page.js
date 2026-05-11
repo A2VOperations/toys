@@ -21,7 +21,7 @@ export default function MyShopPage() {
     async function fetchToys() {
       setLoading(true);
       try {
-        const res = await fetch("/api/toys?limit=1000");
+        const res = await fetch("/api/toys?limit=1000000");
         const data = await res.json();
         setToys(data.toys || []);
       } catch (err) {

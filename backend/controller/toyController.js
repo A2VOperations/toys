@@ -5,8 +5,8 @@ import {
   deleteWithRetry,
 } from '../lib/cloudinary';
 
-const MAX_LIMIT = 200;
-const MAX_PAGE  = 1000;
+const MAX_LIMIT = 1000000;
+const MAX_PAGE = 1000;
 
 async function processImages(images) {
   if (!images?.length) return [];

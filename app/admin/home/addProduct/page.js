@@ -6,15 +6,10 @@ import { PRODUCT_CATEGORIES, PRODUCT_SUBCATEGORIES } from "@/constants/productCa
 const CATEGORIES = PRODUCT_CATEGORIES;
 
 const CATEGORY_EMOJIS = {
-  "Outdoor & Sports":                    "⚽",
-  "Battery Operated Toys":               "🔋",
   "Return Gifts Ideas":                  "🎁",
   "School Essentials":                   "🎒",
   "Stationary (Return Gifts + Regular)": "✏️",
   "Toys":                              "🧸",
-  "Soft and Plush Toys":                 "🐻",
-  "Puzzles and Brain Teasers":           "🧩",
-  "Learning and Education Toys":         "📚",
 };
 
 const TAGS = [

@@ -1,16 +1,11 @@
 export const PRODUCT_CATEGORIES = [
-  "Outdoor & Sports",
-  "Battery Operated Toys",
   "Return Gifts Ideas",
   "School Essentials",
   "Stationary (Return Gifts + Regular)",
   "Toys",
-  "Soft and Plush Toys",
-  "Puzzles and Brain Teasers",
-  "Learning and Education Toys",
   "Mugs",
   "Fancy Bags",
-  "Summer Items"
+  "Summer Items",
 ];
 
 export const PRODUCT_SUBCATEGORIES = {
@@ -19,12 +14,9 @@ export const PRODUCT_SUBCATEGORIES = {
     "Plastic Water Bottles",
     "Steel Water Bottles",
     "Lunch Boxes",
-    "Geometry Box"
+    "Geometry Box",
   ],
-  "Mugs": [
-    "Mugs",
-    "Branded and Imported"
-  ],
+  Mugs: ["Mugs", "Branded and Imported"],
   "Return Gifts Ideas": [
     "Stationery Gift Set",
     "Educational Toys",
@@ -41,9 +33,9 @@ export const PRODUCT_SUBCATEGORIES = {
     "Piggy Bank",
     "Speaker/Mic Set",
     "Kids Beauty Items",
-    "Water Dispenser"
+    "Water Dispenser",
   ],
-  "Toys": [
+  Toys: [
     "Remote Control Toys",
     "Metal Car/Bike/Track",
     "Camera/Printers",
@@ -60,7 +52,10 @@ export const PRODUCT_SUBCATEGORIES = {
     "New Born Toys",
     "Magna Tiles/Magnetic",
     "Action Figures",
-    "Train Toys"
+    "Train Toys",
+    "Learning and Education Toys",
+    "Hand Game",
+    "Video Game",
   ],
   "Fancy Bags": [
     "Lunch Bags",
@@ -73,7 +68,7 @@ export const PRODUCT_SUBCATEGORIES = {
     "Vanity/Trolley Suitcase",
     "Shopping Bag",
     "Chest Bag",
-    "Duffle Bag"
+    "Duffle Bag",
   ],
   "Stationary (Return Gifts + Regular)": [
     "Folder",
@@ -85,11 +80,7 @@ export const PRODUCT_SUBCATEGORIES = {
     "Book Stand and Pen Stand",
     "Writing Tablet",
     "Colour Kit",
-    "Geometry Box"
+    "Geometry Box",
   ],
-  "Summer Items": [
-    "Umbrella",
-    "Fan",
-    "Swimming Items"
-  ]
+  "Summer Items": ["Umbrella", "Fan", "Swimming Items"],
 };

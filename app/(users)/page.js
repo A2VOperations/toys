@@ -103,7 +103,7 @@ const featuredBanners = [
     price: "₹34.00",
     bg: "bg-[#e81a3c]",
     image: "/home page/feature-2.webp",
-    link: "/shop?category=Learning and Education Toys",
+    link: "/shop?category=Toys",
   },
   {
     tag: "LATEST",
@@ -111,7 +111,7 @@ const featuredBanners = [
     price: "₹35.99",
     bg: "bg-[#1a6ce8]",
     image: "/home page/feature-3.webp",
-    link: "/shop?category=Puzzles and Brain Teasers",
+    link: "/shop?category=School Essentials",
   },
 ];
 
@@ -824,85 +824,85 @@ export default function Home() {
         />
       </section>
 
-        <section className="relative isolate overflow-hidden bg-[#FFE8EE] px-4 py-5 sm:px-5 ">
-          <div className="pointer-events-none absolute left-10 top-80 hidden md:block">
-            <Image
-              src="/home page/shape-24.png"
-              alt="Toy for kids"
-              width={180}
-              height={180}
-              priority
-              className="h-[180px] w-[180px] object-contain animate-floatUpDown"
-            />
+      <section className="relative isolate overflow-hidden bg-[#FFE8EE] px-4 py-5 sm:px-5 ">
+        <div className="pointer-events-none absolute left-10 top-80 hidden md:block">
+          <Image
+            src="/home page/shape-24.png"
+            alt="Toy for kids"
+            width={180}
+            height={180}
+            priority
+            className="h-[180px] w-[180px] object-contain animate-floatUpDown"
+          />
+        </div>
+        <div className="pointer-events-none absolute top-0 right-[70%] hidden md:block">
+          <Image
+            src="/home page/shape-17.png"
+            alt="Toy for kids"
+            width={180}
+            height={180}
+            priority
+            className="h-[180px] w-[180px] object-contain"
+          />
+        </div>
+        <div className="pointer-events-none absolute top-0 right-80 hidden md:block">
+          <Image
+            src="/home page/shape-25.png"
+            alt="Toy for kids"
+            width={180}
+            height={180}
+            priority
+            className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
+          />
+        </div>
+        <div className="relative z-10 max-w-[1400px] mx-auto">
+          <div className="flex flex-col md:flex-row justify-center items-center mb-6 md:mb-8 gap-6">
+            <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-left md:text-5xl">
+              Deal of <span className="text-[#E84393]">the Day</span>
+            </h2>
           </div>
-          <div className="pointer-events-none absolute top-0 right-[70%] hidden md:block">
-            <Image
-              src="/home page/shape-17.png"
-              alt="Toy for kids"
-              width={180}
-              height={180}
-              priority
-              className="h-[180px] w-[180px] object-contain"
-            />
-          </div>
-          <div className="pointer-events-none absolute top-0 right-80 hidden md:block">
-            <Image
-              src="/home page/shape-25.png"
-              alt="Toy for kids"
-              width={180}
-              height={180}
-              priority
-              className="h-[180px] w-[180px] object-contain animate-floatLeftRight"
-            />
-          </div>
-          <div className="relative z-10 max-w-[1400px] mx-auto">
-            <div className="flex flex-col md:flex-row justify-center items-center mb-6 md:mb-8 gap-6">
-              <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-left md:text-5xl">
-                Deal of <span className="text-[#E84393]">the Day</span>
-              </h2>
-            </div>
 
-            <div className="flex justify-center gap-3 mb-8 flex-wrap">
-              {[
-                {
-                  tag: "limited edition",
-                  label: "👑 Limited Edition",
-                  activeColor: "#7c3aed",
-                },
-                { tag: "sales", label: "🔥 On Sale", activeColor: "#ef4444" },
-              ].map((pill) => (
-                <button
-                  key={pill.tag}
-                  onClick={() => setDealTag(pill.tag)}
-                  style={
-                    dealTag === pill.tag
-                      ? {
-                          background: pill.activeColor,
-                          color: "#fff",
-                          borderColor: pill.activeColor,
-                        }
-                      : {}
-                  }
-                  className={`px-5 py-2 rounded-full text-sm font-black border-2 transition-all duration-200 ${
-                    dealTag === pill.tag
-                      ? "shadow-lg scale-105"
-                      : "border-pink-200 text-slate-600 bg-white hover:border-[#E84393] hover:text-[#E84393]"
-                  }`}
-                >
-                  {pill.label}
-                </button>
+          <div className="flex justify-center gap-3 mb-8 flex-wrap">
+            {[
+              {
+                tag: "limited edition",
+                label: "👑 Limited Edition",
+                activeColor: "#7c3aed",
+              },
+              { tag: "sales", label: "🔥 On Sale", activeColor: "#ef4444" },
+            ].map((pill) => (
+              <button
+                key={pill.tag}
+                onClick={() => setDealTag(pill.tag)}
+                style={
+                  dealTag === pill.tag
+                    ? {
+                        background: pill.activeColor,
+                        color: "#fff",
+                        borderColor: pill.activeColor,
+                      }
+                    : {}
+                }
+                className={`px-5 py-2 rounded-full text-sm font-black border-2 transition-all duration-200 ${
+                  dealTag === pill.tag
+                    ? "shadow-lg scale-105"
+                    : "border-pink-200 text-slate-600 bg-white hover:border-[#E84393] hover:text-[#E84393]"
+                }`}
+              >
+                {pill.label}
+              </button>
+            ))}
+          </div>
+
+          {dealLoading ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+              {Array.from({ length: 2 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-white animate-pulse rounded-[30px] sm:rounded-[40px] h-48 border-4 border-[#FFE0EE]"
+                />
               ))}
             </div>
-
-            {dealLoading ? (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-                {Array.from({ length: 2 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="bg-white animate-pulse rounded-[30px] sm:rounded-[40px] h-48 border-4 border-[#FFE0EE]"
-                  />
-                ))}
-              </div>
           ) : dealProducts.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-48 text-gray-400">
               <span className="text-5xl mb-4">🔍</span>
@@ -918,115 +918,115 @@ export default function Home() {
                 Tag products with &ldquo;{dealTag}&rdquo; in the admin panel.
               </p>
             </div>
-            ) : (
-              <div className="relative px-0 sm:px-12">
-                <button className="deal-prev absolute left-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    className="h-5 w-5"
-                  >
-                    <path
-                      d="M15 18l-6-6 6-6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-
-                <Swiper
-                  modules={[Navigation, Autoplay]}
-                  spaceBetween={20}
-                  slidesPerView={1}
-                  loop={true}
-                  navigation={{
-                    prevEl: ".deal-prev",
-                    nextEl: ".deal-next",
-                  }}
-                  autoplay={{ delay: 3500, disableOnInteraction: false }}
-                  breakpoints={{
-                    640: { slidesPerView: 1, spaceBetween: 20 },
-                    1024: { slidesPerView: 2, spaceBetween: 30 },
-                  }}
-                  className="deal-swiper"
+          ) : (
+            <div className="relative px-0 sm:px-12">
+              <button className="deal-prev absolute left-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  className="h-5 w-5"
                 >
-                  {dealProducts.map((d) => (
-                    <SwiperSlide key={d._id} className="pb-8 px-2">
-                      <div
-                        className="bg-white rounded-[30px] sm:rounded-[40px] flex flex-col sm:flex-row items-center gap-6 sm:gap-8 border-4 border-[#FFE0EE] shadow-xl hover:shadow-2xl transition-all h-full cursor-pointer"
-                        onClick={() => router.push(`/shop/${d._id}`)}
-                      >
-                        <div className="w-full sm:w-[45%] aspect-square relative shrink-0 rounded-t-[20px] sm:rounded-l-[20px] sm:rounded-tr-none overflow-hidden">
-                          <ProductTagBadge tag={d.tags?.[0]} />
-                          <Image
-                            className="object-cover hover:scale-105 transition-transform duration-500 drop-shadow-md rounded-t-[20px] sm:rounded-l-[20px] sm:rounded-tr-none"
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            src={d.image}
-                            alt={d.name}
-                          />
-                        </div>
-                        <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left gap-4 w-full">
-                          <h3 className="text-lg font-black leading-tight">
-                            {d.name}
-                          </h3>
-                          <p className="text-2xl font-black text-[#E84393]">
-                            {d.price}
-                          </p>
-                          <div className="flex gap-3 mt-auto flex-wrap pb-4">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                addToCart(d);
-                              }}
-                              className="rounded-full border border-dashed bg-white px-6 py-2.5 text-xs font-black uppercase tracking-widest text-[#e8569a] shadow-sm transition-colors hover:border-white hover:bg-[#d83a82] hover:text-white"
-                            >
-                              Add to Cart
-                            </button>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                const waNumber =
-                                  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
-                                if (!waNumber) return;
-                                const msg = `Hi, I want to buy: ${d.name}`;
-                                window.open(
-                                  `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`,
-                                  "_blank",
-                                );
-                              }}
-                              className="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest transition-colors shadow-sm"
-                            >
-                              WhatsApp
-                            </button>
-                          </div>
+                  <path
+                    d="M15 18l-6-6 6-6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              <Swiper
+                modules={[Navigation, Autoplay]}
+                spaceBetween={20}
+                slidesPerView={1}
+                loop={true}
+                navigation={{
+                  prevEl: ".deal-prev",
+                  nextEl: ".deal-next",
+                }}
+                autoplay={{ delay: 3500, disableOnInteraction: false }}
+                breakpoints={{
+                  640: { slidesPerView: 1, spaceBetween: 20 },
+                  1024: { slidesPerView: 2, spaceBetween: 30 },
+                }}
+                className="deal-swiper"
+              >
+                {dealProducts.map((d) => (
+                  <SwiperSlide key={d._id} className="pb-8 px-2">
+                    <div
+                      className="bg-white rounded-[30px] sm:rounded-[40px] flex flex-col sm:flex-row items-center gap-6 sm:gap-8 border-4 border-[#FFE0EE] shadow-xl hover:shadow-2xl transition-all h-full cursor-pointer"
+                      onClick={() => router.push(`/shop/${d._id}`)}
+                    >
+                      <div className="w-full sm:w-[45%] aspect-square relative shrink-0 rounded-t-[20px] sm:rounded-l-[20px] sm:rounded-tr-none overflow-hidden">
+                        <ProductTagBadge tag={d.tags?.[0]} />
+                        <Image
+                          className="object-cover hover:scale-105 transition-transform duration-500 drop-shadow-md rounded-t-[20px] sm:rounded-l-[20px] sm:rounded-tr-none"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          src={d.image}
+                          alt={d.name}
+                        />
+                      </div>
+                      <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left gap-4 w-full">
+                        <h3 className="text-lg font-black leading-tight">
+                          {d.name}
+                        </h3>
+                        <p className="text-2xl font-black text-[#E84393]">
+                          {d.price}
+                        </p>
+                        <div className="flex gap-3 mt-auto flex-wrap pb-4">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              addToCart(d);
+                            }}
+                            className="rounded-full border border-dashed bg-white px-6 py-2.5 text-xs font-black uppercase tracking-widest text-[#e8569a] shadow-sm transition-colors hover:border-white hover:bg-[#d83a82] hover:text-white"
+                          >
+                            Add to Cart
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const waNumber =
+                                process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
+                              if (!waNumber) return;
+                              const msg = `Hi, I want to buy: ${d.name}`;
+                              window.open(
+                                `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`,
+                                "_blank",
+                              );
+                            }}
+                            className="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest transition-colors shadow-sm"
+                          >
+                            WhatsApp
+                          </button>
                         </div>
                       </div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
 
-                <button className="deal-next absolute right-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    className="h-5 w-5"
-                  >
-                    <path
-                      d="M9 18l6-6-6-6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-            )}
-          </div>
-        </section>
+              <button className="deal-next absolute right-1 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-slate-900 bg-white text-slate-900 shadow-md transition-all duration-200 cursor-pointer active:scale-90 hover:bg-slate-900 hover:text-white sm:flex sm:h-12 sm:w-12">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  className="h-5 w-5"
+                >
+                  <path
+                    d="M9 18l6-6-6-6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
       <section className="m-0 p-0 leading-none">
         <Image
           src="/home page/hero-border-2.png"
@@ -1062,89 +1062,89 @@ export default function Home() {
         onAddToCart={addToCart}
       />
 
-        <section className="relative isolate overflow-hidden bg-white py-14 md:py-16">
-          <div className="pointer-events-none absolute right-8 top-0 hidden md:block -z-10 xl:right-20">
+      <section className="relative isolate overflow-hidden bg-white py-14 md:py-16">
+        <div className="pointer-events-none absolute right-8 top-0 hidden md:block -z-10 xl:right-20">
+          <Image
+            src="/home page/shape-26.png"
+            alt="toys for kids"
+            width={150}
+            height={150}
+            priority
+            className="h-[150px] w-[150px] object-contain animate-floatLeftRight"
+          />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
+          {/* LEFT BANNER */}
+          <div className="relative min-h-[260px] overflow-hidden rounded-3xl shadow-xl md:col-span-1 md:min-h-auto">
             <Image
-              src="/home page/shape-26.png"
-              alt="toys for kids"
-              width={150}
-              height={150}
-              priority
-              className="h-[150px] w-[150px] object-contain animate-floatLeftRight"
+              src="/home page/ads-1.jpg"
+              alt="toy for kids"
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover"
             />
-          </div>
-          <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
-            {/* LEFT BANNER */}
-            <div className="relative min-h-[260px] overflow-hidden rounded-3xl shadow-xl md:col-span-1 md:min-h-auto">
-              <Image
-                src="/home page/ads-1.jpg"
-                alt="toy for kids"
-                fill
-                sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-black/20 opacity-80 backdrop-blur-[2px]"></div>
-              <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 text-white md:justify-between md:p-8">
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.2em] mb-2 drop-shadow-md">
-                    Featured
-                  </p>
-                  <h2 className="mt-2 mb-4 text-2xl font-black leading-tight drop-shadow-lg xl:text-3xl">
-                    Kid Toy Collection <br /> for Summer
-                  </h2>
-                  <Link
-                    href="/shop"
-                    className="mt-6 inline-block bg-white text-orange-500 text-center px-5 py-2 md:px-6 md:py-2.5 rounded-full text-xs md:text-sm font-black hover:scale-105 transition-transform shadow-lg"
-                  >
-                    View Shop
-                  </Link>
-                </div>
+            <div className="absolute inset-0 bg-black/20 opacity-80 backdrop-blur-[2px]"></div>
+            <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 text-white md:justify-between md:p-8">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.2em] mb-2 drop-shadow-md">
+                  Featured
+                </p>
+                <h2 className="mt-2 mb-4 text-2xl font-black leading-tight drop-shadow-lg xl:text-3xl">
+                  Kid Toy Collection <br /> for Summer
+                </h2>
+                <Link
+                  href="/shop"
+                  className="mt-6 inline-block bg-white text-orange-500 text-center px-5 py-2 md:px-6 md:py-2.5 rounded-full text-xs md:text-sm font-black hover:scale-105 transition-transform shadow-lg"
+                >
+                  View Shop
+                </Link>
               </div>
             </div>
-            {/* RIGHT CONTENT */}
-            <div className="md:col-span-3 min-w-0">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
-                  Best Selling <span className="text-pink-500">products</span>
-                </h2>
-              </div>
+          </div>
+          {/* RIGHT CONTENT */}
+          <div className="md:col-span-3 min-w-0">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+                Best Selling <span className="text-pink-500">products</span>
+              </h2>
+            </div>
 
-              <Swiper
-                modules={[Navigation, Autoplay, Grid]}
-                spaceBetween={20}
-                slidesPerView={4}
-                navigation
-                autoplay={{ delay: 3000 }}
-                grid={{
-                  rows: 2,
-                  fill: "row",
-                }}
-                breakpoints={{
-                  320: { slidesPerView: 1, grid: { rows: 1 }, spaceBetween: 10 },
-                  640: { slidesPerView: 3, grid: { rows: 1 }, spaceBetween: 15 },
-                  1024: { slidesPerView: 4, grid: { rows: 2 }, spaceBetween: 20 },
-                }}
-              >
-                {bestsellingLoading ? (
-                  Array.from({ length: 8 }).map((_, i) => (
-                    <SwiperSlide key={`skeleton-${i}`} className="h-auto">
-                      <div className="bg-white/60 animate-pulse rounded-2xl h-[360px] w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
-                        <div className="h-48 bg-gray-200/60 rounded-xl w-full mb-4"></div>
-                        <div className="h-5 bg-gray-200/60 rounded w-3/4 mb-2"></div>
-                        <div className="h-4 bg-gray-200/60 rounded w-1/2 mt-auto mb-3"></div>
-                        <div className="h-10 bg-gray-200/60 rounded-full w-full"></div>
-                      </div>
-                    </SwiperSlide>
-                  ))
+            <Swiper
+              modules={[Navigation, Autoplay, Grid]}
+              spaceBetween={20}
+              slidesPerView={4}
+              navigation
+              autoplay={{ delay: 3000 }}
+              grid={{
+                rows: 2,
+                fill: "row",
+              }}
+              breakpoints={{
+                320: { slidesPerView: 1, grid: { rows: 1 }, spaceBetween: 10 },
+                640: { slidesPerView: 3, grid: { rows: 1 }, spaceBetween: 15 },
+                1024: { slidesPerView: 4, grid: { rows: 2 }, spaceBetween: 20 },
+              }}
+            >
+              {bestsellingLoading ? (
+                Array.from({ length: 8 }).map((_, i) => (
+                  <SwiperSlide key={`skeleton-${i}`} className="h-auto">
+                    <div className="bg-white/60 animate-pulse rounded-2xl h-[360px] w-full border border-gray-100/50 shadow-sm flex flex-col p-4">
+                      <div className="h-48 bg-gray-200/60 rounded-xl w-full mb-4"></div>
+                      <div className="h-5 bg-gray-200/60 rounded w-3/4 mb-2"></div>
+                      <div className="h-4 bg-gray-200/60 rounded w-1/2 mt-auto mb-3"></div>
+                      <div className="h-10 bg-gray-200/60 rounded-full w-full"></div>
+                    </div>
+                  </SwiperSlide>
+                ))
               ) : bestsellingProducts.length > 0 ? (
-                  bestsellingProducts.map((item) => (
-                    <SwiperSlide key={item.id} className="h-auto pb-4">
-                      <PopularProductCard
-                        product={{ ...item, image: item.img }}
-                        onAddToCart={addToCart}
-                      />
-                    </SwiperSlide>
-                  ))
+                bestsellingProducts.map((item) => (
+                  <SwiperSlide key={item.id} className="h-auto pb-4">
+                    <PopularProductCard
+                      product={{ ...item, image: item.img }}
+                      onAddToCart={addToCart}
+                    />
+                  </SwiperSlide>
+                ))
               ) : (
                 <SwiperSlide>
                   <div className="col-span-4 text-center py-12 text-gray-400">
@@ -1160,11 +1160,11 @@ export default function Home() {
                     </p>
                   </div>
                 </SwiperSlide>
-                )}
-              </Swiper>
-            </div>
+              )}
+            </Swiper>
           </div>
-        </section>
+        </div>
+      </section>
 
       {/* School Essentials */}
       <ProductCarouselSection
@@ -1181,9 +1181,6 @@ export default function Home() {
         apiFilter={`category=${encodeURIComponent("Stationary (Return Gifts + Regular)")}`}
         onAddToCart={addToCart}
       />
-
-
-  
 
       {/* ── PROMO TICKER ── */}
       <section className="relative isolate my-12 overflow-visible -rotate-2 md:my-20 md:-rotate-5">
@@ -1265,8 +1262,6 @@ export default function Home() {
         </div>
       </section>
 
-
-
       {/* ── PROMO BANNERS ── */}
       <section className="relative isolate mx-auto  overflow-hidden px-4 py-12 sm:px-5">
         <div className="pointer-events-none absolute right-0 top-0 hidden md:block">
@@ -1324,7 +1319,10 @@ export default function Home() {
               <span className="inline-block bg-white/20 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3">
                 Special Offer
               </span>
-              <h3 className="text-white text-4xl mb-6 font-black leading-tight drop-shadow-sm z-1000" style={{ whiteSpace: "pre-line" }}>
+              <h3
+                className="text-white text-4xl mb-6 font-black leading-tight drop-shadow-sm z-1000"
+                style={{ whiteSpace: "pre-line" }}
+              >
                 {offerData.heading}
               </h3>
               <Link
@@ -1388,20 +1386,19 @@ export default function Home() {
         </div>
       </section>
 
-
-          {/* Puzzles and Brain Teasers */}
+      {/* Fancy Bags */}
       <ProductCarouselSection
-        titlePrefix="Puzzles &"
-        titleHighlight="Brain Teasers"
-        apiFilter={`category=${encodeURIComponent("Puzzles and Brain Teasers")}`}
+        titlePrefix="Fancy"
+        titleHighlight="Fancy Bags"
+        apiFilter={`category=${encodeURIComponent("Fancy Bags")}`}
         onAddToCart={addToCart}
       />
 
-      {/* Outdoor and Sports Toys */}
+      {/* Toys */}
       <ProductCarouselSection
-        titlePrefix="Outdoor &"
-        titleHighlight="Sports Toys"
-        apiFilter={`category=${encodeURIComponent("Outdoor & Sports")}`}
+        titlePrefix=""
+        titleHighlight="Toys"
+        apiFilter={`category=${encodeURIComponent("Toys")}`}
         onAddToCart={addToCart}
       />
 
@@ -1590,14 +1587,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Soft and Plush Toys */}
+      {/* Mugs */}
       <ProductCarouselSection
-        titlePrefix="Soft &"
-        titleHighlight="Plush Toys"
-        apiFilter={`category=${encodeURIComponent("Soft and Plush Toys")}`}
+        titlePrefix=""
+        titleHighlight="Mugs"
+        apiFilter={`category=${encodeURIComponent("Mugs")}`}
         onAddToCart={addToCart}
       />
-
 
       <FacebookVideos />
 

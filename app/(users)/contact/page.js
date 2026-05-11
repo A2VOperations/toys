@@ -46,7 +46,7 @@ const waNumber = (
 ).replace(/\D/g, "");
 const mapLocation =
   process.env.NEXT_PUBLIC_MAP_LOCATION ||
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13992.458304593985!2d77.17810128715817!3d28.74599589999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cff8172c8a46b%3A0xc2ad6cca1d0c51e8!2sToys%20for%20kids!5e0!3m2!1sen!2sin!4v1777871039428!5m2!1sen!2sin";
+  "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d735.3883702651584!2d77.19691408856364!3d28.74594356462607!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cff8172c8a46b%3A0xc2ad6cca1d0c51e8!2sToys%20for%20kids!5e0!3m2!1sen!2sin!4v1778475556928!5m2!1sen!2sin";
 
 const CARDS = [
   {
@@ -199,7 +199,7 @@ export default function ContactPage() {
               height={400}
               priority
               className="object-contain"
-              style={{ height: 'auto' }}
+              style={{ height: "auto" }}
             />
           </div>
         </div>
@@ -235,7 +235,7 @@ export default function ContactPage() {
         width={1000}
         height={1000}
         className="bottom-0 left-0 right-0 z-0 w-full bg-[#fccf7d]"
-        style={{ height: 'auto' }}
+        style={{ height: "auto" }}
       />
 
       {/* ── INFO CARDS ───────────────────────────────────────────────────── */}
